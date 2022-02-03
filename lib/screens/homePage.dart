@@ -2,6 +2,8 @@
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 
+bool _light = true;
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -10,40 +12,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-          size: 30
-        ),
+        iconTheme: const IconThemeData(color: Colors.black, size: 30),
         leading: PopupMenuButton<int>(
           icon: const Icon(Icons.menu_outlined),
-          itemBuilder: (context)=>[
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 0,
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(right: 8.0, left: 8.0),
+                    child: Icon(Icons.palette),
+                  ),
+                  const Text("Change Theme"),
+                  Switch(
+                      value: _light,
+                      onChanged: (state) {
+                        setState(() {
+                          _light = state;
+                        });
+                      })
+                ],
+              ),
+            ),
             PopupMenuItem(
               value: 0,
               child: Row(
                 children: const [
                   Padding(
-                    padding: EdgeInsets.only(
-                        right: 8.0, left: 8.0),
-                    child: Icon(Icons.palette),
-                  ),
-                  Text("Change Theme"),
-                ],
-              ),
-            ),
-                        PopupMenuItem(
-              value: 0,
-              child: Row(
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        right: 8.0, left: 8.0),
+                    padding: EdgeInsets.only(right: 8.0, left: 8.0),
                     child: Icon(Icons.info),
                   ),
                   Text("About"),
@@ -110,6 +113,7 @@ class _HomePageState extends State<HomePage> {
       //     ),
       //   ),
       // ),
+<<<<<<< Updated upstream
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -128,7 +132,50 @@ class _HomePageState extends State<HomePage> {
               child: SizedBox(height: 50,)),            
           ],
         ),
+=======
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Flexible(flex: 6, child: Image.asset('assets/images/sample.PNG')),
+          const Flexible(child: Text('Title')),
+          CustomWidgets().nav_Button(),
+          CustomWidgets().nav_Button(),
+          const Flexible(
+              flex: 2,
+              child: SizedBox(
+                height: 50,
+              )),
+        ],
+>>>>>>> Stashed changes
       ),
     );
   }
 }
+// class PopupMenuSwitchItem extends StatefulWidget {
+//   const PopupMenuSwitchItem({
+//     required Key key,
+//     required this.value,
+//     required this.onValueChanged,
+//   }) : super(key: key);
+
+//   final bool value;
+//   final ValueChanged<bool> onValueChanged;
+
+//   @override
+//   _PopupMenuSwitchItemState createState() =>
+//       // ignore: no_logic_in_create_state
+//       _PopupMenuSwitchItemState(value);
+// }
+
+// class _PopupMenuSwitchItemState extends State<PopupMenuSwitchItem> {
+//   _PopupMenuSwitchItemState(bool value) {
+//     _state = value;
+//   }
+
+//   bool _state;
+
+//   void _handleValueChanged(String value) {
+//     widget.onValueChanged(value);
+//   }
