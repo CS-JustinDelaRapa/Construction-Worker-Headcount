@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class CustomWidgets {
 //button widget
-nav_Button(){
+// ignore: non_constant_identifier_names
+nav_Button(String name, Widget icon, int flex){
   return Flexible(
+    flex: flex,
     child: FractionallySizedBox(
                 widthFactor: .7,
                 heightFactor: .9,
@@ -11,10 +13,10 @@ nav_Button(){
                   onPressed: (){}, 
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text('Project List'),
-                      SizedBox(width: 15,),
-                      Icon(Icons.list)
+                    children:[
+                      Text(name),
+                      const SizedBox(width: 15,),
+                      icon
                     ],
                   )
                   ),
@@ -22,5 +24,19 @@ nav_Button(){
   );
 }
 
+// ignore: non_constant_identifier_names
+text_title(String text, double size, int flex){
+  return Flexible(
+    flex: flex,
+  child: Text(text, style: TextStyle(fontSize: size, fontWeight: FontWeight.bold),)
+  );
+}
+
+text_subtitle(String text, double size, int flex){
+  return Flexible(
+    flex: flex,
+  child: Text(text, style: TextStyle(fontSize: size),)
+  );
+}
 
 }

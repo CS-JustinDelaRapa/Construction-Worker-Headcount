@@ -110,33 +110,25 @@ class _HomePageState extends State<HomePage> {
       //     ),
       //   ),
       // ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            flex: 6,
-            child: Image.asset('assets/images/sample.PNG')),
-          const Flexible(
-            child: Text('Title')),
-          CustomWidgets().nav_Button(),
-          CustomWidgets().nav_Button(),
-          const Flexible(
-            flex: 2,
-            child: SizedBox(height: 50,)),            
-        ],
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              flex: 4,
+              child: Image.asset('assets/images/sample.PNG')),
+            CustomWidgets().text_title('Construction Count', 30,1),
+            CustomWidgets().text_subtitle('Construction Worker Headcount Application', 14, 1),
+            CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),1),
+            CustomWidgets().nav_Button('Load Project', const Icon(Icons.folder_open),1),
+            const Flexible(
+              flex: 2,
+              child: SizedBox(height: 50,)),            
+          ],
+        ),
       ),
     );
   }
-
-  // Widget hamburgerMenu() => const IconButton(
-  //     alignment: Alignment.topLeft,
-  //     onPressed: null,
-  //     icon: Icon(Icons.ac_unit_outlined));
-  // void selectDestination(int index) {
-  //   setState(() {
-  //     _selectedDestination = index;
-  //   });
-  // }
 }
