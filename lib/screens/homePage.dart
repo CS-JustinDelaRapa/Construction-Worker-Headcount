@@ -1,11 +1,14 @@
 // ignore: file_names
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-bool _light = true;
+import 'create/create.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  bool themeValue;
+  HomePage({Key? key, required this.themeValue}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -32,10 +35,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const Text("Change Theme"),
                   Switch(
-                      value: _light,
-                      onChanged: (state) {
+                      value: widget.themeValue,
+                      onChanged: (state) async{
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
                         setState(() {
-                          _light = state;
+                        prefs.setBool('theme', state);  
                         });
                       })
                 ],
@@ -113,7 +117,6 @@ class _HomePageState extends State<HomePage> {
       //     ),
       //   ),
       // ),
-<<<<<<< Updated upstream
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -125,57 +128,14 @@ class _HomePageState extends State<HomePage> {
               child: Image.asset('assets/images/sample.PNG')),
             CustomWidgets().text_title('Construction Count', 30,1),
             CustomWidgets().text_subtitle('Construction Worker Headcount Application', 14, 1),
-            CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),1),
-            CustomWidgets().nav_Button('Load Project', const Icon(Icons.folder_open),1),
+            CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),1, context, ()=> const CreateProject()),
+            CustomWidgets().nav_Button('Load Project', const Icon(Icons.folder_open),1,context, ()=> const CreateProject()),
             const Flexible(
               flex: 2,
               child: SizedBox(height: 50,)),            
           ],
         ),
-=======
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(flex: 6, child: Image.asset('assets/images/sample.PNG')),
-          const Flexible(child: Text('Title')),
-          CustomWidgets().nav_Button(),
-          CustomWidgets().nav_Button(),
-          const Flexible(
-              flex: 2,
-              child: SizedBox(
-                height: 50,
-              )),
-        ],
->>>>>>> Stashed changes
       ),
     );
   }
 }
-// class PopupMenuSwitchItem extends StatefulWidget {
-//   const PopupMenuSwitchItem({
-//     required Key key,
-//     required this.value,
-//     required this.onValueChanged,
-//   }) : super(key: key);
-
-//   final bool value;
-//   final ValueChanged<bool> onValueChanged;
-
-//   @override
-//   _PopupMenuSwitchItemState createState() =>
-//       // ignore: no_logic_in_create_state
-//       _PopupMenuSwitchItemState(value);
-// }
-
-// class _PopupMenuSwitchItemState extends State<PopupMenuSwitchItem> {
-//   _PopupMenuSwitchItemState(bool value) {
-//     _state = value;
-//   }
-
-//   bool _state;
-
-//   void _handleValueChanged(String value) {
-//     widget.onValueChanged(value);
-//   }
