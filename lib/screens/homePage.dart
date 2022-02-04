@@ -18,58 +18,53 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool switchVal = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.black, size: 30),
-        leading: Consumer<ThemeProvider>(
-          builder: (context, provider, child) {
-            return PopupMenuButton<String>(
-              icon: const Icon(Icons.menu_outlined),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  padding: const EdgeInsets.only(right: 0),
-                  child: Consumer<ThemeProvider>(
+        leading: Consumer<ThemeProvider>(builder: (context, provider, child) {
+          return PopupMenuButton<String>(
+            icon: const Icon(Icons.menu_outlined),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                padding: const EdgeInsets.only(right: 0),
+                child: Consumer<ThemeProvider>(
                     builder: (context, provider, child) {
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: Switch(
-                              value: provider.currentTheme,
-                              onChanged: (value){
-                                setState(() {
-                                  provider.changeTheme(value);
-                                });
-                              }),
-                          ),
-                            CustomWidgets().text_subtitle('Night Mode', 16, 1)
-                        ],
-                      );
-                    }
-                  ),
-                ),
-                PopupMenuItem(
-                  value: 'light',
-                  child: Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.only(right: 8.0, left: 8.0),
-                        child: Icon(Icons.info),
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: Switch(
+                            value: provider.currentTheme,
+                            onChanged: (value) {
+                              setState(() {
+                                provider.changeTheme(value);
+                              });
+                            }),
                       ),
-                      Text("About")
+                      CustomWidgets().text_subtitle('Night Mode', 16, 1)
                     ],
-                  ),
+                  );
+                }),
+              ),
+              PopupMenuItem(
+                value: 'light',
+                child: Row(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(right: 8.0, left: 8.0),
+                      child: Icon(Icons.info),
+                    ),
+                    Text("About")
+                  ],
                 ),
-              ],
-            );
-          }
-        ),
+              ),
+            ],
+          );
+        }),
       ),
       // drawer: SafeArea(
       //   child: Drawer(
@@ -134,16 +129,23 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Flexible(
-              flex: 4,
-              child: Image.asset('assets/images/sample.PNG')),
-            CustomWidgets().text_title('Construction Count', 30,1),
-            CustomWidgets().text_subtitle('Construction Worker Headcount Application', 14, 1),
-            CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),1, context, ()=> const CreateProject()),
-            CustomWidgets().nav_Button('Load Project', const Icon(Icons.folder_open),1,context, ()=> const CreateProject()),
+            Flexible(flex: 4, child: Image.asset('assets/images/sample.PNG')),
+            CustomWidgets().text_title('Construction Count', 30, 1),
+            CustomWidgets().text_subtitle(
+                'Construction Worker Headcount Application', 14, 1),
+            CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),
+                1, context, () => const CreateProject()),
+            CustomWidgets().nav_Button(
+                'Load Project',
+                const Icon(Icons.folder_open),
+                1,
+                context,
+                () => const CreateProject()),
             const Flexible(
-              flex: 2,
-              child: SizedBox(height: 50,)),            
+                flex: 2,
+                child: SizedBox(
+                  height: 50,
+                )),
           ],
         ),
       ),
