@@ -1,20 +1,24 @@
 // ignore: file_names
+import 'package:engineering/theme/themeProvider.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'create/create.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
-  bool themeValue;
-  HomePage({Key? key, required this.themeValue}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  bool switchVal = false;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,42 +26,49 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: Colors.black, size: 30),
-        leading: PopupMenuButton<int>(
-          icon: const Icon(Icons.menu_outlined),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 0,
-              child: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: 8.0, left: 8.0),
-                    child: Icon(Icons.palette),
+        leading: Consumer<ThemeProvider>(
+          builder: (context, provider, child) {
+            return PopupMenuButton<String>(
+              icon: const Icon(Icons.menu_outlined),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  padding: const EdgeInsets.only(right: 0),
+                  child: Consumer<ThemeProvider>(
+                    builder: (context, provider, child) {
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Switch(
+                              value: provider.currentTheme,
+                              onChanged: (value){
+                                setState(() {
+                                  provider.changeTheme(value);
+                                });
+                              }),
+                          ),
+                            CustomWidgets().text_subtitle('Night Mode', 16, 1)
+                        ],
+                      );
+                    }
                   ),
-                  const Text("Change Theme"),
-                  Switch(
-                      value: widget.themeValue,
-                      onChanged: (state) async{
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        setState(() {
-                        prefs.setBool('theme', state);  
-                        });
-                      })
-                ],
-              ),
-            ),
-            PopupMenuItem(
-              value: 0,
-              child: Row(
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(right: 8.0, left: 8.0),
-                    child: Icon(Icons.info),
+                ),
+                PopupMenuItem(
+                  value: 'light',
+                  child: Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0, left: 8.0),
+                        child: Icon(Icons.info),
+                      ),
+                      Text("About")
+                    ],
                   ),
-                  Text("About"),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          }
         ),
       ),
       // drawer: SafeArea(

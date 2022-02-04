@@ -1,38 +1,32 @@
 import 'package:engineering/screens/homePage.dart';
+import 'package:engineering/theme/themeProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
-bool _light = true;
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool themeValue = (prefs.getBool('theme') ?? true);
-  runApp(MyApp(themeValue: themeValue));
+  runApp(ChangeNotifierProvider<ThemeProvider>(
+    create: (_) => ThemeProvider()..initialize(),
+    child: const MyApp()
+    )
+    );
 }
 
-ThemeData _darkTheme = ThemeData(
-  accentColor: Colors.red,
-  brightness: Brightness.dark,
-  primaryColor: Colors.amber,
-);
-
-ThemeData _lightTheme = ThemeData(
-    accentColor: Colors.pink,
-    brightness: Brightness.light,
-    primaryColor: Colors.blue);
-
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-  bool themeValue;
-  MyApp({Key? key, required this.themeValue}) : super(key: key); 
+  const MyApp({Key? key}) : super(key: key); 
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: _light ? _lightTheme : _darkTheme,
-      debugShowCheckedModeBanner: false,
-      title: 'Const',
-      home: HomePage(themeValue: themeValue,),
+    return Consumer<ThemeProvider>(
+      builder: (context,provider,child) {
+        return MaterialApp(
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: provider.themeMode,
+          debugShowCheckedModeBanner: false,
+          title: 'Const',
+          home: const HomePage(),
+        );
+      }
     );
   }
 }
