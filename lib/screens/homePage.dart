@@ -37,13 +37,24 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Flexible(
                         flex: 1,
-                        child: Switch(
-                            value: provider.currentTheme,
-                            onChanged: (value) {
-                              setState(() {
-                                provider.changeTheme(value);
-                              });
-                            }),
+                        child: Transform.scale(
+                          scale: 1,
+                          child: Switch.adaptive(
+                              thumbColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              trackColor:
+                                  MaterialStateProperty.all(Colors.grey[700]),
+                              activeThumbImage:
+                                  const AssetImage('assets/images/daymode.png'),
+                              inactiveThumbImage: const AssetImage(
+                                  'assets/images/darkmode.png'),
+                              value: provider.currentTheme,
+                              onChanged: (value) {
+                                setState(() {
+                                  provider.changeTheme(value);
+                                });
+                              }),
+                        ),
                       ),
                       CustomWidgets().text_subtitle('Night Mode', 16, 1)
                     ],
