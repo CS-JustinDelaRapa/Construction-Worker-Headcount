@@ -8,29 +8,22 @@ class ThemeProvider extends ChangeNotifier {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
       brightness: Brightness.light,
-      cardColor: Colors.white,
-      backgroundColor: Colors.white,
-      primaryColor: Colors.red,
-      scaffoldBackgroundColor: Colors.white,
+      appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
+      iconTheme: const IconThemeData(color: Colors.black)
     );
   }
 
   ThemeData buildDarkTheme() {
     final ThemeData base = ThemeData.dark();
     return base.copyWith(
-      brightness: Brightness.dark,
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
         primary: Colors.amber[800], // Button color
         onPrimary: Colors.black, // Text color
       )),
-      appBarTheme: AppBarTheme(backgroundColor: Colors.amber[800]),
-      //  popupMenuTheme: PopupMenuThemeData(color: Colors.amber[800]),
-      //  iconTheme: IconThemeData(color: Colors.amber[800]),
-      cardColor: Colors.grey[800], //card widget color
-      // backgroundColor: Colors.grey[800], //di ko pa alam
-      primaryColor: Colors.pink, //di ko pa alam
-      scaffoldBackgroundColor: Colors.grey[900], //color ng scaffold
+      appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
+      scaffoldBackgroundColor: Colors.grey[900],
+      iconTheme: const IconThemeData(color: Colors.white) //color ng scaffold
     );
   }
 
