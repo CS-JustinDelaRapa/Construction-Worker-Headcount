@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:engineering/screens/homePage.dart';
 import 'package:engineering/screens/mainProject/additionalManpower/additionalManpower.dart';
 import 'package:engineering/screens/mainProject/architectural/architectural.dart';
@@ -162,26 +164,41 @@ class _StackWidgetState extends State<StackWidget> {
   }
 
 confirmDialogue(){
-  return  showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-            content: const Text(
-                "All unsave data will be deleted, Continue?"),
-            actions: [
-              ElevatedButton(
-                child: const Text("Cancel"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+  return   showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),
+        transitionBuilder: (context, a1, a2, widget) {
+          return Transform.scale(
+            scale: a1.value,
+            child: Opacity(
+              opacity: a1.value,
+              child: AlertDialog(
+                title: const Text('Return to Home'),
+                content: const Text('All unsaved data will be lost, continue?'),
+                actions: [
+                  TextButton(onPressed: (){
+                    Navigator.pop(context, false);
+                  }, child: const Text('Cancel')),
+                  TextButton(onPressed:(){
+                    Navigator.pop(context, true);
+                  },
+                  child: const Text('Continue'))
+                  ],
               ),
-              ElevatedButton(
-                child: const Text("Confirm"),
-                onPressed: () {
-                Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomePage()),);
-                },
-              )
-            ],
-          ));
+            ),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 150),
+        barrierDismissible: true,
+        barrierLabel: '',
+        context: context,
+        pageBuilder: (context, animation1, animation2) {
+          return Container();
+        }).then((value) {
+          if(value == true){
+            Timer(const Duration(milliseconds: 200), () {
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePage()), (Route<dynamic> route) => false);
+                    });
+          }
+        });
 }
 
 }

@@ -18,10 +18,10 @@ nav_Button(String name, Widget icon, int flex, BuildContext context, Widget Func
                   onPressed: (){
                       // ignore: unnecessary_null_comparison
                       if(pushReplacement == null){
-                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => push!()),);                        
+                        Navigator.push(context,MaterialPageRoute(builder: (context) => push!()),);                        
                       // ignore: unnecessary_null_comparison
                       }else if(push == null){
-                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => pushReplacement()),);
+                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => pushReplacement()), (Route<dynamic> route) => false);
                       }
                   }, 
                   child: Row(
