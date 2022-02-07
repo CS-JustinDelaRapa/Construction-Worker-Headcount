@@ -26,8 +26,6 @@ class _LoadProjectState extends State<LoadProject> {
                 child: SizedBox(
               height: 10,
             )),
-            CustomWidgets().nav_Button('Back To Home', const Icon(Icons.home),
-                context, () => const HomePage(), null),
             const Flexible(
                 child: SizedBox(
               height: 10,
@@ -36,6 +34,8 @@ class _LoadProjectState extends State<LoadProject> {
                 'Load Dummy Project',
                 const Icon(Icons.menu_open),
                 context,
+                0.6,
+                0.05,
                 () => const StackWidget(),
                 null),
           ],

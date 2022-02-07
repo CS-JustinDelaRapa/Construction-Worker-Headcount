@@ -12,35 +12,36 @@ class CustomWidgets {
     String name,
     Widget icon,
     BuildContext context,
+    double width,
+    double height,
     Widget Function()? push,
     Widget Function()? pushReplacement,
   ) {
-    return ElevatedButton(
-        onPressed: () {
-          // ignore: unnecessary_null_comparison
-          if (pushReplacement == null) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => push!()),
-            );
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * height,
+      width: MediaQuery.of(context).size.width * width,
+      child: ElevatedButton(
+          onPressed: () {
             // ignore: unnecessary_null_comparison
-          } else if (push == null) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => pushReplacement()),
-            );
-          }
-        },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(name),
-            const SizedBox(
-              width: 15,
-            ),
-            icon
-          ],
-        ));
+            if (push != null) {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => push()),
+              );
+              // ignore: unnecessary_null_comparison
+            } else if (pushReplacement != null) {
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => pushReplacement()), (Route<dynamic> route) => false);
+            }
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(name),
+              const SizedBox(
+                width: 15,
+              ),
+              icon
+            ],
+          )),
+    );
   }
 
 //title widget
