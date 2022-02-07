@@ -18,7 +18,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                               thumbColor:
                                   MaterialStateProperty.all(Colors.black),
                               trackColor:
-                                  MaterialStateProperty.all(Colors.grey[700]),
+                                  MaterialStateProperty.all(Colors.grey[500]),
                               activeThumbImage:
                                   const AssetImage('assets/images/daymode.png'),
                               inactiveThumbImage: const AssetImage(
@@ -57,26 +56,30 @@ class _HomePageState extends State<HomePage> {
                               }),
                         ),
                       ),
-                      CustomWidgets().text_subtitle('Night Mode', 16, 1)
+                      Flexible(
+                          flex: 1,
+                          child:
+                              CustomWidgets().text_subtitle('Theme Mode', 16)),
                     ],
                   );
                 }),
               ),
               PopupMenuItem(
                 value: 'light',
-                child: StatefulBuilder(
-                  builder: (context,stateSetter) {
-                    return Row(
-                      children:[
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                          child: Icon(Icons.info,color: Theme.of(context).iconTheme.color,),
+                child: StatefulBuilder(builder: (context, stateSetter) {
+                  return Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                        child: Icon(
+                          Icons.info,
+                          color: Theme.of(context).iconTheme.color,
                         ),
-                        const Text("About")
-                      ],
-                    );
-                  }
-                ),
+                      ),
+                      const Text("About")
+                    ],
+                  );
+                }),
               ),
             ],
           );
@@ -89,17 +92,23 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Flexible(flex: 4, child: Image.asset('assets/images/sample.PNG')),
-            CustomWidgets().text_title('Construction Count', 30, 1),
-            CustomWidgets().text_subtitle(
-                'Construction Worker Headcount Application', 14, 1),
+            Flexible(
+              flex: 1,
+              child: CustomWidgets().text_title('Construction Count', 30),
+            ),
+            Flexible(
+              flex: 1,
+              child: CustomWidgets().text_subtitle(
+                  'Construction Worker Headcount Application', 15),
+            ),
             CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),
-                1, context, null, () => const CreateProject()),
+                context, null, () => const CreateProject()),
             CustomWidgets().nav_Button(
                 'Load Project',
                 const Icon(Icons.folder_open),
-                1,
                 context,
-                null,()=> const LoadProject()),
+                null,
+                () => const LoadProject()),
             const Flexible(
                 flex: 2,
                 child: SizedBox(

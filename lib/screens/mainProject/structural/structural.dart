@@ -3,9 +3,9 @@ import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 
 class Structural extends StatefulWidget {
-final VoidCallback openDrawer;
+  final VoidCallback openDrawer;
 
- const  Structural({ Key? key, required this.openDrawer }) : super(key: key);
+  const Structural({Key? key, required this.openDrawer}) : super(key: key);
 
   @override
   _StructuralState createState() => _StructuralState();
@@ -17,14 +17,16 @@ class _StructuralState extends State<Structural> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        leading: OpenDrawerWidget(onClicked: widget.openDrawer,),
+        leading: OpenDrawerWidget(
+          onClicked: widget.openDrawer,
+        ),
         title: const Text('Structural'),
       ),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CustomWidgets().text_title('Structural', 35, 10),
+            CustomWidgets().text_title('Structural', 35),
           ],
         ),
       ),

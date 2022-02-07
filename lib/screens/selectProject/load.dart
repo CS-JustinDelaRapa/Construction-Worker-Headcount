@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../homePage.dart';
 
 class LoadProject extends StatefulWidget {
- const  LoadProject({ Key? key}) : super(key: key);
+  const LoadProject({Key? key}) : super(key: key);
 
   @override
   _LoadProjectState createState() => _LoadProjectState();
@@ -21,21 +21,23 @@ class _LoadProjectState extends State<LoadProject> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CustomWidgets().text_title('Load Project', 35, 10),
-            const Flexible(child: SizedBox(height: 10,)),
-            CustomWidgets().nav_Button(
-                'Back To Home',
-                const Icon(Icons.home),
-                1,
-                context,
-                () => const HomePage(),null),
-            const Flexible(child: SizedBox(height: 10,)),
+            CustomWidgets().text_title('Load Project', 35),
+            const Flexible(
+                child: SizedBox(
+              height: 10,
+            )),
+            CustomWidgets().nav_Button('Back To Home', const Icon(Icons.home),
+                context, () => const HomePage(), null),
+            const Flexible(
+                child: SizedBox(
+              height: 10,
+            )),
             CustomWidgets().nav_Button(
                 'Load Dummy Project',
                 const Icon(Icons.menu_open),
-                1,
                 context,
-                () => const StackWidget(),null),
+                () => const StackWidget(),
+                null),
           ],
         ),
       ),

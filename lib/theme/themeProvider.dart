@@ -7,24 +7,24 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData buildLightTheme() {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
-      brightness: Brightness.light,
-      appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
-      iconTheme: const IconThemeData(color: Colors.black)
-    );
+        brightness: Brightness.light,
+        appBarTheme:
+            const AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
+        iconTheme: const IconThemeData(color: Colors.black));
   }
 
   ThemeData buildDarkTheme() {
     final ThemeData base = ThemeData.dark();
     return base.copyWith(
-      elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-        primary: Colors.amber[800], // Button color
-        onPrimary: Colors.black, // Text color
-      )),
-      appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
-      scaffoldBackgroundColor: Colors.grey[900],
-      iconTheme: const IconThemeData(color: Colors.white) //color ng scaffold
-    );
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+          primary: Colors.amber[800], // Button color
+          onPrimary: Colors.black, // Text color
+        )),
+        appBarTheme:
+            const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
+        scaffoldBackgroundColor: Colors.grey[900], //color ng scaffold
+        iconTheme: const IconThemeData(color: Colors.white));
   }
 
   ThemeData get themeMode {
