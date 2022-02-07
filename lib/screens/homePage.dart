@@ -35,47 +35,46 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                              Flexible(child: 
-                               FlutterSwitch(
-                      showOnOff: true,
-                      inactiveText: 'Light Mode',
-                      activeText: 'Dark Mode',
-                      inactiveTextColor: Colors.black,
-                      activeTextColor: Colors.white,
-                      activeTextFontWeight: FontWeight.normal,
-                      inactiveTextFontWeight: FontWeight.normal,
-                      width: 125.0,
-                      height: 38.5,
-                      toggleSize: 27,
-                      value: provider.currentTheme,
-                      borderRadius: 30.0,
-                      padding: 2.0,
-                      activeToggleColor: Color.fromARGB(255, 156, 148, 170),
-                      inactiveToggleColor: const Color(0xFF2F363D),
-                      activeSwitchBorder: Border.all(
-                        color: const Color.fromARGB(255, 103, 96, 116),
-                        width: 3.0,
+                      Flexible(
+                        child: FlutterSwitch(
+                          showOnOff: true,
+                          inactiveText: 'Light Mode',
+                          activeText: 'Dark Mode',
+                          inactiveTextColor: Colors.black,
+                          activeTextColor: Colors.white,
+                          activeTextFontWeight: FontWeight.normal,
+                          inactiveTextFontWeight: FontWeight.normal,
+                          width: 125.0,
+                          height: 38.5,
+                          toggleSize: 27,
+                          value: provider.currentTheme,
+                          borderRadius: 30.0,
+                          padding: 2.0,
+                          activeToggleColor: Color.fromARGB(255, 156, 148, 170),
+                          inactiveToggleColor: const Color(0xFF2F363D),
+                          activeSwitchBorder: Border.all(
+                            color: const Color.fromARGB(255, 103, 96, 116),
+                            width: 3.0,
+                          ),
+                          inactiveSwitchBorder: Border.all(
+                            color: const Color(0xFFD1D5DA),
+                            width: 3.0,
+                          ),
+                          activeColor: Color.fromARGB(255, 79, 74, 87),
+                          inactiveColor: Colors.white,
+                          activeIcon: const Icon(
+                            Icons.nightlight_round,
+                            color: Color(0xFFF8E3A1),
+                          ),
+                          inactiveIcon: const Icon(
+                            Icons.wb_sunny,
+                            color: Color(0xFFFFDF5D),
+                          ),
+                          onToggle: (val) {
+                            provider.changeTheme(val);
+                          },
+                        ),
                       ),
-                      inactiveSwitchBorder: Border.all(
-                        color: const Color(0xFFD1D5DA),
-                        width: 3.0,
-                      ),
-                      activeColor: Color.fromARGB(255, 79, 74, 87),
-                      inactiveColor: Colors.white,
-                      activeIcon: const Icon(
-                        Icons.nightlight_round,
-                        color: Color(0xFFF8E3A1),
-                      ),
-                      inactiveIcon: const Icon(
-                        Icons.wb_sunny,
-                        color: Color(0xFFFFDF5D),
-                      ),
-                      onToggle: (val) {
-                        provider.changeTheme(val);
-                      },
-                    ),
-                              
-                              ),
                       // Flexible(
                       //   flex: 1,
                       //   child: Transform.scale(
@@ -88,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                       //         activeThumbImage:
                       //             const AssetImage(
                       //             'assets/images/darkmode.png'),
-                      //         inactiveThumbImage: 
+                      //         inactiveThumbImage:
                       //         const AssetImage('assets/images/daymode.png'),
                       //         value: provider.currentTheme,
                       //         onChanged: (value) {
@@ -139,21 +138,17 @@ class _HomePageState extends State<HomePage> {
               child: CustomWidgets().text_subtitle(
                   'Construction Worker Headcount Application', 15),
             ),
+            CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),
+                context, 0.6, 0.05, () => const CreateProject(), null),
             CustomWidgets().nav_Button(
-              'Create Project',
-              const Icon(Icons.add),
+              'Load Project',
+              const Icon(Icons.folder_open),
               context,
-                0.6,
-                0.05,
-              () => const CreateProject(), null),
-            CustomWidgets().nav_Button(
-                'Load Project',
-                const Icon(Icons.folder_open),
-                context,
-                0.6,
-                0.05,
-                () => const LoadProject(),
-                null),
+              0.6,
+              0.05,
+              () => const LoadProject(),
+              null,
+            ),
             const Flexible(
                 flex: 2,
                 child: SizedBox(

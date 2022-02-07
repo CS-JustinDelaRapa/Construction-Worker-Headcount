@@ -24,12 +24,49 @@ class CustomWidgets {
           onPressed: () {
             // ignore: unnecessary_null_comparison
             if (push != null) {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => push()),
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => push()),
               );
               // ignore: unnecessary_null_comparison
             } else if (pushReplacement != null) {
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => pushReplacement()), (Route<dynamic> route) => false);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => pushReplacement()),
+                  (Route<dynamic> route) => false);
             }
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(name),
+              const SizedBox(
+                width: 15,
+              ),
+              icon
+            ],
+          )),
+    );
+  }
+
+  // ignore: non_constant_identifier_names
+  save_Button(
+      String name,
+      Widget icon,
+      BuildContext context,
+      double width,
+      double height,
+      Widget Function() pushReplacement,
+      String projectName,
+      String _projectStyle) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * height,
+      width: MediaQuery.of(context).size.width * width,
+      child: ElevatedButton(
+          onPressed: () {
+            // ignore: avoid_print
+            print(_projectStyle.toString() + "testing" + projectName);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => pushReplacement()),
+                (Route<dynamic> route) => false);
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -64,8 +101,10 @@ class CustomWidgets {
 
 //text form field widget
 // ignore: non_constant_identifier_names
-  textFormField_widget(String hintText, Color borderColor, double width) {
+  textFormField_widget(String hintText, Color borderColor, double width,
+      TextEditingController projectName) {
     return TextFormField(
+      onChanged: (value) => projectName.text = value,
       decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(
