@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:async';
 
 import 'package:engineering/screens/homePage.dart';
@@ -16,22 +18,22 @@ import 'drawerItems.dart';
 import 'hiddenDrawer.dart';
 
 class StackWidget extends StatefulWidget {
-  const StackWidget({ Key? key }) : super(key: key);
+  const StackWidget({Key? key}) : super(key: key);
 
   @override
   _StackWidgetState createState() => _StackWidgetState();
 }
 
 class _StackWidgetState extends State<StackWidget> {
-    late double xoffset;
-    late double yoffset;
-    late double scaleFactor;
+  late double xoffset;
+  late double yoffset;
+  late double scaleFactor;
 
-    //current selected item on hidden menu
-    DrawerItem item = DrawerItems.structural;
+  //current selected item on hidden menu
+  DrawerItem item = DrawerItems.structural;
 
-    bool isDrawerOpen = false;
-    bool isDragging = false;
+  bool isDrawerOpen = false;
+  bool isDragging = false;
 
   @override
   void initState() {
@@ -39,16 +41,16 @@ class _StackWidgetState extends State<StackWidget> {
     closeDrawer();
   }
 
-  void closeDrawer(){
+  void closeDrawer() {
     return setState(() {
       xoffset = 0;
       yoffset = 0;
       scaleFactor = 1;
-      isDrawerOpen =false;
+      isDrawerOpen = false;
     });
   }
 
- void openDrawer(){
+  void openDrawer() {
     return setState(() {
       xoffset = 280;
       yoffset = 150;
@@ -57,38 +59,33 @@ class _StackWidgetState extends State<StackWidget> {
     });
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
-          buildDrawer(),
-          buildPage()
-        ],
+        children: [buildDrawer(), buildPage()],
       ),
     );
   }
 
-  Widget buildDrawer() => SafeArea(
-    child: HiddenDrawer(
-    onSelectedItem:(item) {
-      switch (item) {
-        case DrawerItems.home:
-          closeDrawer();
-          confirmDialogue();
-          return;
-        default:
-        setState(() => this.item = item);
-        closeDrawer();
-      }
-    } ,
-  ));
+  Widget buildDrawer() => SafeArea(child: HiddenDrawer(
+        onSelectedItem: (item) {
+          switch (item) {
+            case DrawerItems.home:
+              closeDrawer();
+              confirmDialogue();
+              return;
+            default:
+              setState(() => this.item = item);
+              closeDrawer();
+          }
+        },
+      ));
 
-  Widget buildPage(){
+  Widget buildPage() {
     return WillPopScope(
-      onWillPop: () async{
-        if(isDrawerOpen){
+      onWillPop: () async {
+        if (isDrawerOpen) {
           closeDrawer();
           return false;
         } else {
@@ -99,73 +96,94 @@ class _StackWidgetState extends State<StackWidget> {
         onTap: closeDrawer,
         onHorizontalDragStart: (details) => isDragging = true,
         onHorizontalDragUpdate: (details) {
-          if(!isDragging) return;
+          if (!isDragging) return;
           const delta = 1;
-          if(details.delta.dx > delta){
+          if (details.delta.dx > delta) {
             openDrawer();
-          }else if(details.delta.dx < -delta){
+          } else if (details.delta.dx < -delta) {
             closeDrawer();
           }
-    
+
           isDragging = false;
         },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          transform: Matrix4.translationValues(xoffset, yoffset, 0)..scale(scaleFactor),
-          child: AbsorbPointer(
-            absorbing: isDrawerOpen,
-            child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(isDrawerOpen? 20:0),
-        boxShadow: isDrawerOpen?[
-       BoxShadow(
-        color: Theme.of(context).brightness == Brightness.light? const Color.fromARGB(255, 194, 194, 194):
-         const Color.fromARGB(255, 26, 26, 26),
-        spreadRadius: 5,
-        blurRadius: 7,
-        offset: const Offset(-8, 10), // changes position of shadow
-      ),
-    ]: null,
-      ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(isDrawerOpen? 20:0),
+            duration: const Duration(milliseconds: 200),
+            transform: Matrix4.translationValues(xoffset, yoffset, 0)
+              ..scale(scaleFactor),
+            child: AbsorbPointer(
+                absorbing: isDrawerOpen,
                 child: Container(
-                  color: isDrawerOpen?
-                  Theme.of(context).brightness == Brightness.light?
-                  const Color.fromARGB(255, 241, 241, 241):const Color.fromARGB(255, 43, 43, 43)
-                  : Theme.of(context).scaffoldBackgroundColor,
-                  child: getDrawerPage()
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(isDrawerOpen ? 20 : 0),
+                    boxShadow: isDrawerOpen
+                        ? [
+                            BoxShadow(
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? const Color.fromARGB(255, 194, 194, 194)
+                                  : const Color.fromARGB(255, 26, 26, 26),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(
+                                  -8, 10), // changes position of shadow
+                            ),
+                          ]
+                        : null,
                   ),
-              ),
-            ))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(isDrawerOpen ? 20 : 0),
+                    child: Container(
+                        color: isDrawerOpen
+                            ? Theme.of(context).brightness == Brightness.light
+                                ? const Color.fromARGB(255, 241, 241, 241)
+                                : const Color.fromARGB(255, 43, 43, 43)
+                            : Theme.of(context).scaffoldBackgroundColor,
+                        child: getDrawerPage()),
+                  ),
+                ))),
       ),
     );
   }
 
-  Widget getDrawerPage(){
-    switch(item){
+  Widget getDrawerPage() {
+    switch (item) {
       case DrawerItems.architectural:
-        return Architectural(openDrawer: openDrawer,);
+        return Architectural(
+          openDrawer: openDrawer,
+        );
       case DrawerItems.electricalAndPlumming:
-        return ElectricalAndPlumbing(openDrawer: openDrawer,);
+        return ElectricalAndPlumbing(
+          openDrawer: openDrawer,
+        );
       case DrawerItems.rateOfWorkers:
-        return RateOfWorkers(openDrawer: openDrawer,);                
+        return RateOfWorkers(
+          openDrawer: openDrawer,
+        );
       case DrawerItems.productivityRate:
-        return ProductivityRate(openDrawer: openDrawer,);
+        return ProductivityRate(
+          openDrawer: openDrawer,
+        );
       case DrawerItems.manPowerDistribution:
-        return ManpowerDistribution(openDrawer: openDrawer,);
+        return ManpowerDistribution(
+          openDrawer: openDrawer,
+        );
       case DrawerItems.additionalManpower:
-        return AdditionalManpower(openDrawer: openDrawer,);
+        return AdditionalManpower(
+          openDrawer: openDrawer,
+        );
       case DrawerItems.home:
         return const HomePage();
       case DrawerItems.structural:
       default:
-      return Structural(openDrawer: openDrawer,);
+        return Structural(
+          openDrawer: openDrawer,
+        );
     }
   }
 
-confirmDialogue(){
-  return   showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),
+  confirmDialogue() {
+    return showGeneralDialog(
+        barrierColor: Colors.black.withOpacity(0.5),
         transitionBuilder: (context, a1, a2, widget) {
           return Transform.scale(
             scale: a1.value,
@@ -175,14 +193,17 @@ confirmDialogue(){
                 title: const Text('Return to Home'),
                 content: const Text('All unsaved data will be lost, continue?'),
                 actions: [
-                  TextButton(onPressed: (){
-                    Navigator.pop(context, false);
-                  }, child: const Text('Cancel')),
-                  TextButton(onPressed:(){
-                    Navigator.pop(context, true);
-                  },
-                  child: const Text('Continue'))
-                  ],
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, false);
+                      },
+                      child: const Text('Cancel')),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context, true);
+                      },
+                      child: const Text('Continue'))
+                ],
               ),
             ),
           );
@@ -194,12 +215,13 @@ confirmDialogue(){
         pageBuilder: (context, animation1, animation2) {
           return Container();
         }).then((value) {
-          if(value == true){
-            Timer(const Duration(milliseconds: 200), () {
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePage()), (Route<dynamic> route) => false);
-                    });
-          }
+      if (value == true) {
+        Timer(const Duration(milliseconds: 200), () {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const HomePage()),
+              (Route<dynamic> route) => false);
         });
-}
-
+      }
+    });
+  }
 }

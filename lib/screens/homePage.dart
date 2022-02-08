@@ -1,4 +1,5 @@
-// ignore: file_names
+// ignore_for_file: file_names
+
 import 'package:engineering/screens/selectProject/create.dart';
 import 'package:engineering/screens/selectProject/load.dart';
 import 'package:engineering/theme/themeProvider.dart';
@@ -6,8 +7,6 @@ import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'hamburgerMenu/stack.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -50,7 +49,8 @@ class _HomePageState extends State<HomePage> {
                           value: provider.currentTheme,
                           borderRadius: 30.0,
                           padding: 2.0,
-                          activeToggleColor: const Color.fromARGB(255, 156, 148, 170),
+                          activeToggleColor:
+                              const Color.fromARGB(255, 156, 148, 170),
                           inactiveToggleColor: const Color(0xFF2F363D),
                           activeSwitchBorder: Border.all(
                             color: const Color.fromARGB(255, 103, 96, 116),

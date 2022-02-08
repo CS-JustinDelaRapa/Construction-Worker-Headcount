@@ -1,4 +1,4 @@
-// ignore: file_names
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 
 class CustomWidgets {
@@ -48,24 +48,25 @@ class CustomWidgets {
     );
   }
 
-
 // ignore: non_constant_identifier_names
-function_pushReplacement(BuildContext context, Widget Function() pushReplacement,){
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => pushReplacement()),
-                (Route<dynamic> route) => false);
-}
-
+  function_pushReplacement(
+    BuildContext context,
+    Widget Function() pushReplacement,
+  ) {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => pushReplacement()),
+        (Route<dynamic> route) => false);
+  }
 
   // ignore: non_constant_identifier_names
   funtion_Button(
-      String name,
-      Widget icon,
-      double width,
-      double height,
-      BuildContext context,
-      VoidCallback callback,
-      ) {
+    String name,
+    Widget icon,
+    double width,
+    double height,
+    BuildContext context,
+    VoidCallback callback,
+  ) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:engineering/screens/hamburgerMenu/stack.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
@@ -71,14 +73,8 @@ class _CreateProjectState extends State<CreateProject> {
                 ),
               ),
               const SizedBox(height: 30),
-              CustomWidgets().funtion_Button(
-                'Save',
-                const Icon(Icons.menu_open),
-                0.6,
-                0.07,
-                context,
-                saveProject
-              ),
+              CustomWidgets().funtion_Button('Save',
+                  const Icon(Icons.menu_open), 0.6, 0.07, context, saveProject),
             ],
           )
         ],
@@ -87,6 +83,7 @@ class _CreateProjectState extends State<CreateProject> {
   }
 
   saveProject() {
-    CustomWidgets().function_pushReplacement(context, () => const StackWidget());
+    CustomWidgets()
+        .function_pushReplacement(context, () => const StackWidget());
   }
 }

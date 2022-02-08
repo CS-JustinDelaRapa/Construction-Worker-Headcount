@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, avoid_print
+
 import 'dart:ffi';
 
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
@@ -15,18 +17,17 @@ class Structural extends StatefulWidget {
 }
 
 class _StructuralState extends State<Structural> {
- late double screenPercent;
- late double radius;
- bool isVerticalDragging = false;
- bool isExpanded = false;
- double opacity = 0;
+  late double screenPercent;
+  late double radius;
+  bool isVerticalDragging = false;
+  bool isExpanded = false;
+  double opacity = 0;
 
   @override
   void initState() {
     super.initState();
     minimizeDrawer();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,47 +43,61 @@ class _StructuralState extends State<Structural> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('''Dela Cruz' long long long Apartment''', style: TextStyle(color: Theme.of(context).primaryTextTheme.caption!.color, fontSize: 18),),
-            Text('''Bungalow''', style: TextStyle(color: Theme.of(context).primaryTextTheme.caption!.color, fontSize: 16, fontWeight: FontWeight.w400),),
+            Text(
+              '''Dela Cruz' long long long Apartment''',
+              style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.caption!.color,
+                  fontSize: 18),
+            ),
+            Text(
+              '''Bungalow''',
+              style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.caption!.color,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
           ],
         ),
       ),
       body: Stack(
-        children: [
-          buildBackground(),
-          buildList()
-        ],
+        children: [buildBackground(), buildList()],
       ),
     );
   }
 
   Widget buildBackground() {
-  return Stack(
-    children: [
-      Container(
-        width: MediaQuery.of(context).size.width+(MediaQuery.of(context).size.width*0.5),
-        height: MediaQuery.of(context).size.height*0.4,
-        decoration:
-BoxDecoration(
-  color: const Color.fromARGB(255, 42, 44, 46),
-  image: DecorationImage(
-    fit: BoxFit.cover,
-    colorFilter: 
-      ColorFilter.mode(Colors.black.withOpacity(0.35
-      ), 
-      BlendMode.dstATop),
-    image: const AssetImage(
-      'assets/images/structural_bg.jpeg',
-    ),
-  ),
-),
-      ),
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.3,
-        width: MediaQuery.of(context).size.width,
-        child: const Center(child:Text('Structural\nWorks',textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w500),))),      
-    ],
-  );
+    return Stack(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width +
+              (MediaQuery.of(context).size.width * 0.5),
+          height: MediaQuery.of(context).size.height * 0.4,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 42, 44, 46),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.35), BlendMode.dstATop),
+              image: const AssetImage(
+                'assets/images/structural_bg.jpeg',
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: MediaQuery.of(context).size.width,
+            child: const Center(
+                child: Text(
+              'Structural\nWorks',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500),
+            ))),
+      ],
+    );
   }
 
   Widget buildList() {
@@ -91,21 +106,23 @@ BoxDecoration(
       child: GestureDetector(
         onVerticalDragStart: (details) => isVerticalDragging = true,
         onVerticalDragUpdate: (details) {
-          if(!isVerticalDragging) return;
+          if (!isVerticalDragging) return;
           const delta = 1;
-          if(details.delta.dy < delta){
+          if (details.delta.dy < delta) {
             expandDrawer();
-          }else if(details.delta.dy > -delta){
+          } else if (details.delta.dy > -delta) {
             minimizeDrawer();
           }
-    
+
           isVerticalDragging = false;
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
-          height:MediaQuery.of(context).size.height * screenPercent,
+          height: MediaQuery.of(context).size.height * screenPercent,
           child: ClipRRect(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(radius), topRight: Radius.circular(radius)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(radius),
+                topRight: Radius.circular(radius)),
             child: Container(
               padding: const EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width,
@@ -117,30 +134,35 @@ BoxDecoration(
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     SizedBox(
-                      child: isExpanded? 
-                      AnimatedOpacity(
-                        opacity: opacity, duration: const Duration(milliseconds: 250),
-                        child: CustomWidgets().text_title('STRUCTURAL WORKS', 20))
-                      :null,
+                      child: isExpanded
+                          ? AnimatedOpacity(
+                              opacity: opacity,
+                              duration: const Duration(milliseconds: 250),
+                              child: CustomWidgets()
+                                  .text_title('STRUCTURAL WORKS', 20))
+                          : null,
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: StructuralItems.all.map(
-                      (item) => Column(
-                        children: [
-                          ListTile(
-                            onTap: (){
-                              print(item.title+' was clicked');
-                            },
-                            leading: Icon(item.icon),
-                            title: Text(item.title),
-                          ),
-                          Divider(color: Theme.of(context).iconTheme.color, thickness: 0.5,)
-                        ],
-                      )).toList()
-                      ,
-                      )
+                      children: StructuralItems.all
+                          .map((item) => Column(
+                                children: [
+                                  ListTile(
+                                    onTap: () {
+                                      print(item.title + ' was clicked');
+                                    },
+                                    leading: Icon(item.icon),
+                                    title: Text(item.title),
+                                  ),
+                                  Divider(
+                                    color: Theme.of(context).iconTheme.color,
+                                    thickness: 0.5,
+                                  )
+                                ],
+                              ))
+                          .toList(),
+                    )
                   ],
                 ),
               ),
@@ -153,28 +175,28 @@ BoxDecoration(
   }
 
   void expandDrawer() {
-   return setState(() {
-    screenPercent = 1;
-    radius = 0;
-    isExpanded = true;
+    return setState(() {
+      screenPercent = 1;
+      radius = 0;
+      isExpanded = true;
       Future.delayed(const Duration(milliseconds: 200), () {
-    setState(() {
-      opacity = 1;
-    });
-  });
+        setState(() {
+          opacity = 1;
+        });
+      });
     });
   }
 
   void minimizeDrawer() {
     return setState(() {
-    screenPercent = 0.5;
-    radius = 20;
-    isExpanded = false;
+      screenPercent = 0.5;
+      radius = 20;
+      isExpanded = false;
       Future.delayed(const Duration(milliseconds: 200), () {
-    setState(() {
-      opacity = 0;
-    });
-  });
+        setState(() {
+          opacity = 0;
+        });
+      });
     });
   }
 }

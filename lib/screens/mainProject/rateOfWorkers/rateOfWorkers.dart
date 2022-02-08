@@ -1,4 +1,4 @@
-// ignore: file_names
+// ignore_for_file: file_names
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';

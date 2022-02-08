@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, unused_import, unnecessary_new, prefer_const_constructors, avoid_print
 
 import 'package:engineering/screens/hamburgerMenu/stack.dart';
 import 'package:engineering/widget/customWidgets.dart';
@@ -79,33 +79,31 @@ class _LoadProjectState extends State<LoadProject> {
                     ),
                   );
                 }),
-          )
+          ),
+          Row(
+            children: [
+              CustomWidgets().funtion_Button('Save',
+                  const Icon(Icons.menu_open), 0.4, 0.07, context, loadProject),
+              CustomWidgets().funtion_Button(
+                  "Delete",
+                  const Icon(Icons.delete_outline_outlined),
+                  0.4,
+                  0.07,
+                  context,
+                  deleteProject)
+            ],
+          ),
         ],
       ),
     );
   }
+
+  loadProject() {
+    CustomWidgets()
+        .function_pushReplacement(context, () => const StackWidget());
+  }
+
+  deleteProject() {
+    print("delete");
+  }
 }
-          // child: Center(
-                    //   child: Column(
-                    //     mainAxisSize: MainAxisSize.min,
-                    //     children: [
-                    //       CustomWidgets().text_title('Load Project', 35),
-                    //       const Flexible(
-                    //           child: SizedBox(
-                    //         height: 10,
-                    //       )),
-                    //       const Flexible(
-                    //           child: SizedBox(
-                    //         height: 10,
-                    //       )),
-                    //       CustomWidgets().nav_Button(
-                    //           'Load Dummy Project',
-                    //           const Icon(Icons.menu_open),
-                    //           context,
-                    //           0.6,
-                    //           0.05,
-                    //           () => const StackWidget(),
-                    //           null),
-                    //     ],
-                    //   ),
-                    // ),
