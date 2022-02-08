@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                           value: provider.currentTheme,
                           borderRadius: 30.0,
                           padding: 2.0,
-                          activeToggleColor: Color.fromARGB(255, 156, 148, 170),
+                          activeToggleColor: const Color.fromARGB(255, 156, 148, 170),
                           inactiveToggleColor: const Color(0xFF2F363D),
                           activeSwitchBorder: Border.all(
                             color: const Color.fromARGB(255, 103, 96, 116),
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                             color: const Color(0xFFD1D5DA),
                             width: 3.0,
                           ),
-                          activeColor: Color.fromARGB(255, 79, 74, 87),
+                          activeColor: const Color.fromARGB(255, 79, 74, 87),
                           inactiveColor: Colors.white,
                           activeIcon: const Icon(
                             Icons.nightlight_round,
@@ -75,28 +75,6 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                       ),
-                      // Flexible(
-                      //   flex: 1,
-                      //   child: Transform.scale(
-                      //     scale: 1,
-                      //     child: Switch.adaptive(
-                      //         thumbColor:
-                      //             MaterialStateProperty.all(Colors.black),
-                      //         trackColor:
-                      //             MaterialStateProperty.all(Colors.grey[500]),
-                      //         activeThumbImage:
-                      //             const AssetImage(
-                      //             'assets/images/darkmode.png'),
-                      //         inactiveThumbImage:
-                      //         const AssetImage('assets/images/daymode.png'),
-                      //         value: provider.currentTheme,
-                      //         onChanged: (value) {
-                      //           setState(() {
-                      //             provider.changeTheme(value);
-                      //           });
-                      //         }),
-                      //   ),
-                      // ),
                     ],
                   );
                 }),

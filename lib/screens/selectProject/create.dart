@@ -71,20 +71,22 @@ class _CreateProjectState extends State<CreateProject> {
                 ),
               ),
               const SizedBox(height: 30),
-              CustomWidgets().save_Button(
+              CustomWidgets().funtion_Button(
                 'Save',
                 const Icon(Icons.menu_open),
-                context,
                 0.6,
                 0.07,
-                () => const StackWidget(),
-                projectName.text,
-                val.toString(),
+                context,
+                saveProject
               ),
             ],
           )
         ],
       ),
     );
+  }
+
+  saveProject() {
+    CustomWidgets().function_pushReplacement(context, () => const StackWidget());
   }
 }

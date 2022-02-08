@@ -7,6 +7,7 @@ class CustomWidgets {
   /// NOTE: do not use both PUSH and PUSHREPLACEMENT in once instance, one parameter must be null
 
 //button widget
+
 // ignore: non_constant_identifier_names
   nav_Button(
     String name,
@@ -47,27 +48,29 @@ class CustomWidgets {
     );
   }
 
+
+// ignore: non_constant_identifier_names
+function_pushReplacement(BuildContext context, Widget Function() pushReplacement,){
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => pushReplacement()),
+                (Route<dynamic> route) => false);
+}
+
+
   // ignore: non_constant_identifier_names
-  save_Button(
+  funtion_Button(
       String name,
       Widget icon,
-      BuildContext context,
       double width,
       double height,
-      Widget Function() pushReplacement,
-      String projectName,
-      String _projectStyle) {
+      BuildContext context,
+      VoidCallback callback,
+      ) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
-          onPressed: () {
-            // ignore: avoid_print
-            print(_projectStyle.toString() + "testing" + projectName);
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => pushReplacement()),
-                (Route<dynamic> route) => false);
-          },
+          onPressed: callback,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
