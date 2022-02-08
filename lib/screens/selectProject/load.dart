@@ -81,18 +81,20 @@ class _LoadProjectState extends State<LoadProject> {
                 }),
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              CustomWidgets().funtion_Button('Save',
-                  const Icon(Icons.menu_open), 0.4, 0.07, context, loadProject),
               CustomWidgets().funtion_Button(
-                  "Delete",
-                  const Icon(Icons.delete_outline_outlined),
-                  0.4,
-                  0.07,
-                  context,
-                  deleteProject)
+                "Delete",
+                const Icon(Icons.delete_outline_outlined),
+                0.49,
+                0.07,
+                context,
+                deleteProject),
+              CustomWidgets().funtion_Button('Load',
+                  const Icon(Icons.menu_open), 0.49, 0.07, context, loadProject)
             ],
           ),
+          SizedBox(height: 5)
         ],
       ),
     );
