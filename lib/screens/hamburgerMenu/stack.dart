@@ -118,11 +118,12 @@ class _StackWidgetState extends State<StackWidget> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(isDrawerOpen? 20:0),
         boxShadow: isDrawerOpen?[
-      const BoxShadow(
-        color: Color.fromARGB(255, 194, 194, 194),
+       BoxShadow(
+        color: Theme.of(context).brightness == Brightness.light? const Color.fromARGB(255, 194, 194, 194):
+         const Color.fromARGB(255, 26, 26, 26),
         spreadRadius: 5,
         blurRadius: 7,
-        offset: Offset(-8, 10), // changes position of shadow
+        offset: const Offset(-8, 10), // changes position of shadow
       ),
     ]: null,
       ),
@@ -130,8 +131,8 @@ class _StackWidgetState extends State<StackWidget> {
                 borderRadius: BorderRadius.circular(isDrawerOpen? 20:0),
                 child: Container(
                   color: isDrawerOpen?
-                  !ThemeProvider().currentTheme?
-                  const Color.fromARGB(255, 218, 218, 218):const Color.fromARGB(255, 43, 43, 43)
+                  Theme.of(context).brightness == Brightness.light?
+                  const Color.fromARGB(255, 241, 241, 241):const Color.fromARGB(255, 43, 43, 43)
                   : Theme.of(context).scaffoldBackgroundColor,
                   child: getDrawerPage()
                   ),

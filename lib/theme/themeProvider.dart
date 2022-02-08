@@ -7,6 +7,8 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData buildLightTheme() {
     final ThemeData base = ThemeData.light();
     return base.copyWith(
+      backgroundColor: Colors.white,
+        primaryTextTheme: const TextTheme(caption: TextStyle(color: Colors.black)),
         brightness: Brightness.light,
         appBarTheme:
             const AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
@@ -16,6 +18,8 @@ class ThemeProvider extends ChangeNotifier {
   ThemeData buildDarkTheme() {
     final ThemeData base = ThemeData.dark();
     return base.copyWith(
+      brightness: Brightness.dark,
+              primaryTextTheme: const TextTheme(caption: TextStyle(color: Colors.white)),
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
           primary: Colors.amber[800], // Button color
