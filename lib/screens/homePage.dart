@@ -1,5 +1,5 @@
-// ignore_for_file: file_names
-
+// ignore: file_names
+import 'package:engineering/screens/selectProject/about.dart';
 import 'package:engineering/screens/selectProject/create.dart';
 import 'package:engineering/screens/selectProject/load.dart';
 import 'package:engineering/theme/themeProvider.dart';
@@ -7,6 +7,8 @@ import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'hamburgerMenu/stack.dart';
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
@@ -24,7 +26,13 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: Consumer<ThemeProvider>(builder: (context, provider, child) {
-          return PopupMenuButton<String>(
+          return PopupMenuButton<int>(
+            onSelected: (val) {
+              if (val == 1) {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const about()));
+              }
+            },
             icon: const Icon(Icons.menu_outlined),
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -49,8 +57,7 @@ class _HomePageState extends State<HomePage> {
                           value: provider.currentTheme,
                           borderRadius: 30.0,
                           padding: 2.0,
-                          activeToggleColor:
-                              const Color.fromARGB(255, 156, 148, 170),
+                          activeToggleColor: Color.fromARGB(255, 156, 148, 170),
                           inactiveToggleColor: const Color(0xFF2F363D),
                           activeSwitchBorder: Border.all(
                             color: const Color.fromARGB(255, 103, 96, 116),
@@ -60,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                             color: const Color(0xFFD1D5DA),
                             width: 3.0,
                           ),
-                          activeColor: const Color.fromARGB(255, 79, 74, 87),
+                          activeColor: Color.fromARGB(255, 79, 74, 87),
                           inactiveColor: Colors.white,
                           activeIcon: const Icon(
                             Icons.nightlight_round,
@@ -75,17 +82,39 @@ class _HomePageState extends State<HomePage> {
                           },
                         ),
                       ),
+                      // Flexible(
+                      //   flex: 1,
+                      //   child: Transform.scale(
+                      //     scale: 1,
+                      //     child: Switch.adaptive(
+                      //         thumbColor:
+                      //             MaterialStateProperty.all(Colors.black),
+                      //         trackColor:
+                      //             MaterialStateProperty.all(Colors.grey[500]),
+                      //         activeThumbImage:
+                      //             const AssetImage(
+                      //             'assets/images/darkmode.png'),
+                      //         inactiveThumbImage:
+                      //         const AssetImage('assets/images/daymode.png'),
+                      //         value: provider.currentTheme,
+                      //         onChanged: (value) {
+                      //           setState(() {
+                      //             provider.changeTheme(value);
+                      //           });
+                      //         }),
+                      //   ),
+                      // ),
                     ],
                   );
                 }),
               ),
               PopupMenuItem(
-                value: 'light',
+                value: 1,
                 child: StatefulBuilder(builder: (context, stateSetter) {
                   return Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                        padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                         child: Icon(
                           Icons.info,
                           color: Theme.of(context).iconTheme.color,
