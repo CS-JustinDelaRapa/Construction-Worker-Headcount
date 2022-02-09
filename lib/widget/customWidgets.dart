@@ -116,4 +116,36 @@ class CustomWidgets {
           )),
     );
   }
+
+  // ignore: non_constant_identifier_names
+  function_ButtonPR(
+    String name,
+    double width,
+    double height,
+    BuildContext context,
+    Widget Function() push,
+  ) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * height,
+      width: MediaQuery.of(context).size.width * width,
+      child: ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => push()),
+            );
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(name),
+              const SizedBox(
+                width: 15,
+              ),
+            ],
+          )),
+    );
+  }
 }
+
+// ignore: non_constant_identifier_names
+
