@@ -32,20 +32,22 @@ class _StructuralState extends State<Structural> {
   void initState() {
     super.initState();
     minimizeDrawer();
-    screenCrontroller.addListener(() { 
+    screenCrontroller.addListener(() {
       // ignore: unrelated_type_equality_checks
-      if(screenCrontroller.position.minScrollExtent == screenCrontroller.offset && isScrolled == true)
-      {
-          isScrolled = false;
-          print('isScrolled: '+isScrolled.toString());          
-      }else if(screenCrontroller.position.minScrollExtent == screenCrontroller.offset && isScrolled == false)
-      {
-          minimizeDrawer();
-          print('Scrolling downward');  
-      }
-      else if(screenCrontroller.position.userScrollDirection == ScrollDirection.reverse){
-          isScrolled = true;
-          print('isScrolled: '+isScrolled.toString());
+      if (screenCrontroller.position.minScrollExtent ==
+              screenCrontroller.offset &&
+          isScrolled == true) {
+        isScrolled = false;
+        print('isScrolled: ' + isScrolled.toString());
+      } else if (screenCrontroller.position.minScrollExtent ==
+              screenCrontroller.offset &&
+          isScrolled == false) {
+        minimizeDrawer();
+        print('Scrolling downward');
+      } else if (screenCrontroller.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        isScrolled = true;
+        print('isScrolled: ' + isScrolled.toString());
       }
     });
   }
@@ -124,18 +126,21 @@ class _StructuralState extends State<Structural> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: GestureDetector(
-        onVerticalDragStart: isExpanded? null:(details) => isVerticalDragging = true,
-        onVerticalDragUpdate: isExpanded? null: (details) {
-          if (!isVerticalDragging) return;
-          const delta = 1;
-          if (details.delta.dy < delta) {
-            expandDrawer();
-          } else if (details.delta.dy > -delta) {
-            minimizeDrawer();
-          }
+        onVerticalDragStart:
+            isExpanded ? null : (details) => isVerticalDragging = true,
+        onVerticalDragUpdate: isExpanded
+            ? null
+            : (details) {
+                if (!isVerticalDragging) return;
+                const delta = 1;
+                if (details.delta.dy < delta) {
+                  expandDrawer();
+                } else if (details.delta.dy > -delta) {
+                  minimizeDrawer();
+                }
 
-          isVerticalDragging = false;
-        },
+                isVerticalDragging = false;
+              },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),
           height: MediaQuery.of(context).size.height * screenPercent,
@@ -146,8 +151,10 @@ class _StructuralState extends State<Structural> {
             child: Container(
               color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
-                controller: screenCrontroller,  
-                physics: isExpanded? const BouncingScrollPhysics():const NeverScrollableScrollPhysics(),
+                controller: screenCrontroller,
+                physics: isExpanded
+                    ? const BouncingScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -157,44 +164,49 @@ class _StructuralState extends State<Structural> {
                       child: SizedBox(
                         child: isExpanded
                             ? Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
-                              child: AnimatedOpacity(
-                                  opacity: opacity,
-                                  duration: const Duration(milliseconds: 250),
-                                  child: CustomWidgets()
-                                      .text_title('STRUCTURAL WORKS', 20)),
-                            )
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 8),
+                                child: AnimatedOpacity(
+                                    opacity: opacity,
+                                    duration: const Duration(milliseconds: 250),
+                                    child: CustomWidgets()
+                                        .text_title('STRUCTURAL WORKS', 20)),
+                              )
                             : const SizedBox(height: 10),
                       ),
                     ),
                     Flexible(
-                      fit:FlexFit.loose,
+                      fit: FlexFit.loose,
                       child: Column(
                         children: StructuralItems.all
                             .map((item) => ListTile(
-                              onTap: (){
-                                print(item.title);
-                              },
-                              title: Row(
-                                children: [
-                                  Icon(item.icon),
-                                  const SizedBox(width: 15),
-                                  Text(item.title, style: const TextStyle(fontWeight: FontWeight.w500),),
-                                ],
-                              ),
-                              subtitle: 
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  AnimatedSwitcher(
-                                    transitionBuilder: (Widget child, Animation<double> animation)=>
-                                    ScaleTransition(scale: animation, child: child),
-                                    duration: const Duration(milliseconds: 300),
-                                    child:returnItem(item.title)
-                                  ),
-                                ],
-                              )
-                            ))
+                                onTap: () {
+                                  print(item.title);
+                                },
+                                title: Row(
+                                  children: [
+                                    Icon(item.icon),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      item.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    AnimatedSwitcher(
+                                        transitionBuilder: (Widget child,
+                                                Animation<double> animation) =>
+                                            ScaleTransition(
+                                                scale: animation, child: child),
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: returnItem(item.title)),
+                                  ],
+                                )))
                             .toList(),
                       ),
                     )
@@ -208,82 +220,66 @@ class _StructuralState extends State<Structural> {
     );
   }
 
-  Widget expandItem(List<String> columnList){
+  Widget expandItem(List<String> columnList) {
     Padding returnColumn;
     List<TextButton> buttonsList = [];
-    for(int x = 0; x< columnList.length; x++){
-      buttonsList.add(
-        TextButton(onPressed: (){},
-        style: const ButtonStyle(
-          alignment: Alignment.centerLeft
-        ), 
-        child: Text(columnList[x],)));
+    for (int x = 0; x < columnList.length; x++) {
+      buttonsList.add(TextButton(
+          onPressed: () {},
+          style: const ButtonStyle(alignment: Alignment.centerLeft),
+          child: Text(
+            columnList[x],
+          )));
     }
     returnColumn = Padding(
       padding: const EdgeInsets.only(left: 40),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: buttonsList),
+          crossAxisAlignment: CrossAxisAlignment.start, children: buttonsList),
     );
     return returnColumn;
   }
 
-  Widget staticItem(List<String> columnList){
+  Widget staticItem(List<String> columnList) {
     Column returnColumn;
     List<Padding> textList = [];
-    for(int x = 0; x<columnList.length; x++){
+    for (int x = 0; x < columnList.length; x++) {
       textList.add(Padding(
-        padding: const EdgeInsets.only(left: 40, bottom: 8, top: 8),
-        child: Text(columnList[x])));
+          padding: const EdgeInsets.only(left: 40, bottom: 8, top: 8),
+          child: Text(columnList[x])));
     }
     returnColumn = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:textList);
+        crossAxisAlignment: CrossAxisAlignment.start, children: textList);
     return returnColumn;
   }
 
-  Widget returnItem( String itemName){
-     switch (itemName) {
+  Widget returnItem(String itemName) {
+    switch (itemName) {
       case 'Formworks':
-
-        if(!isExpanded){
+        if (!isExpanded) {
           return Container();
         }
-        return expandItem(
-          StructuralItems.listFormWorks
-        );
+        return expandItem(StructuralItems.listFormWorks);
       case 'Masonry Works':
-
-        if(!isExpanded){
+        if (!isExpanded) {
           return Container();
         }
-        return expandItem(
-          StructuralItems.listMasonryWorks
-        );        
+        return expandItem(StructuralItems.listMasonryWorks);
       case 'Steel Reinforcement Works':
-        
-        if(!isExpanded){
+        if (!isExpanded) {
           return Container();
-        }        
-        return expandItem(
-          StructuralItems.listSteelReinforecedWorks
-        ); 
+        }
+        return expandItem(StructuralItems.listSteelReinforecedWorks);
       case 'Reinforced Cement Works':
-        
-        if(!isExpanded){
+        if (!isExpanded) {
           return Container();
-        }        
-        return expandItem(
-          StructuralItems.listReinforecedWorks
-        );        
-      case 'Earthworks':      
+        }
+        return expandItem(StructuralItems.listReinforecedWorks);
+      case 'Earthworks':
       default:
-        
-        if(!isExpanded){
+        if (!isExpanded) {
           return Container();
-        }        
-        return staticItem(
-          StructuralItems.listEarthWorks);
+        }
+        return staticItem(StructuralItems.listEarthWorks);
     }
   }
 

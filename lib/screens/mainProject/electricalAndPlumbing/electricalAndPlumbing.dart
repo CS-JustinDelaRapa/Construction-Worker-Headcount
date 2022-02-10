@@ -1,9 +1,12 @@
-// ignore_for_file: file_names
+// ignore_for_file: unused_import, avoid_print
 
+import 'dart:ffi';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/electricalAndPlumbing/electricalAndPlumbingItem.dart';
+import 'package:engineering/screens/mainProject/structural/structuralItem.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'electricalAndPlumbingItem.dart';
 
 class ElectricalAndPlumbing extends StatefulWidget {
   final VoidCallback openDrawer;
@@ -12,15 +15,19 @@ class ElectricalAndPlumbing extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ElectricalAndPlumbingState createState() => _ElectricalAndPlumbingState();
+  _ElectricalState createState() => _ElectricalState();
 }
 
-class _ElectricalAndPlumbingState extends State<ElectricalAndPlumbing> {
+class _ElectricalState extends State<ElectricalAndPlumbing> {
+  final screenCrontroller = ScrollController();
+
   late double screenPercent;
   late double radius;
+  double opacity = 0;
+
   bool isVerticalDragging = false;
   bool isExpanded = false;
-  double opacity = 0;
+  bool isScrolled = false;
 
   @override
   void initState() {
@@ -31,36 +38,37 @@ class _ElectricalAndPlumbingState extends State<ElectricalAndPlumbing> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        titleSpacing: 0.1,
+        elevation: 0.0,
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          titleSpacing: 0.1,
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leading: OpenDrawerWidget(
-            onClicked: widget.openDrawer,
-          ),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '''Dela Cruz' long long long Apartment''',
-                style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.caption!.color,
-                    fontSize: 18),
-              ),
-              Text(
-                '''Bungalow''',
-                style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.caption!.color,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
-          ),
+        leading: OpenDrawerWidget(
+          onClicked: widget.openDrawer,
         ),
-        body: Stack(
-          children: [buildBackground(), buildList()],
-        ));
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '''Dela Cruz' long long long Apartment''',
+              style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.caption!.color,
+                  fontSize: 18),
+            ),
+            Text(
+              '''Bungalow''',
+              style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.caption!.color,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
+      ),
+      body: Stack(
+        children: [buildBackground(), buildList()],
+      ),
+    );
   }
 
   Widget buildBackground() {
@@ -68,7 +76,7 @@ class _ElectricalAndPlumbingState extends State<ElectricalAndPlumbing> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.4,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 42, 44, 46),
             image: DecorationImage(
@@ -86,7 +94,7 @@ class _ElectricalAndPlumbingState extends State<ElectricalAndPlumbing> {
             width: MediaQuery.of(context).size.width,
             child: const Center(
                 child: Text(
-              'Electrical and\nPlumbing Works',
+              'Electrical And\n Plumbing Works',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.white,
@@ -110,65 +118,130 @@ class _ElectricalAndPlumbingState extends State<ElectricalAndPlumbing> {
           } else if (details.delta.dy > -delta) {
             minimizeDrawer();
           }
-
           isVerticalDragging = false;
         },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 250),
           height: MediaQuery.of(context).size.height * screenPercent,
           child: ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(radius),
                 topRight: Radius.circular(radius)),
             child: Container(
-              padding: const EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * screenPercent,
+              color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
+                controller: screenCrontroller,
                 physics: const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    SizedBox(
-                      child: isExpanded
-                          ? AnimatedOpacity(
-                              opacity: opacity,
-                              duration: const Duration(milliseconds: 250),
-                              child: CustomWidgets()
-                                  .text_title('Electrical and Plumbing', 20))
-                          : null,
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: SizedBox(
+                        child: isExpanded
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 8),
+                                child: AnimatedOpacity(
+                                    opacity: opacity,
+                                    duration: const Duration(milliseconds: 250),
+                                    child: CustomWidgets().text_title(
+                                        'Electrical and Plumbing', 20)),
+                              )
+                            : const SizedBox(height: 10),
+                      ),
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: ElectricalAndPlumbingItems.all
-                          .map((item) => Column(
-                                children: [
-                                  ListTile(
-                                    onTap: () {
-                                      print(item.title + ' was clicked');
-                                    },
-                                    leading: Icon(item.icon),
-                                    title: Text(item.title),
-                                  ),
-                                  Divider(
-                                    color: Theme.of(context).iconTheme.color,
-                                    thickness: 0.5,
-                                  )
-                                ],
-                              ))
-                          .toList(),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: Column(
+                        children: ElectricalAndPlumbingItems.all
+                            .map((item) => ListTile(
+                                onTap: () {
+                                  print(item.title);
+                                },
+                                title: Row(
+                                  children: [
+                                    Icon(item.icon),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      item.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    AnimatedSwitcher(
+                                        transitionBuilder: (Widget child,
+                                                Animation<double> animation) =>
+                                            ScaleTransition(
+                                                scale: animation, child: child),
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: returnItem(item.title)),
+                                  ],
+                                )))
+                            .toList(),
+                      ),
                     )
                   ],
                 ),
               ),
-              color: Theme.of(context).backgroundColor,
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget expandItem(List<String> columnList) {
+    Padding returnColumn;
+    List<TextButton> buttonsList = [];
+    for (int x = 0; x < columnList.length; x++) {
+      buttonsList.add(TextButton(
+          onPressed: () {},
+          style: const ButtonStyle(alignment: Alignment.centerLeft),
+          child: Text(
+            columnList[x],
+          )));
+    }
+    returnColumn = Padding(
+      padding: const EdgeInsets.only(left: 40),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, children: buttonsList),
+    );
+    return returnColumn;
+  }
+
+  Widget staticItem(List<String> columnList) {
+    Column returnColumn;
+    List<Padding> textList = [];
+    for (int x = 0; x < columnList.length; x++) {
+      textList.add(Padding(
+          padding: const EdgeInsets.only(left: 40, bottom: 8, top: 8),
+          child: Text(columnList[x])));
+    }
+    returnColumn = Column(
+        crossAxisAlignment: CrossAxisAlignment.start, children: textList);
+    return returnColumn;
+  }
+
+  Widget returnItem(String itemName) {
+    switch (itemName) {
+      case 'Electrical Works':
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ElectricalAndPlumbingItems.listElectricalWorks);
+      default:
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ElectricalAndPlumbingItems.listPlumbingWorks);
+    }
   }
 
   void expandDrawer() {
