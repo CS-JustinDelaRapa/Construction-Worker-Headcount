@@ -4,6 +4,30 @@ import 'package:engineering/model/itemModel.dart';
 import 'package:flutter/material.dart';
 
 class ArchitechturalItems {
+  static const List<String> listFlooringWorks = [
+    'EXC T&B:',
+    'T&B:',
+  ];
+  static const List<String> listPlasteringWorks = ['Inferior', 'Exterior'];
+  static const List<String> listPaintingWorks = [
+    'Internal Skim Coat',
+    'External Skim Coat',
+    "Interior",
+    "Exterior"
+  ];
+  static const List<String> listDoornWindowsWorks = [
+    'Lockset ',
+    'Jamb',
+    'Doors',
+    'Windows'
+  ];
+  static const List<String> listCeilingWorks = ['Steel Frame', 'Plywood'];
+  static const List<String> listRoofingWorks = [
+    'Trusses ',
+    'GI Sheets',
+    'Gutter'
+  ];
+
   static const flooring = DrawerItem(title: 'Flooring', icon: Icons.home);
   static const plastering = DrawerItem(title: 'Plastering', icon: Icons.home);
   static const paintingWorks =

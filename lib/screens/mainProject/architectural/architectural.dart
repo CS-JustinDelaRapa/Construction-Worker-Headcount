@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/architectural/architecturalItem.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class Architectural extends StatefulWidget {
   final VoidCallback openDrawer;
@@ -13,51 +16,74 @@ class Architectural extends StatefulWidget {
 }
 
 class _ArchitecturalState extends State<Architectural> {
+  final screenCrontroller = ScrollController();
+
   late double screenPercent;
   late double radius;
+  double opacity = 0;
+
   bool isVerticalDragging = false;
   bool isExpanded = false;
-  double opacity = 0;
+  bool isScrolled = false;
 
   @override
   void initState() {
     super.initState();
     minimizeDrawer();
+    screenCrontroller.addListener(() {
+      // ignore: unrelated_type_equality_checks
+      if (screenCrontroller.position.minScrollExtent ==
+              screenCrontroller.offset &&
+          isScrolled == true) {
+        isScrolled = false;
+        print('isScrolled: ' + isScrolled.toString());
+      } else if (screenCrontroller.position.minScrollExtent ==
+              screenCrontroller.offset &&
+          isScrolled == false) {
+        minimizeDrawer();
+        print('Scrolling downward');
+      } else if (screenCrontroller.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        isScrolled = true;
+        print('isScrolled: ' + isScrolled.toString());
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        titleSpacing: 0.1,
+        elevation: 0.0,
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          titleSpacing: 0.1,
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          leading: OpenDrawerWidget(
-            onClicked: widget.openDrawer,
-          ),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '''Dela Cruz' long long long Apartment''',
-                style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.caption!.color,
-                    fontSize: 18),
-              ),
-              Text(
-                '''Bungalow''',
-                style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.caption!.color,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
-          ),
+        leading: OpenDrawerWidget(
+          onClicked: widget.openDrawer,
         ),
-        body: Stack(
-          children: [buildBackground(), buildList()],
-        ));
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '''Dela Cruz' long long long Apartment''',
+              style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.caption!.color,
+                  fontSize: 18),
+            ),
+            Text(
+              '''Bungalow''',
+              style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.caption!.color,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
+      ),
+      body: Stack(
+        children: [buildBackground(), buildList()],
+      ),
+    );
   }
 
   Widget buildBackground() {
@@ -65,7 +91,7 @@ class _ArchitecturalState extends State<Architectural> {
       children: [
         Container(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.4,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 42, 44, 46),
             image: DecorationImage(
@@ -83,7 +109,7 @@ class _ArchitecturalState extends State<Architectural> {
             width: MediaQuery.of(context).size.width,
             child: const Center(
                 child: Text(
-              'Architectural\nWorks',
+              'Architecural\nWorks',
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.white,
@@ -98,74 +124,167 @@ class _ArchitecturalState extends State<Architectural> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: GestureDetector(
-        onVerticalDragStart: (details) => isVerticalDragging = true,
-        onVerticalDragUpdate: (details) {
-          if (!isVerticalDragging) return;
-          const delta = 1;
-          if (details.delta.dy < delta) {
-            expandDrawer();
-          } else if (details.delta.dy > -delta) {
-            minimizeDrawer();
-          }
+        onVerticalDragStart:
+            isExpanded ? null : (details) => isVerticalDragging = true,
+        onVerticalDragUpdate: isExpanded
+            ? null
+            : (details) {
+                if (!isVerticalDragging) return;
+                const delta = 1;
+                if (details.delta.dy < delta) {
+                  expandDrawer();
+                } else if (details.delta.dy > -delta) {
+                  minimizeDrawer();
+                }
 
-          isVerticalDragging = false;
-        },
+                isVerticalDragging = false;
+              },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 250),
           height: MediaQuery.of(context).size.height * screenPercent,
           child: ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(radius),
                 topRight: Radius.circular(radius)),
             child: Container(
-              padding: const EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * screenPercent,
+              color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
+                controller: screenCrontroller,
+                physics: isExpanded
+                    ? const BouncingScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    SizedBox(
-                      child: isExpanded
-                          ? AnimatedOpacity(
-                              opacity: opacity,
-                              duration: const Duration(milliseconds: 250),
-                              child: CustomWidgets()
-                                  .text_title('ARCHITECTURAL WORKS', 20))
-                          : null,
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: SizedBox(
+                        child: isExpanded
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 8),
+                                child: AnimatedOpacity(
+                                    opacity: opacity,
+                                    duration: const Duration(milliseconds: 250),
+                                    child: CustomWidgets()
+                                        .text_title('ARCHITECTURAL WORKS', 20)),
+                              )
+                            : const SizedBox(height: 10),
+                      ),
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: ArchitechturalItems.all
-                          .map((item) => Column(
-                                children: [
-                                  ListTile(
-                                    onTap: () {
-                                      print(item.title + ' was clicked');
-                                    },
-                                    leading: Icon(item.icon),
-                                    title: Text(item.title),
-                                  ),
-                                  Divider(
-                                    color: Theme.of(context).iconTheme.color,
-                                    thickness: 0.5,
-                                  )
-                                ],
-                              ))
-                          .toList(),
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: Column(
+                        children: ArchitechturalItems.all
+                            .map((item) => ListTile(
+                                onTap: () {
+                                  print(item.title);
+                                },
+                                title: Row(
+                                  children: [
+                                    Icon(item.icon),
+                                    const SizedBox(width: 15),
+                                    Text(
+                                      item.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                                subtitle: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    AnimatedSwitcher(
+                                        transitionBuilder: (Widget child,
+                                                Animation<double> animation) =>
+                                            ScaleTransition(
+                                                scale: animation, child: child),
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        child: returnItem(item.title)),
+                                  ],
+                                )))
+                            .toList(),
+                      ),
                     )
                   ],
                 ),
               ),
-              color: Theme.of(context).backgroundColor,
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget expandItem(List<String> columnList) {
+    Padding returnColumn;
+    List<TextButton> buttonsList = [];
+    for (int x = 0; x < columnList.length; x++) {
+      buttonsList.add(TextButton(
+          onPressed: () {},
+          style: const ButtonStyle(alignment: Alignment.centerLeft),
+          child: Text(
+            columnList[x],
+          )));
+    }
+    returnColumn = Padding(
+      padding: const EdgeInsets.only(left: 40),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, children: buttonsList),
+    );
+    return returnColumn;
+  }
+
+  Widget staticItem(List<String> columnList) {
+    Column returnColumn;
+    List<Padding> textList = [];
+    for (int x = 0; x < columnList.length; x++) {
+      textList.add(Padding(
+          padding: const EdgeInsets.only(left: 40, bottom: 8, top: 8),
+          child: Text(columnList[x])));
+    }
+    returnColumn = Column(
+        crossAxisAlignment: CrossAxisAlignment.start, children: textList);
+    return returnColumn;
+  }
+
+  Widget returnItem(String itemName) {
+    switch (itemName) {
+      case 'Plastering':
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ArchitechturalItems.listPlasteringWorks);
+      case 'Painting Works':
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ArchitechturalItems.listPaintingWorks);
+      case 'Doors and Windows':
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ArchitechturalItems.listDoornWindowsWorks);
+      case 'Ceiling':
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ArchitechturalItems.listCeilingWorks);
+
+      case 'Roofing Works':
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ArchitechturalItems.listRoofingWorks);
+      case 'Flooring':
+      default:
+        if (!isExpanded) {
+          return Container();
+        }
+        return expandItem(ArchitechturalItems.listFlooringWorks);
+    }
   }
 
   void expandDrawer() {

@@ -12,6 +12,10 @@ class RateOfWorkers extends StatefulWidget {
   _RateOfWorkersState createState() => _RateOfWorkersState();
 }
 
+List<TextEditingController> myController = [
+  for (int i = 1; i < 11; i++) TextEditingController()
+];
+
 class _RateOfWorkersState extends State<RateOfWorkers> {
   @override
   Widget build(BuildContext context) {
@@ -25,9 +29,19 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            CustomWidgets().text_title('Rate of Workers', 35),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CustomWidgets().text_title('Carpenter', 20),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: CustomWidgets().textFormField_widget(
+                      'Carpenter', Colors.white, 0, myController[1]),
+                )
+              ],
+            ),
           ],
         ),
       ),
