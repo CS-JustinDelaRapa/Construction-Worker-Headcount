@@ -6,6 +6,7 @@ import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/structural/structuralItem.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class Structural extends StatefulWidget {
   final VoidCallback openDrawer;
@@ -17,16 +18,36 @@ class Structural extends StatefulWidget {
 }
 
 class _StructuralState extends State<Structural> {
+  final screenCrontroller = ScrollController();
+
   late double screenPercent;
   late double radius;
+  double opacity = 0;
+
   bool isVerticalDragging = false;
   bool isExpanded = false;
-  double opacity = 0;
+  bool isScrolled = false;
 
   @override
   void initState() {
     super.initState();
     minimizeDrawer();
+    screenCrontroller.addListener(() { 
+      // ignore: unrelated_type_equality_checks
+      if(screenCrontroller.position.minScrollExtent == screenCrontroller.offset && isScrolled == true)
+      {
+          isScrolled = false;
+          print('isScrolled: '+isScrolled.toString());          
+      }else if(screenCrontroller.position.minScrollExtent == screenCrontroller.offset && isScrolled == false)
+      {
+          minimizeDrawer();
+          print('Scrolling downward');  
+      }
+      else if(screenCrontroller.position.userScrollDirection == ScrollDirection.reverse){
+          isScrolled = true;
+          print('isScrolled: '+isScrolled.toString());
+      }
+    });
   }
 
   @override
@@ -69,8 +90,7 @@ class _StructuralState extends State<Structural> {
     return Stack(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width +
-              (MediaQuery.of(context).size.width * 0.5),
+          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.4,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 42, 44, 46),
@@ -104,8 +124,8 @@ class _StructuralState extends State<Structural> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: GestureDetector(
-        onVerticalDragStart: (details) => isVerticalDragging = true,
-        onVerticalDragUpdate: (details) {
+        onVerticalDragStart: isExpanded? null:(details) => isVerticalDragging = true,
+        onVerticalDragUpdate: isExpanded? null: (details) {
           if (!isVerticalDragging) return;
           const delta = 1;
           if (details.delta.dy < delta) {
@@ -117,61 +137,154 @@ class _StructuralState extends State<Structural> {
           isVerticalDragging = false;
         },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 250),
           height: MediaQuery.of(context).size.height * screenPercent,
           child: ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(radius),
                 topRight: Radius.circular(radius)),
             child: Container(
-              padding: const EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * screenPercent,
+              color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
+                controller: screenCrontroller,  
+                physics: isExpanded? const BouncingScrollPhysics():const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    SizedBox(
-                      child: isExpanded
-                          ? AnimatedOpacity(
-                              opacity: opacity,
-                              duration: const Duration(milliseconds: 250),
-                              child: CustomWidgets()
-                                  .text_title('STRUCTURAL WORKS', 20))
-                          : null,
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: SizedBox(
+                        child: isExpanded
+                            ? Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8),
+                              child: AnimatedOpacity(
+                                  opacity: opacity,
+                                  duration: const Duration(milliseconds: 250),
+                                  child: CustomWidgets()
+                                      .text_title('STRUCTURAL WORKS', 20)),
+                            )
+                            : const SizedBox(height: 10),
+                      ),
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: StructuralItems.all
-                          .map((item) => Column(
+                    Flexible(
+                      fit:FlexFit.loose,
+                      child: Column(
+                        children: StructuralItems.all
+                            .map((item) => ListTile(
+                              onTap: (){
+                                print(item.title);
+                              },
+                              title: Row(
                                 children: [
-                                  ListTile(
-                                    onTap: () {
-                                      print(item.title + ' was clicked');
-                                    },
-                                    leading: Icon(item.icon),
-                                    title: Text(item.title),
-                                  ),
-                                  Divider(
-                                    color: Theme.of(context).iconTheme.color,
-                                    thickness: 0.5,
-                                  )
+                                  Icon(item.icon),
+                                  const SizedBox(width: 15),
+                                  Text(item.title, style: const TextStyle(fontWeight: FontWeight.w500),),
                                 ],
-                              ))
-                          .toList(),
+                              ),
+                              subtitle: 
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  AnimatedSwitcher(
+                                    transitionBuilder: (Widget child, Animation<double> animation)=>
+                                    ScaleTransition(scale: animation, child: child),
+                                    duration: const Duration(milliseconds: 300),
+                                    child:returnItem(item.title)
+                                  ),
+                                ],
+                              )
+                            ))
+                            .toList(),
+                      ),
                     )
                   ],
                 ),
               ),
-              color: Theme.of(context).backgroundColor,
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget expandItem(List<String> columnList){
+    Padding returnColumn;
+    List<TextButton> buttonsList = [];
+    for(int x = 0; x< columnList.length; x++){
+      buttonsList.add(
+        TextButton(onPressed: (){},
+        style: const ButtonStyle(
+          alignment: Alignment.centerLeft
+        ), 
+        child: Text(columnList[x],)));
+    }
+    returnColumn = Padding(
+      padding: const EdgeInsets.only(left: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: buttonsList),
+    );
+    return returnColumn;
+  }
+
+  Widget staticItem(List<String> columnList){
+    Column returnColumn;
+    List<Padding> textList = [];
+    for(int x = 0; x<columnList.length; x++){
+      textList.add(Padding(
+        padding: const EdgeInsets.only(left: 40, bottom: 8, top: 8),
+        child: Text(columnList[x])));
+    }
+    returnColumn = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:textList);
+    return returnColumn;
+  }
+
+  Widget returnItem( String itemName){
+     switch (itemName) {
+      case 'Formworks':
+
+        if(!isExpanded){
+          return Container();
+        }
+        return expandItem(
+          StructuralItems.listFormWorks
+        );
+      case 'Masonry Works':
+
+        if(!isExpanded){
+          return Container();
+        }
+        return expandItem(
+          StructuralItems.listMasonryWorks
+        );        
+      case 'Steel Reinforcement Works':
+        
+        if(!isExpanded){
+          return Container();
+        }        
+        return expandItem(
+          StructuralItems.listSteelReinforecedWorks
+        ); 
+      case 'Reinforced Cement Works':
+        
+        if(!isExpanded){
+          return Container();
+        }        
+        return expandItem(
+          StructuralItems.listReinforecedWorks
+        );        
+      case 'Earthworks':      
+      default:
+        
+        if(!isExpanded){
+          return Container();
+        }        
+        return staticItem(
+          StructuralItems.listEarthWorks);
+    }
   }
 
   void expandDrawer() {

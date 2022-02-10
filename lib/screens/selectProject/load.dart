@@ -101,8 +101,7 @@ class _LoadProjectState extends State<LoadProject> {
   }
 
   loadProject() {
-    CustomWidgets()
-        .function_pushReplacement(context, () => const StackWidget());
+    CustomWidgets().function_pushReplacement(context, () => const StackWidget());
   }
 
   deleteProject() {
