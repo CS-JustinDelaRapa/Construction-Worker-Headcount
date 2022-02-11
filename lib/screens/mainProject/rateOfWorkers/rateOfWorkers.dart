@@ -13,7 +13,7 @@ class RateOfWorkers extends StatefulWidget {
 }
 
 List<TextEditingController> myController = [
-  for (int i = 1; i <= 12; i++) TextEditingController()
+  for (int i = 0; i <= 11; i++) TextEditingController()
 ];
 
 class _RateOfWorkersState extends State<RateOfWorkers> {
@@ -29,178 +29,251 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
       ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Carpenter', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[1]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Laborer', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[2]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Mason', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[3]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Steel Man', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[4]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Painter', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[5]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Tile Man', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[6]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets()
-                      .text_subtitle('Door and Window\n Installer', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[7]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Electrician', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[8]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Plumber', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[9]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Welder', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[10]),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CustomWidgets().text_subtitle('Tinsmith', 15),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    child: CustomWidgets().textFormField_widget(
-                        '', Colors.white, 0, myController[11]),
-                  )
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Labels
+                Flexible(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Carpenter', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Laborer', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Mason', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Steel Man', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Painter', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Tile Man', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Door and Window Installer', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Electrician', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Plumber', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Welder', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                       child: const Align(
+                         alignment: Alignment.centerLeft,
+                         child: Text('Tinsmith', textAlign: TextAlign.left,
+                         style: TextStyle(fontSize: 15),))
+                    ),
+                  ),
+                    ],
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Column(
+                    children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[0]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[1]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[2]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[3]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[4]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[5]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[6]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[7]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[8]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[9]),
+                        ),                    
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: CustomWidgets().textFormField_widget(
+                                '', Colors.white, 0, myController[10]),
+                        ),                    
+                          ),                                                                                                                                                                                                                                                
+                    ],
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: 30),
             CustomWidgets().funtion_Button('Save', const Icon(Icons.menu_open),
-                0.6, 0.07, context, saveRateofWorkers)
+            0.6, 0.07, context, saveRateofWorkers),
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -208,8 +281,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
   }
 
   saveRateofWorkers() {
-    for (int i = 0; i <= 12; i++) {
-      print(myController[i]);
+    for (int i = 0; i <= 11; i++) {
+      print(myController[i].text);
     }
   }
 }

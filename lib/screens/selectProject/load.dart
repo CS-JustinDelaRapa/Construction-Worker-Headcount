@@ -40,7 +40,12 @@ class _LoadProjectState extends State<LoadProject> {
                   return Ink(
                     child: GestureDetector(
                       child: ListTile(
-                        tileColor: selected == id[index] ? Colors.blue : null,
+                        tileColor: selected == id[index] ? Theme.of(context).listTileTheme.selectedTileColor: null,
+                        textColor: selected == id[index] ? 
+                          Theme.of(context).brightness == Brightness.dark?
+                          Color.fromARGB(255, 32, 28, 48):
+                          const Color.fromARGB(255, 250, 252, 243)
+                          : null,
                         leading: Text(id[index].toString()),
                         title: Text(projectName[index]),
                         trailing: Text(projectStyle[index]),
@@ -86,15 +91,15 @@ class _LoadProjectState extends State<LoadProject> {
               CustomWidgets().funtion_Button(
                 "Delete",
                 const Icon(Icons.delete_outline_outlined),
-                0.49,
+                0.45,
                 0.07,
                 context,
                 deleteProject),
               CustomWidgets().funtion_Button('Load',
-                  const Icon(Icons.menu_open), 0.49, 0.07, context, loadProject)
+                  const Icon(Icons.menu_open), 0.45, 0.07, context, loadProject)
             ],
           ),
-          SizedBox(height: 5)
+          SizedBox(height: 10)
         ],
       ),
     );

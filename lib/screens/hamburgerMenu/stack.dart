@@ -136,7 +136,7 @@ class _StackWidgetState extends State<StackWidget> {
                         color: isDrawerOpen
                             ? Theme.of(context).brightness == Brightness.light
                                 ? const Color.fromARGB(255, 241, 241, 241)
-                                : const Color.fromARGB(255, 43, 43, 43)
+                                : const Color.fromARGB(255, 41, 37, 58)
                             : Theme.of(context).scaffoldBackgroundColor,
                         child: getDrawerPage()),
                   ),

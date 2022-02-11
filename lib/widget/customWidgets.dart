@@ -22,6 +22,9 @@ class CustomWidgets {
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(30.0),
+               ),),
           onPressed: () {
             // ignore: unnecessary_null_comparison
             if (push != null) {
@@ -71,6 +74,9 @@ class CustomWidgets {
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(30.0),
+               ),),
           onPressed: callback,
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -129,6 +135,9 @@ class CustomWidgets {
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+               borderRadius: BorderRadius.circular(30.0),
+               ),),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => push()),

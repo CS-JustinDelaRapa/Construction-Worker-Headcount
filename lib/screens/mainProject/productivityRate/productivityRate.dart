@@ -28,10 +28,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomWidgets().text_title('Productivity Rate', 20),
-          ),
+          const SizedBox(height: 20,),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
