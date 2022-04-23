@@ -2,6 +2,7 @@ import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/rateOfWorkers/rateOfWorkers.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class EarthWorksForm extends StatefulWidget {
@@ -14,6 +15,25 @@ class EarthWorksForm extends StatefulWidget {
 
 class _EarthWorksFormState extends State<EarthWorksForm> {
   TextEditingController dateStartControler = TextEditingController();
+  var outputFormat = DateFormat('MM/dd/yyyy');
+  DateTime selectedDate = DateTime.now();
+
+  List<String> _locations = ['Hard Soil', 'Soft Soil'];
+  String? _selectedLocation;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,31 +188,36 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                               child: TextField(
                             readOnly: true,
                             controller: dateStartControler,
-                            decoration: const InputDecoration(
-                                hintText: 'Pick your Date'),
                             onTap: () async {
-                              var date = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100));
-                              // dateStartControler.text =
-                              //     date.toString().substring(0, 10);
+                              _selectDate(context);
                             },
+                            decoration: InputDecoration(
+                                hintText: outputFormat
+                                    .format(selectedDate)
+                                    .toString()),
                           )),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'dropdown',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
-                                  ))),
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            height: MediaQuery.of(context).size.height * 0.07,
+                            child: DropdownButton(
+                                hint: Text(
+                                    'Hard Soil'), // Not necessary for Option 1
+                                value: _selectedLocation,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedLocation = value.toString();
+                                  });
+                                },
+                                items: _locations.map((location) {
+                                  return DropdownMenuItem(
+                                    child: new Text(location),
+                                    value: location,
+                                  );
+                                }).toList()),
+                          ),
                         ),
                       ],
                     )),
@@ -335,7 +360,3 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
     );
   }
 }
-
-// saveRateofWorkers() {
-//   print('test');
-// }
