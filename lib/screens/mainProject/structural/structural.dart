@@ -3,7 +3,8 @@
 import 'dart:ffi';
 
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/structural/structuralItem.dart';
+import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
+import 'package:engineering/screens/mainProject/structural/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -163,7 +164,7 @@ class _StructuralState extends State<Structural> {
                     Flexible(
                       fit: FlexFit.loose,
                       child: Column(
-                        children: StructuralItems.all
+                        children: BungalowStructuralItems.all
                             .map((item) => ListTile(
                                 onTap: () {
                                   print(item.title);
@@ -246,28 +247,38 @@ class _StructuralState extends State<Structural> {
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(StructuralItems.listFormWorks);
+        return expandItem(true
+            ? BungalowStructuralItems.listFormWorks
+            : TwoStoreyStructuralItems.listFormWorks);
       case 'Masonry Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(StructuralItems.listMasonryWorks);
+        return expandItem(true
+            ? BungalowStructuralItems.listMasonryWorks
+            : TwoStoreyStructuralItems.listMasonryWorks);
       case 'Steel Reinforcement Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(StructuralItems.listSteelReinforecedWorks);
+        return expandItem(true
+            ? BungalowStructuralItems.listSteelReinforecedWorks
+            : TwoStoreyStructuralItems.listSteelReinforecedWorks);
       case 'Reinforced Cement Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(StructuralItems.listReinforecedWorks);
+        return expandItem(true
+            ? BungalowStructuralItems.listReinforecedWorks
+            : TwoStoreyStructuralItems.listReinforecedWorks);
       case 'Earthworks':
       default:
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(StructuralItems.listEarthWorks);
+        return expandItem(true
+            ? BungalowStructuralItems.listEarthWorks
+            : TwoStoreyStructuralItems.listEarthWorks);
     }
   }
 

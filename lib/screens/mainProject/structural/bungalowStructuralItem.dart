@@ -3,7 +3,7 @@
 import 'package:engineering/model/itemModel.dart';
 import 'package:flutter/material.dart';
 
-class StructuralItems {
+class BungalowStructuralItems {
   static const List<String> listEarthWorks = ['Excavation', 'Backfilling'];
   static const List<String> listFormWorks = ['Column', 'Beam', 'Slab'];
   static const List<String> listMasonryWorks = ['Exterior', 'Interior'];

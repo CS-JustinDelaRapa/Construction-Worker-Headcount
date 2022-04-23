@@ -2,7 +2,7 @@
 
 import 'dart:ffi';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/structural/structuralItem.dart';
+import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
