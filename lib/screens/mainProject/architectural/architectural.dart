@@ -16,8 +16,6 @@ class Architectural extends StatefulWidget {
 }
 
 class _ArchitecturalState extends State<Architectural> {
-  final screenCrontroller = ScrollController();
-
   late double screenPercent;
   late double radius;
   double opacity = 0;
@@ -30,24 +28,6 @@ class _ArchitecturalState extends State<Architectural> {
   void initState() {
     super.initState();
     minimizeDrawer();
-    screenCrontroller.addListener(() {
-      // ignore: unrelated_type_equality_checks
-      if (screenCrontroller.position.minScrollExtent ==
-              screenCrontroller.offset &&
-          isScrolled == true) {
-        isScrolled = false;
-        print('isScrolled: ' + isScrolled.toString());
-      } else if (screenCrontroller.position.minScrollExtent ==
-              screenCrontroller.offset &&
-          isScrolled == false) {
-        minimizeDrawer();
-        print('Scrolling downward');
-      } else if (screenCrontroller.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        isScrolled = true;
-        print('isScrolled: ' + isScrolled.toString());
-      }
-    });
   }
 
   @override
@@ -83,6 +63,13 @@ class _ArchitecturalState extends State<Architectural> {
       body: Stack(
         children: [buildBackground(), buildList()],
       ),
+      floatingActionButton: isExpanded
+          ? FloatingActionButton(
+              child: const Icon(Icons.arrow_downward),
+              onPressed: () {
+                minimizeDrawer();
+              })
+          : null,
     );
   }
 
@@ -149,10 +136,8 @@ class _ArchitecturalState extends State<Architectural> {
             child: Container(
               color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
-                controller: screenCrontroller,
-                physics: isExpanded
-                    ? const BouncingScrollPhysics()
-                    : const NeverScrollableScrollPhysics(),
+                physics:
+                    isExpanded ? null : const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,

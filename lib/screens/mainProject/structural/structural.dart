@@ -18,7 +18,6 @@ class Structural extends StatefulWidget {
 }
 
 class _StructuralState extends State<Structural> {
-
   late double screenPercent;
   late double radius;
   double opacity = 0;
@@ -66,11 +65,13 @@ class _StructuralState extends State<Structural> {
       body: Stack(
         children: [buildBackground(), buildList()],
       ),
-      floatingActionButton: isExpanded? FloatingActionButton(
-        child: const Icon(Icons.arrow_downward),
-        onPressed: (){
-          minimizeDrawer();
-        }) : null,
+      floatingActionButton: isExpanded
+          ? FloatingActionButton(
+              child: const Icon(Icons.arrow_downward),
+              onPressed: () {
+                minimizeDrawer();
+              })
+          : null,
     );
   }
 
@@ -137,9 +138,8 @@ class _StructuralState extends State<Structural> {
             child: Container(
               color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
-                physics: isExpanded
-                    ? null
-                    : const NeverScrollableScrollPhysics(),
+                physics:
+                    isExpanded ? null : const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -210,7 +210,10 @@ class _StructuralState extends State<Structural> {
     List<TextButton> buttonsList = [];
     for (int x = 0; x < columnList.length; x++) {
       buttonsList.add(TextButton(
-          onPressed: () {},
+          onPressed: () {
+            print(columnList[x]);
+            print(x);
+          },
           style: const ButtonStyle(alignment: Alignment.centerLeft),
           child: Text(
             columnList[x],
@@ -264,7 +267,7 @@ class _StructuralState extends State<Structural> {
         if (!isExpanded) {
           return Container();
         }
-        return staticItem(StructuralItems.listEarthWorks);
+        return expandItem(StructuralItems.listEarthWorks);
     }
   }
 

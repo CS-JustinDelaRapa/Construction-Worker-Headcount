@@ -19,8 +19,6 @@ class ElectricalAndPlumbing extends StatefulWidget {
 }
 
 class _ElectricalState extends State<ElectricalAndPlumbing> {
-  final screenCrontroller = ScrollController();
-
   late double screenPercent;
   late double radius;
   double opacity = 0;
@@ -68,6 +66,13 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
       body: Stack(
         children: [buildBackground(), buildList()],
       ),
+      floatingActionButton: isExpanded
+          ? FloatingActionButton(
+              child: const Icon(Icons.arrow_downward),
+              onPressed: () {
+                minimizeDrawer();
+              })
+          : null,
     );
   }
 
@@ -116,7 +121,7 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
           if (details.delta.dy < delta) {
             expandDrawer();
           } else if (details.delta.dy > -delta) {
-            minimizeDrawer();
+            null;
           }
           isVerticalDragging = false;
         },
@@ -130,7 +135,6 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
             child: Container(
               color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
-                controller: screenCrontroller,
                 physics: const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
