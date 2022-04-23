@@ -18,7 +18,6 @@ class Structural extends StatefulWidget {
 }
 
 class _StructuralState extends State<Structural> {
-  final screenCrontroller = ScrollController();
 
   late double screenPercent;
   late double radius;
@@ -32,24 +31,6 @@ class _StructuralState extends State<Structural> {
   void initState() {
     super.initState();
     minimizeDrawer();
-    screenCrontroller.addListener(() {
-      // ignore: unrelated_type_equality_checks
-      if (screenCrontroller.position.minScrollExtent ==
-              screenCrontroller.offset &&
-          isScrolled == true) {
-        isScrolled = false;
-        print('isScrolled: ' + isScrolled.toString());
-      } else if (screenCrontroller.position.minScrollExtent ==
-              screenCrontroller.offset &&
-          isScrolled == false) {
-        minimizeDrawer();
-        print('Scrolling downward');
-      } else if (screenCrontroller.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        isScrolled = true;
-        print('isScrolled: ' + isScrolled.toString());
-      }
-    });
   }
 
   @override
@@ -85,6 +66,11 @@ class _StructuralState extends State<Structural> {
       body: Stack(
         children: [buildBackground(), buildList()],
       ),
+      floatingActionButton: isExpanded? FloatingActionButton(
+        child: const Icon(Icons.arrow_downward),
+        onPressed: (){
+          minimizeDrawer();
+        }) : null,
     );
   }
 
@@ -151,9 +137,8 @@ class _StructuralState extends State<Structural> {
             child: Container(
               color: Theme.of(context).backgroundColor,
               child: SingleChildScrollView(
-                controller: screenCrontroller,
                 physics: isExpanded
-                    ? const BouncingScrollPhysics()
+                    ? null
                     : const NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
