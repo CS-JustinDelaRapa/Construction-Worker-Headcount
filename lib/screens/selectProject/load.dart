@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use, unused_import, unnecessary_new, prefer_const_constructors, avoid_print
 
+import 'package:engineering/databaseHelper/DataBaseHelper.dart';
 import 'package:engineering/model/ProjectItem.dart';
 import 'package:engineering/screens/hamburgerMenu/stack.dart';
+import 'package:engineering/screens/selectProject/about.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import '../homePage.dart';
@@ -15,14 +17,30 @@ class LoadProject extends StatefulWidget {
 
 class _LoadProjectState extends State<LoadProject> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  TextEditingController projectName = TextEditingController();
 
-  final List<ProjectItem> projects = ([
-  ProjectItem(id: 0, project_name: 'Project 1', type: 'Bungalow', date_start:  DateTime.now(), date_end: DateTime.now()),
-  ProjectItem(id: 1, project_name: 'Project 2', type: 'Two Storey', date_start:  DateTime.now(), date_end: DateTime.now())
-  ]);
 
+  List<ProjectItem>? projects;
+  bool isLoading = false;
   int? selected;
+  int? selectedIndex;
 
+  // final List<ProjectItem> projects = ([
+  // ProjectItem(id: 0, project_name: 'Project 1', type: 'Bungalow', date_start:  DateTime.now(), date_end: DateTime.now()),
+  // ProjectItem(id: 1, project_name: 'Project 2', type: 'Two Storey', date_start:  DateTime.now(), date_end: DateTime.now())
+  // ]);
+
+  @override
+  void initState() {
+    refreshState();
+    super.initState();
+  }
+
+  Future refreshState() async {
+    setState(() => isLoading = true);
+    projects = await DatabaseHelper.instance.readAllProject();
+    setState(() => isLoading = false);    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +48,9 @@ class _LoadProjectState extends State<LoadProject> {
       appBar: AppBar(
         title: const Text('Load Project'),
       ),
-      body: Column(
+      body: isLoading? Center(child: CircularProgressIndicator(),):
+      projects!.isEmpty? Center(child: Text('no projects')):
+      Column(
         key: _scaffoldKey,
         children: [
           const ListTile(
@@ -40,37 +60,44 @@ class _LoadProjectState extends State<LoadProject> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: projects.length,
+                itemCount: projects!.length,
                 itemBuilder: (context, index) {
                   return Ink(
                     child: GestureDetector(
                       child: ListTile(
-                        tileColor: selected == projects[index].id ? Theme.of(context).listTileTheme.selectedTileColor: null,
-                        textColor: selected == projects[index].id ? 
+                        tileColor: selected == projects![index].id ? Theme.of(context).listTileTheme.selectedTileColor: null,
+                        textColor: selected == projects![index].id ? 
                           Theme.of(context).brightness == Brightness.dark?
                           Color.fromARGB(255, 32, 28, 48):
                           const Color.fromARGB(255, 250, 252, 243)
                           : null,
-                        leading: Text(projects[index].id.toString()),
-                        title: Text(projects[index].project_name),
-                        trailing: Text(projects[index].type),
+                        leading: Text(projects![index].id.toString()),
+                        title: Text(projects![index].project_name),
+                        trailing: Text(projects![index].type),
                         onTap: () {
                           setState(() {
-                            selected = index;
+                            selected = projects![index].id;
+                            selectedIndex = index;
+                            projectName.text = projects![index].project_name;
                           });
                         },
                         onLongPress: () {
+                          setState(() {
+                            projectName.text = projects![index].project_name;
+                            selected = projects![index].id;
+                            selectedIndex = index;
+                          });
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                     title: const Text('Edit Project Name'),
-                                    content: TextField(
-                                      decoration: InputDecoration(
-                                          hintText: projects[index].project_name),
+                                    content: TextFormField(
+                                      initialValue: projectName.text,
+                                      // controller: projectName.text,
                                       onChanged: (value) {
                                         setState(() {
-                                          // projects[index].projectName = value;
+                                          projectName.text = value;
                                         });
                                       },
                                     ),
@@ -78,7 +105,13 @@ class _LoadProjectState extends State<LoadProject> {
                                       FlatButton(
                                         child: Text("Continue"),
                                         onPressed: () {
-                                          // print(projectName[index]);
+                                          final updated = ProjectItem(
+                                            id: projects![selectedIndex!].id,
+                                            project_name: projectName.text, 
+                                            date_start: projects![selectedIndex!].date_start,
+                                            date_end: projects![selectedIndex!].date_end,
+                                            type: projects![selectedIndex!].type);
+                                          DatabaseHelper.instance.updateProject(updated).then((value) => refreshState());
                                           Navigator.of(context).pop();
                                         },
                                       ),
@@ -111,10 +144,32 @@ class _LoadProjectState extends State<LoadProject> {
   }
 
   loadProject() {
-    CustomWidgets().function_pushReplacement(context, () => StackWidget(project: projects[selected!],));
+    CustomWidgets().function_pushReplacement(context, () => StackWidget(project: projects![selectedIndex!],));
   }
 
   deleteProject() {
-    print("delete");
+    showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    title: const Text('Delete Project?'),
+                                    content: Text('Are you sure you want to pemanently delete the selected project?'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text("Cancel"),
+                                        onPressed: () {
+                                          // print(projectName[index]);
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      FlatButton(
+                                        child: Text("Continue"),
+                                        onPressed: () {
+                                          DatabaseHelper.instance.deleteProject(selected!).then((value) => refreshState());
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),                                      
+                                    ]);
+                              });
   }
 }

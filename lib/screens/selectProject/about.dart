@@ -11,8 +11,6 @@ class about extends StatefulWidget {
   _about createState() => _about();
 }
 
-TextEditingController projectName = TextEditingController();
-
 // ignore: camel_case_types
 class _about extends State<about> {
   @override
