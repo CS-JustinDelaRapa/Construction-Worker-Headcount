@@ -5,18 +5,28 @@ import 'package:flutter/material.dart';
 
 class BungalowStructuralItems {
   static const List<String> listEarthWorks = ['Excavation', 'Backfilling'];
-  static const List<String> listFormWorks = ['Column', 'Beam', 'Slab'];
+  static const List<String> listFormWorks = [
+    'Footings',
+    'Column',
+    'Beam',
+    'Slab',
+  ];
   static const List<String> listMasonryWorks = ['Exterior', 'Interior'];
   static const List<String> listReinforecedWorks = [
-    'Footing',
+    'Footings',
     'Columns',
-    'Beam',
-    'Slab'
+    'Beams',
+    'Slabs'
   ];
   static const List<String> listSteelReinforecedWorks = [
-    'Footing',
+    'Footings',
     'Column',
-    'Beam'
+    'Slabs',
+    'Beams',
+    'Lintels',
+    'Stirrups, spacers and links',
+    'Walls',
+    'Wall type',
   ];
 
   static const earthWorks = DrawerItem(title: 'Earthworks', icon: Icons.home);

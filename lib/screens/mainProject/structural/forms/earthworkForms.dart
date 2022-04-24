@@ -15,6 +15,7 @@ class EarthWorksForm extends StatefulWidget {
 
 class _EarthWorksFormState extends State<EarthWorksForm> {
   TextEditingController dateStartControler = TextEditingController();
+
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
 
@@ -36,13 +37,15 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
 
   TextEditingController preferredTimeController = TextEditingController();
   TextEditingController volumeController = TextEditingController();
-  int? soilTypeValue;
+  int soilTypeValue = 0;
+  TextEditingController productivityRateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.workType),
+        actions: [saveButton()],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -201,36 +204,60 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                     .toString()),
                           )),
                         ),
-                        Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: DropdownButton(
-                                  hint: const Text(
-                                      'Soft Soil'), // Not necessary for Option 1
-                                  value: _selectedSoilType,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedSoilType = value.toString();
-                                      if (_selectedSoilType == "Soft Soil") {
-                                        soilTypeValue = 3;
-                                      } else {
-                                        soilTypeValue = 2;
-                                      }
-
-                                      print(soilTypeValue);
-                                    });
-                                  },
-                                  items: soilType.map((soilType) {
-                                    return DropdownMenuItem(
-                                      child: Text(soilType),
-                                      value: soilType,
-                                    );
-                                  }).toList()),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: Padding(
+                        widget.workType == 'Excavation'
+                            ? Row(
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: DropdownButton(
+                                        hint: const Text(
+                                            'Soft Type'), // Not necessary for Option 1
+                                        value: _selectedSoilType,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedSoilType =
+                                                value.toString();
+                                            if (_selectedSoilType ==
+                                                "Soft Soil") {
+                                              productivityRateController.text =
+                                                  '3';
+                                            } else {
+                                              productivityRateController.text =
+                                                  '2';
+                                            }
+                                          });
+                                        },
+                                        items: soilType.map((soilType) {
+                                          return DropdownMenuItem(
+                                            child: Text(soilType),
+                                            value: soilType,
+                                          );
+                                        }).toList()),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.5,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.07,
+                                          child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: TextFormField(
+                                                controller:
+                                                    productivityRateController,
+                                              ))),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SizedBox(
                                     width:
@@ -239,12 +266,22 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                         0.07,
                                     child: Align(
                                         alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          soilTypeValue.toString(),
-                                        ))),
+                                        child: CustomWidgets()
+                                            .textFormField_widget(
+                                                '',
+                                                Colors.white,
+                                                0,
+                                                productivityRateController))),
                               ),
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: CustomWidgets().textFormField_widget(
+                                      '', Colors.white, 0, volumeController))),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -254,20 +291,7 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: CustomWidgets().textFormField_widget(
-                                      'Volume',
-                                      Colors.white,
-                                      0,
-                                      volumeController))),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: CustomWidgets().textFormField_widget(
-                                      'Preferred Time',
+                                      '',
                                       Colors.white,
                                       0,
                                       preferredTimeController))),
@@ -483,4 +507,13 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
       ),
     );
   }
+
+  Widget saveButton() => ElevatedButton(
+      onPressed: () {
+        print(volumeController.text +
+            preferredTimeController.text +
+            selectedDate.toString() +
+            productivityRateController.text);
+      },
+      child: const Text('Save'));
 }

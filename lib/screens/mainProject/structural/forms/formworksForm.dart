@@ -17,10 +17,6 @@ class _Newforms extends State<Newforms> {
   TextEditingController dateStartControler = TextEditingController();
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
-
-  List<String> _locations = ['Hard Soil', 'Soft Soil'];
-  String? _selectedLocation;
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -36,12 +32,14 @@ class _Newforms extends State<Newforms> {
 
   TextEditingController preferredTimeController = TextEditingController();
   TextEditingController volumeController = TextEditingController();
+  TextEditingController productivityRateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.workType),
+        actions: [saveButton()],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -163,9 +161,6 @@ class _Newforms extends State<Newforms> {
                                     style: TextStyle(fontSize: 15),
                                   ))),
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
@@ -219,37 +214,15 @@ class _Newforms extends State<Newforms> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            child: DropdownButton(
-                                hint: const Text(
-                                    'Hard Soil'), // Not necessary for Option 1
-                                value: _selectedLocation,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedLocation = value.toString();
-                                  });
-                                },
-                                items: _locations.map((location) {
-                                  return DropdownMenuItem(
-                                    child: Text(location),
-                                    value: location,
-                                  );
-                                }).toList()),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: CustomWidgets().textFormField_widget(
-                                      'Volume',
+                                      '',
                                       Colors.white,
                                       0,
-                                      volumeController))),
+                                      productivityRateController))),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -259,7 +232,17 @@ class _Newforms extends State<Newforms> {
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: CustomWidgets().textFormField_widget(
-                                      'Preferred Time',
+                                      '', Colors.white, 0, volumeController))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: CustomWidgets().textFormField_widget(
+                                      '',
                                       Colors.white,
                                       0,
                                       preferredTimeController))),
@@ -466,9 +449,6 @@ class _Newforms extends State<Newforms> {
                                     style: TextStyle(fontSize: 15),
                                   ))),
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
@@ -504,4 +484,13 @@ class _Newforms extends State<Newforms> {
       ),
     );
   }
+
+  Widget saveButton() => ElevatedButton(
+      onPressed: () {
+        print(volumeController.text +
+            preferredTimeController.text +
+            selectedDate.toString() +
+            productivityRateController.text);
+      },
+      child: const Text('Save'));
 }

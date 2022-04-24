@@ -6,7 +6,7 @@ import 'package:engineering/model/ProjectItem.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
 import 'package:engineering/screens/mainProject/structural/forms/earthworkForms.dart';
-import 'package:engineering/screens/mainProject/structural/forms/newform.dart';
+import 'package:engineering/screens/mainProject/structural/forms/formworksForm.dart';
 import 'package:engineering/screens/mainProject/structural/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,8 @@ class Structural extends StatefulWidget {
   final VoidCallback openDrawer;
   final ProjectItem project;
 
-  const Structural({Key? key, required this.openDrawer, required this.project}) : super(key: key);
+  const Structural({Key? key, required this.openDrawer, required this.project})
+      : super(key: key);
 
   @override
   _StructuralState createState() => _StructuralState();
@@ -209,18 +210,28 @@ class _StructuralState extends State<Structural> {
     );
   }
 
-  Widget expandItem(List<String> columnList) {
+  Widget expandItem(List<String> columnList, String structuralType) {
     Padding returnColumn;
     List<TextButton> buttonsList = [];
     for (int x = 0; x < columnList.length; x++) {
       buttonsList.add(TextButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => EarthWorksForm(
-                          workType: columnList[x],
-                        )));
+            if (columnList[0] == 'Excavation') {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EarthWorksForm(
+                            workType: columnList[x],
+                          )));
+            } else if (widget.project.type == 'Bungalow' &&
+                columnList[0] == 'Footings') {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Newforms(
+                            workType: columnList[x],
+                          )));
+            }
 
             print(columnList[x]);
             print(x);
@@ -257,38 +268,48 @@ class _StructuralState extends State<Structural> {
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(true
-            ? BungalowStructuralItems.listFormWorks
-            : TwoStoreyStructuralItems.listFormWorks);
+        return expandItem(
+            true
+                ? BungalowStructuralItems.listFormWorks
+                : TwoStoreyStructuralItems.listFormWorks,
+            itemName);
       case 'Masonry Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(true
-            ? BungalowStructuralItems.listMasonryWorks
-            : TwoStoreyStructuralItems.listMasonryWorks);
+        return expandItem(
+            true
+                ? BungalowStructuralItems.listMasonryWorks
+                : TwoStoreyStructuralItems.listMasonryWorks,
+            itemName);
       case 'Steel Reinforcement Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(true
-            ? BungalowStructuralItems.listSteelReinforecedWorks
-            : TwoStoreyStructuralItems.listSteelReinforecedWorks);
+        return expandItem(
+            true
+                ? BungalowStructuralItems.listSteelReinforecedWorks
+                : TwoStoreyStructuralItems.listSteelReinforecedWorks,
+            itemName);
       case 'Reinforced Cement Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(true
-            ? BungalowStructuralItems.listReinforecedWorks
-            : TwoStoreyStructuralItems.listReinforecedWorks);
+        return expandItem(
+            true
+                ? BungalowStructuralItems.listReinforecedWorks
+                : TwoStoreyStructuralItems.listReinforecedWorks,
+            itemName);
       case 'Earthworks':
       default:
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(true
-            ? BungalowStructuralItems.listEarthWorks
-            : TwoStoreyStructuralItems.listEarthWorks);
+        return expandItem(
+            true
+                ? BungalowStructuralItems.listEarthWorks
+                : TwoStoreyStructuralItems.listEarthWorks,
+            itemName);
     }
   }
 
