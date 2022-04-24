@@ -34,6 +34,9 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
     }
   }
 
+  TextEditingController preferredTimeController = TextEditingController();
+  TextEditingController volumeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +47,7 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              //  mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Flexible(
                     flex: 3,
@@ -203,7 +206,7 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                             width: MediaQuery.of(context).size.width * 0.5,
                             height: MediaQuery.of(context).size.height * 0.07,
                             child: DropdownButton(
-                                hint: Text(
+                                hint: const Text(
                                     'Hard Soil'), // Not necessary for Option 1
                                 value: _selectedLocation,
                                 onChanged: (value) {
@@ -213,11 +216,108 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                 },
                                 items: _locations.map((location) {
                                   return DropdownMenuItem(
-                                    child: new Text(location),
+                                    child: Text(location),
                                     value: location,
                                   );
                                 }).toList()),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: CustomWidgets().textFormField_widget(
+                                      'Volume',
+                                      Colors.white,
+                                      0,
+                                      volumeController))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: CustomWidgets().textFormField_widget(
+                                      'Preferred Time',
+                                      Colors.white,
+                                      0,
+                                      preferredTimeController))),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  ))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  ))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  ))),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  ))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  ))),
                         ),
                       ],
                     )),
