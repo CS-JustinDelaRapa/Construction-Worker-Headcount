@@ -1,5 +1,7 @@
 // ignore_for_file: unused_import
 
+import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/ProjectItem.dart';
 import 'package:engineering/screens/hamburgerMenu/stack.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +14,14 @@ class CreateProject extends StatefulWidget {
   _CreateProjectState createState() => _CreateProjectState();
 }
 
-TextEditingController projectName = TextEditingController();
 
 class _CreateProjectState extends State<CreateProject> {
+  
   String val = "Bungalow";
+  TextEditingController projectName = TextEditingController();
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +84,19 @@ class _CreateProjectState extends State<CreateProject> {
     );
   }
 
-  saveProject() {
-    CustomWidgets()
-        .function_pushReplacement(context, () => const StackWidget());
+  saveProject() async {
+    final craetedProject = ProjectItem(
+      project_name: projectName.text, 
+      date_start: DateTime.now(),
+      date_end: DateTime.now(),
+      type: val);
+    final iDFromSQL = await DatabaseHelper.instance.createProject(craetedProject);
+    final toStackProject = ProjectItem(
+      id: iDFromSQL,
+      project_name:projectName.text, 
+      date_start: DateTime.now(), 
+      date_end: DateTime.now(),
+      type: val);
+    CustomWidgets().function_pushReplacement(context, () => StackWidget(project:toStackProject));
   }
 }

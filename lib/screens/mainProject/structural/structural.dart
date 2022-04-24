@@ -2,18 +2,19 @@
 
 import 'dart:ffi';
 
+import 'package:engineering/model/ProjectItem.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
 import 'package:engineering/screens/mainProject/structural/forms/earthworkForms.dart';
 import 'package:engineering/screens/mainProject/structural/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class Structural extends StatefulWidget {
   final VoidCallback openDrawer;
+  final ProjectItem project;
 
-  const Structural({Key? key, required this.openDrawer}) : super(key: key);
+  const Structural({Key? key, required this.openDrawer, required this.project}) : super(key: key);
 
   @override
   _StructuralState createState() => _StructuralState();
@@ -49,13 +50,13 @@ class _StructuralState extends State<Structural> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '''Dela Cruz' long long long Apartment''',
+              widget.project.project_name,
               style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.caption!.color,
                   fontSize: 18),
             ),
             Text(
-              '''Bungalow''',
+              widget.project.type,
               style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.caption!.color,
                   fontSize: 16,

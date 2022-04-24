@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use, unused_import, unnecessary_new, prefer_const_constructors, avoid_print
 
+import 'package:engineering/model/ProjectItem.dart';
 import 'package:engineering/screens/hamburgerMenu/stack.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,17 @@ class LoadProject extends StatefulWidget {
   _LoadProjectState createState() => _LoadProjectState();
 }
 
-List<int> id = [0, 1];
-List<String> projectName = ["BUNGALOW", "TWO-STOREY"];
-List<String> projectStyle = ["Bungalow", "Two-Storey"];
-
 class _LoadProjectState extends State<LoadProject> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  final List<ProjectItem> projects = ([
+  ProjectItem(id: 0, project_name: 'Project 1', type: 'Bungalow', date_start:  DateTime.now(), date_end: DateTime.now()),
+  ProjectItem(id: 1, project_name: 'Project 2', type: 'Two Storey', date_start:  DateTime.now(), date_end: DateTime.now())
+  ]);
+
   int? selected;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,20 +40,20 @@ class _LoadProjectState extends State<LoadProject> {
           ),
           Expanded(
             child: ListView.builder(
-                itemCount: id.length,
+                itemCount: projects.length,
                 itemBuilder: (context, index) {
                   return Ink(
                     child: GestureDetector(
                       child: ListTile(
-                        tileColor: selected == id[index] ? Theme.of(context).listTileTheme.selectedTileColor: null,
-                        textColor: selected == id[index] ? 
+                        tileColor: selected == projects[index].id ? Theme.of(context).listTileTheme.selectedTileColor: null,
+                        textColor: selected == projects[index].id ? 
                           Theme.of(context).brightness == Brightness.dark?
                           Color.fromARGB(255, 32, 28, 48):
                           const Color.fromARGB(255, 250, 252, 243)
                           : null,
-                        leading: Text(id[index].toString()),
-                        title: Text(projectName[index]),
-                        trailing: Text(projectStyle[index]),
+                        leading: Text(projects[index].id.toString()),
+                        title: Text(projects[index].project_name),
+                        trailing: Text(projects[index].type),
                         onTap: () {
                           setState(() {
                             selected = index;
@@ -62,10 +67,10 @@ class _LoadProjectState extends State<LoadProject> {
                                     title: const Text('Edit Project Name'),
                                     content: TextField(
                                       decoration: InputDecoration(
-                                          hintText: projectName[index]),
+                                          hintText: projects[index].project_name),
                                       onChanged: (value) {
                                         setState(() {
-                                          projectName[index] = value;
+                                          // projects[index].projectName = value;
                                         });
                                       },
                                     ),
@@ -73,7 +78,7 @@ class _LoadProjectState extends State<LoadProject> {
                                       FlatButton(
                                         child: Text("Continue"),
                                         onPressed: () {
-                                          print(projectName[index]);
+                                          // print(projectName[index]);
                                           Navigator.of(context).pop();
                                         },
                                       ),
@@ -106,7 +111,7 @@ class _LoadProjectState extends State<LoadProject> {
   }
 
   loadProject() {
-    CustomWidgets().function_pushReplacement(context, () => const StackWidget());
+    CustomWidgets().function_pushReplacement(context, () => StackWidget(project: projects[selected!],));
   }
 
   deleteProject() {

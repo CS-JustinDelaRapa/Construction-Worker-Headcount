@@ -1,7 +1,6 @@
 // ignore_for_file: unused_import
 
 import 'dart:async';
-
 import 'package:engineering/screens/homePage.dart';
 import 'package:engineering/screens/mainProject/additionalManpower/additionalManpower.dart';
 import 'package:engineering/screens/mainProject/architectural/architectural.dart';
@@ -12,13 +11,15 @@ import 'package:engineering/screens/mainProject/rateOfWorkers/rateOfWorkers.dart
 import 'package:engineering/screens/mainProject/structural/structural.dart';
 import 'package:engineering/theme/themeProvider.dart';
 import 'package:flutter/material.dart';
-
 import '../../model/itemModel.dart';
 import 'drawerItems.dart';
 import 'hiddenDrawer.dart';
+import 'package:engineering/model/ProjectItem.dart';
 
 class StackWidget extends StatefulWidget {
-  const StackWidget({Key? key}) : super(key: key);
+  final ProjectItem project;
+
+  const StackWidget({Key? key, required this.project}) : super(key: key);
 
   @override
   _StackWidgetState createState() => _StackWidgetState();
@@ -176,7 +177,9 @@ class _StackWidgetState extends State<StackWidget> {
       case DrawerItems.structural:
       default:
         return Structural(
+          project: widget.project,
           openDrawer: openDrawer,
+
         );
     }
   }
