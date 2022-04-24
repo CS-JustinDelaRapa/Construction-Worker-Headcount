@@ -18,8 +18,8 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
 
-  List<String> _locations = ['Hard Soil', 'Soft Soil'];
-  String? _selectedLocation;
+  List<String> soilType = ['Soft Soil', 'Hard Soil'];
+  String? _selectedSoilType;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -36,6 +36,7 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
 
   TextEditingController preferredTimeController = TextEditingController();
   TextEditingController volumeController = TextEditingController();
+  int? soilTypeValue;
 
   @override
   Widget build(BuildContext context) {
@@ -200,27 +201,50 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                     .toString()),
                           )),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            height: MediaQuery.of(context).size.height * 0.07,
-                            child: DropdownButton(
-                                hint: const Text(
-                                    'Hard Soil'), // Not necessary for Option 1
-                                value: _selectedLocation,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedLocation = value.toString();
-                                  });
-                                },
-                                items: _locations.map((location) {
-                                  return DropdownMenuItem(
-                                    child: Text(location),
-                                    value: location,
-                                  );
-                                }).toList()),
-                          ),
+                        Row(
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: DropdownButton(
+                                  hint: const Text(
+                                      'Soft Soil'), // Not necessary for Option 1
+                                  value: _selectedSoilType,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedSoilType = value.toString();
+                                      if (_selectedSoilType == "Soft Soil") {
+                                        soilTypeValue = 3;
+                                      } else {
+                                        soilTypeValue = 2;
+                                      }
+
+                                      print(soilTypeValue);
+                                    });
+                                  },
+                                  items: soilType.map((soilType) {
+                                    return DropdownMenuItem(
+                                      child: Text(soilType),
+                                      value: soilType,
+                                    );
+                                  }).toList()),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          soilTypeValue.toString(),
+                                        ))),
+                              ),
+                            ),
+                          ],
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
