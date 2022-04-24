@@ -6,6 +6,7 @@ import 'package:engineering/model/ProjectItem.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
 import 'package:engineering/screens/mainProject/structural/forms/earthworkForms.dart';
+import 'package:engineering/screens/mainProject/structural/forms/newform.dart';
 import 'package:engineering/screens/mainProject/structural/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
