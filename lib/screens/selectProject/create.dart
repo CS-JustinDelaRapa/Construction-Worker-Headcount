@@ -16,6 +16,7 @@ class CreateProject extends StatefulWidget {
 }
 
 class _CreateProjectState extends State<CreateProject> {
+  final _formKey = GlobalKey<FormState>();
   String val = "Bungalow";
   TextEditingController projectName = TextEditingController();
 
@@ -27,7 +28,7 @@ class _CreateProjectState extends State<CreateProject> {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: startSelectedDate,
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime.now(),
         lastDate: DateTime(2101));
     if (picked != null && picked != startSelectedDate) {
       setState(() {
@@ -39,8 +40,8 @@ class _CreateProjectState extends State<CreateProject> {
   Future<void> _selectDateEnd(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: endSelectedDate,
-        firstDate: DateTime(2015, 8),
+        initialDate: endSelectedDate.add(const Duration(days: 1)),
+        firstDate: DateTime.now().add(const Duration(days: 1)),
         lastDate: DateTime(2101));
     if (picked != null && picked != endSelectedDate) {
       setState(() {
@@ -65,15 +66,18 @@ class _CreateProjectState extends State<CreateProject> {
             child: CustomWidgets().text_title(
                 'Enter the name of the new project and select style.', 20),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: CustomWidgets().textFormField_widget(
-                'Project name', Colors.white, 0, projectName),
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: CustomWidgets().textFormField_widget(
+                  'Project name', Colors.white, 0, projectName),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-                child: TextField(
+                child: TextFormField(
               readOnly: true,
               controller: dateStartControler,
               onTap: () async {
@@ -87,7 +91,7 @@ class _CreateProjectState extends State<CreateProject> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-                child: TextField(
+                child: TextFormField(
               readOnly: true,
               controller: dateStartControler,
               onTap: () async {
@@ -95,7 +99,15 @@ class _CreateProjectState extends State<CreateProject> {
                 print(endSelectedDate);
               },
               decoration: InputDecoration(
-                  hintText: outputFormat.format(endSelectedDate).toString()),
+                  hintText: outputFormat
+                      .format(endSelectedDate.add(const Duration(days: 1)))
+                      .toString()),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
             )),
           ),
           Container(
@@ -140,20 +152,22 @@ class _CreateProjectState extends State<CreateProject> {
   }
 
   saveProject() async {
-    final craetedProject = ProjectItem(
-        project_name: projectName.text,
-        date_start: startSelectedDate,
-        date_end: endSelectedDate,
-        type: val);
-    final iDFromSQL =
-        await DatabaseHelper.instance.createProject(craetedProject);
-    final toStackProject = ProjectItem(
-        id: iDFromSQL,
-        project_name: projectName.text,
-        date_start: startSelectedDate,
-        date_end: endSelectedDate,
-        type: val);
-    CustomWidgets().function_pushReplacement(
-        context, () => StackWidget(project: toStackProject));
+    if (_formKey.currentState!.validate()) {
+      final craetedProject = ProjectItem(
+          project_name: projectName.text,
+          date_start: DateTime.now(),
+          date_end: DateTime.now(),
+          type: val);
+      final iDFromSQL =
+          await DatabaseHelper.instance.createProject(craetedProject);
+      final toStackProject = ProjectItem(
+          id: iDFromSQL,
+          project_name: projectName.text,
+          date_start: DateTime.now(),
+          date_end: DateTime.now(),
+          type: val);
+      CustomWidgets().function_pushReplacement(
+          context, () => StackWidget(project: toStackProject));
+    }
   }
 }

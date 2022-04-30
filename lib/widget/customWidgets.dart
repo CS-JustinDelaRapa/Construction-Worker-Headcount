@@ -22,9 +22,11 @@ class CustomWidgets {
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(30.0),
-               ),),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () {
             // ignore: unnecessary_null_comparison
             if (push != null) {
@@ -74,9 +76,11 @@ class CustomWidgets {
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(30.0),
-               ),),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: callback,
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -115,6 +119,12 @@ class CustomWidgets {
       TextEditingController projectName) {
     return TextFormField(
       onChanged: (value) => projectName.text = value,
+      validator: (value) {
+        if (value == null || value.isEmpty || value == " ") {
+          return 'Please enter some text';
+        }
+        return null;
+      },
       decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(
@@ -135,9 +145,11 @@ class CustomWidgets {
       height: MediaQuery.of(context).size.height * height,
       width: MediaQuery.of(context).size.width * width,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
-               borderRadius: BorderRadius.circular(30.0),
-               ),),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => push()),
