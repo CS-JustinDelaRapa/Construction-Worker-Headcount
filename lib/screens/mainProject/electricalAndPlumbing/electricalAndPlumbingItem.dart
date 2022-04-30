@@ -13,10 +13,6 @@ class ElectricalAndPlumbingItems {
     electricalWorks,
     plumbingWorks,
   ];
-  static const List<String> listElectricalWorks = [
-    'Roughing',
-    'Cable Pulling',
-    'Fixtures'
-  ];
-  static const List<String> listPlumbingWorks = ['Works', 'Fixture'];
+  static const List<String> listElectricalWorks = ['Roughing Ins', 'Fixtures'];
+  static const List<String> listPlumbingWorks = ['Works', 'Fixtures'];
 }

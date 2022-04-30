@@ -154,6 +154,7 @@ class _StackWidgetState extends State<StackWidget> {
         );
       case DrawerItems.electricalAndPlumming:
         return ElectricalAndPlumbing(
+          project: widget.project,
           openDrawer: openDrawer,
         );
       case DrawerItems.rateOfWorkers:
@@ -179,7 +180,6 @@ class _StackWidgetState extends State<StackWidget> {
         return Structural(
           project: widget.project,
           openDrawer: openDrawer,
-
         );
     }
   }

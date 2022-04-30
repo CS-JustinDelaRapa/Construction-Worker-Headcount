@@ -6,12 +6,16 @@ import 'package:engineering/screens/mainProject/structural/bungalowStructuralIte
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import '../../../model/ProjectItem.dart';
 import 'electricalAndPlumbingItem.dart';
+import 'form/twoWorkersForm.dart';
 
 class ElectricalAndPlumbing extends StatefulWidget {
   final VoidCallback openDrawer;
+  final ProjectItem project;
 
-  const ElectricalAndPlumbing({Key? key, required this.openDrawer})
+  const ElectricalAndPlumbing(
+      {Key? key, required this.openDrawer, required this.project})
       : super(key: key);
 
   @override
@@ -201,12 +205,20 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
     );
   }
 
-  Widget expandItem(List<String> columnList) {
+  Widget expandItem(List<String> columnList, String elecAndPlumbType) {
     Padding returnColumn;
     List<TextButton> buttonsList = [];
     for (int x = 0; x < columnList.length; x++) {
       buttonsList.add(TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TwoWorkersForm(
+                        workType: columnList[x],
+                        elecAndPlumbType: elecAndPlumbType,
+                        projectType: widget.project.type)));
+          },
           style: const ButtonStyle(alignment: Alignment.centerLeft),
           child: Text(
             columnList[x],
@@ -239,12 +251,14 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ElectricalAndPlumbingItems.listElectricalWorks);
+        return expandItem(
+            ElectricalAndPlumbingItems.listElectricalWorks, itemName);
       default:
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ElectricalAndPlumbingItems.listPlumbingWorks);
+        return expandItem(
+            ElectricalAndPlumbingItems.listPlumbingWorks, itemName);
     }
   }
 
