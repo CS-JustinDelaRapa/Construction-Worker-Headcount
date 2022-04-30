@@ -5,8 +5,8 @@ import 'dart:ffi';
 import 'package:engineering/model/ProjectItem.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
-import 'package:engineering/screens/mainProject/structural/forms/earthworkForms.dart';
-import 'package:engineering/screens/mainProject/structural/forms/formworksForm.dart';
+import 'package:engineering/screens/mainProject/structural/forms/oneWorkerForm.dart';
+import 'package:engineering/screens/mainProject/structural/forms/twoWorkersForm.dart';
 import 'package:engineering/screens/mainProject/structural/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
@@ -216,20 +216,21 @@ class _StructuralState extends State<Structural> {
     for (int x = 0; x < columnList.length; x++) {
       buttonsList.add(TextButton(
           onPressed: () {
-            if (columnList[0] == 'Excavation') {
+            if (structuralType == 'Earthworks' ||
+                structuralType == 'Steel Reinforcement Works') {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => EarthWorksForm(
-                            workType: columnList[x],
-                          )));
-            } else if (widget.project.type == 'Bungalow' &&
-                columnList[0] == 'Footings') {
+                      builder: (context) => OneWorkerForm(
+                          workType: columnList[x],
+                          structuralType: structuralType)));
+            } else {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Newforms(
+                      builder: (context) => TwoWorkersForm(
                             workType: columnList[x],
+                            structuralType: structuralType,
                           )));
             }
 
@@ -269,7 +270,7 @@ class _StructuralState extends State<Structural> {
           return Container();
         }
         return expandItem(
-            true
+            widget.project.type == 'Bungalow'
                 ? BungalowStructuralItems.listFormWorks
                 : TwoStoreyStructuralItems.listFormWorks,
             itemName);
@@ -278,7 +279,7 @@ class _StructuralState extends State<Structural> {
           return Container();
         }
         return expandItem(
-            true
+            widget.project.type == 'Bungalow'
                 ? BungalowStructuralItems.listMasonryWorks
                 : TwoStoreyStructuralItems.listMasonryWorks,
             itemName);
@@ -287,7 +288,7 @@ class _StructuralState extends State<Structural> {
           return Container();
         }
         return expandItem(
-            true
+            widget.project.type == 'Bungalow'
                 ? BungalowStructuralItems.listSteelReinforecedWorks
                 : TwoStoreyStructuralItems.listSteelReinforecedWorks,
             itemName);
@@ -296,7 +297,7 @@ class _StructuralState extends State<Structural> {
           return Container();
         }
         return expandItem(
-            true
+            widget.project.type == 'Bungalow'
                 ? BungalowStructuralItems.listReinforecedWorks
                 : TwoStoreyStructuralItems.listReinforecedWorks,
             itemName);
@@ -306,7 +307,7 @@ class _StructuralState extends State<Structural> {
           return Container();
         }
         return expandItem(
-            true
+            widget.project.type == 'Bungalow'
                 ? BungalowStructuralItems.listEarthWorks
                 : TwoStoreyStructuralItems.listEarthWorks,
             itemName);

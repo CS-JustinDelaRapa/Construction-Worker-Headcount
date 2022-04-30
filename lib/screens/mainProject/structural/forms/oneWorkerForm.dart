@@ -1,22 +1,34 @@
-import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/rateOfWorkers/rateOfWorkers.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class Newforms extends StatefulWidget {
+class OneWorkerForm extends StatefulWidget {
   String workType;
-  Newforms({Key? key, required this.workType}) : super(key: key);
+  String structuralType;
+  OneWorkerForm(
+      {Key? key, required this.workType, required this.structuralType})
+      : super(key: key);
 
   @override
-  State<Newforms> createState() => _Newforms();
+  State<OneWorkerForm> createState() => _OneWorkerFormState();
 }
 
-class _Newforms extends State<Newforms> {
+class _OneWorkerFormState extends State<OneWorkerForm> {
   TextEditingController dateStartControler = TextEditingController();
+
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
+
+  List<String> soilType = ['Soft Soil', 'Hard Soil'];
+  String? _selectedSoilType;
+  late String? units, label, worker, surface;
+  late double? defaultValue;
+
+  TextEditingController preferredTimeController = TextEditingController();
+  TextEditingController volumeController = TextEditingController();
+  TextEditingController productivityRateController = TextEditingController();
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -30,9 +42,52 @@ class _Newforms extends State<Newforms> {
     }
   }
 
-  TextEditingController preferredTimeController = TextEditingController();
-  TextEditingController volumeController = TextEditingController();
-  TextEditingController productivityRateController = TextEditingController();
+  @override
+  void initState() {
+    if (widget.structuralType == 'Earthworks') {
+      if (widget.workType == 'Excavation') {
+        label = 'Excavation';
+        defaultValue = 0;
+      } else {
+        label = 'Backfilling';
+        defaultValue = 4;
+      }
+      units = 'cum';
+      surface = 'Volume';
+      worker = 'Labourer';
+    } else {
+      if (widget.workType.contains('Column')) {
+        label = 'Column';
+        defaultValue = 200;
+      } else if (widget.workType.contains('Slab')) {
+        label = 'Slab';
+        defaultValue = 175;
+      } else if (widget.workType.contains('Beams')) {
+        label = 'Beams';
+        defaultValue = 173;
+      } else if (widget.workType.contains('Walls')) {
+        label = 'Walls';
+        defaultValue = 200;
+      } else if (widget.workType == 'Footings') {
+        label = 'Footing';
+        defaultValue = 190;
+      } else if (widget.workType == 'Lintels') {
+        label = 'Lintels';
+        defaultValue = 100;
+      } else if (widget.workType == 'Staircase') {
+        label = 'Staircase';
+        defaultValue = 173;
+      } else {
+        label = 'Stirrups, spacers and links';
+        defaultValue = 150;
+      }
+      units = 'kg';
+      worker = 'Steel man';
+      surface = 'Weight';
+    }
+    productivityRateController.text = defaultValue.toString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +100,6 @@ class _Newforms extends State<Newforms> {
         child: Column(
           children: [
             Row(
-              //  mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Flexible(
                     flex: 3,
@@ -72,7 +126,7 @@ class _Newforms extends State<Newforms> {
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    widget.workType,
+                                    label!,
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(fontSize: 15),
                                   ))),
@@ -82,12 +136,12 @@ class _Newforms extends State<Newforms> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Volume',
+                                    surface!,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -153,25 +207,12 @@ class _Newforms extends State<Newforms> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Carpenter',
+                                    worker!.toUpperCase(),
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
-                                  ))),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Laborer',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -196,6 +237,7 @@ class _Newforms extends State<Newforms> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        //date start
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
@@ -211,19 +253,68 @@ class _Newforms extends State<Newforms> {
                                     .toString()),
                           )),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: CustomWidgets().textFormField_widget(
-                                      '',
-                                      Colors.white,
-                                      0,
-                                      productivityRateController))),
-                        ),
+                        widget.workType == 'Excavation'
+                            ? Row(
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: DropdownButton(
+                                        hint: const Text(
+                                            'Soil Type'), // Not necessary for Option 1
+                                        value: _selectedSoilType,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _selectedSoilType =
+                                                value.toString();
+                                            if (_selectedSoilType ==
+                                                "Soft Soil") {
+                                              defaultValue = 3;
+                                              productivityRateController.text =
+                                                  defaultValue.toString();
+                                            } else {
+                                              defaultValue = 2;
+                                              productivityRateController.text =
+                                                  defaultValue.toString();
+                                            }
+                                          });
+                                        },
+                                        items: soilType.map((soilType) {
+                                          return DropdownMenuItem(
+                                            child: Text(soilType),
+                                            value: soilType,
+                                          );
+                                        }).toList()),
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: TextFormField(
+                                            controller:
+                                                productivityRateController,
+                                            keyboardType: TextInputType.number,
+                                          )),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextFormField(
+                                          controller:
+                                              productivityRateController,
+                                          keyboardType: TextInputType.number,
+                                        ))),
+                              ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(
@@ -249,19 +340,6 @@ class _Newforms extends State<Newforms> {
                         ),
                         const SizedBox(
                           height: 30,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
-                                  ))),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -357,12 +435,12 @@ class _Newforms extends State<Newforms> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'cum/day',
+                                    units! + '/day',
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -370,12 +448,12 @@ class _Newforms extends State<Newforms> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'cum',
+                                    units!,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -435,19 +513,6 @@ class _Newforms extends State<Newforms> {
                         ),
                         const SizedBox(
                           height: 30,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'worker/s',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
-                                  ))),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),

@@ -5,23 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class EarthWorksForm extends StatefulWidget {
+class TwoWorkersForm extends StatefulWidget {
   String workType;
-  EarthWorksForm({Key? key, required this.workType}) : super(key: key);
+  String structuralType;
+  TwoWorkersForm(
+      {Key? key, required this.workType, required this.structuralType})
+      : super(key: key);
 
   @override
-  State<EarthWorksForm> createState() => _EarthWorksFormState();
+  State<TwoWorkersForm> createState() => _TwoWorkersForm();
 }
 
-class _EarthWorksFormState extends State<EarthWorksForm> {
-  TextEditingController dateStartControler = TextEditingController();
+class _TwoWorkersForm extends State<TwoWorkersForm> {
+  late String? units, label, worker, secondWorker, surface;
+  late double? defaultValue;
+
+  List<String> soilType = ['8"', '6"'];
+  String? _selectedSoilType;
 
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
-
-  List<String> soilType = ['Soft Soil', 'Hard Soil'];
-  String? _selectedSoilType;
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -37,8 +40,70 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
 
   TextEditingController preferredTimeController = TextEditingController();
   TextEditingController volumeController = TextEditingController();
-  int soilTypeValue = 0;
   TextEditingController productivityRateController = TextEditingController();
+  TextEditingController dateStartControler = TextEditingController();
+
+  @override
+  void initState() {
+    if (widget.structuralType == 'Formworks') {
+      if (widget.workType == 'Footings') {
+        label = 'Footings';
+        defaultValue = 7.7;
+      } else if (widget.workType.contains('Column')) {
+        label = 'Column';
+        defaultValue = 4;
+      } else if (widget.workType.contains('Beam')) {
+        label = 'Beam';
+        defaultValue = 3.3;
+      } else if (widget.workType.contains('Slab')) {
+        label = 'Slab';
+        defaultValue = 4.3;
+      } else if (widget.workType.contains('Staircase')) {
+        label = 'Staircase';
+        defaultValue = 3.3;
+      }
+      units = 'sqm';
+      surface = 'Area';
+      worker = 'Carpenter';
+      secondWorker = 'Labourer';
+    } else if (widget.structuralType == 'Masonry Works') {
+      if (widget.workType.contains('Interior')) {
+        surface = 'Area';
+        label = 'Concrete Block';
+        defaultValue = 4;
+      } else if (widget.workType.contains('Exterior')) {
+        surface = 'Surface Area';
+        label = 'CHB Walls';
+        defaultValue = 0;
+      }
+      units = 'sqm';
+      worker = 'Tile man';
+      secondWorker = 'Labourer';
+    } else {
+      if (widget.workType == 'Footings') {
+        label = 'Footings';
+        defaultValue = 1.5;
+      } else if (widget.workType.contains('Column')) {
+        label = 'Column';
+        defaultValue = 1;
+      } else if (widget.workType.contains('Beam')) {
+        label = 'Beam';
+        defaultValue = 1;
+      } else if (widget.workType.contains('Slab')) {
+        label = 'Slab';
+        defaultValue = 2;
+      } else if (widget.workType.contains('Staircase')) {
+        label = 'Staircase';
+        defaultValue = 1;
+      }
+      units = 'cum';
+      surface = 'Volume';
+      worker = 'Mason';
+      secondWorker = 'Labourer';
+    }
+    productivityRateController.text = defaultValue.toString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +116,8 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
         child: Column(
           children: [
             Row(
-              //  mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                //first column
                 Flexible(
                     flex: 3,
                     child: Column(
@@ -78,7 +143,7 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    widget.workType,
+                                    label!,
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(fontSize: 15),
                                   ))),
@@ -88,12 +153,12 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Volume',
+                                    surface!,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -159,12 +224,25 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Laborer',
+                                    worker!.toUpperCase(),
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
+                                  ))),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    secondWorker!.toUpperCase(),
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -182,7 +260,7 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                         ),
                       ],
                     )),
-                //dito ka mageedit
+                //second column
                 Flexible(
                     flex: 5,
                     child: Column(
@@ -204,7 +282,8 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                     .toString()),
                           )),
                         ),
-                        widget.workType == 'Excavation'
+                        widget.structuralType == 'Masonry Works' &&
+                                widget.workType.contains('Exterior')
                             ? Row(
                                 children: [
                                   Flexible(
@@ -217,13 +296,14 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                           setState(() {
                                             _selectedSoilType =
                                                 value.toString();
-                                            if (_selectedSoilType ==
-                                                "Soft Soil") {
+                                            if (_selectedSoilType == "8\"") {
+                                              defaultValue = 8.5;
                                               productivityRateController.text =
-                                                  '3';
+                                                  defaultValue.toString();
                                             } else {
+                                              defaultValue = 9;
                                               productivityRateController.text =
-                                                  '2';
+                                                  defaultValue.toString();
                                             }
                                           });
                                         },
@@ -238,21 +318,13 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                     flex: 1,
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.5,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.07,
-                                          child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: TextFormField(
-                                                controller:
-                                                    productivityRateController,
-                                              ))),
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: TextFormField(
+                                            controller:
+                                                productivityRateController,
+                                            keyboardType: TextInputType.number,
+                                          )),
                                     ),
                                   ),
                                 ],
@@ -266,12 +338,11 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                         0.07,
                                     child: Align(
                                         alignment: Alignment.centerLeft,
-                                        child: CustomWidgets()
-                                            .textFormField_widget(
-                                                '',
-                                                Colors.white,
-                                                0,
-                                                productivityRateController))),
+                                        child: TextFormField(
+                                          controller:
+                                              productivityRateController,
+                                          keyboardType: TextInputType.number,
+                                        ))),
                               ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -338,6 +409,19 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                                     style: TextStyle(fontSize: 15),
                                   ))),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  ))),
+                        ),
                         const SizedBox(
                           height: 30,
                         ),
@@ -369,6 +453,7 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                         ),
                       ],
                     )),
+                //third column
                 Flexible(
                   flex: 2,
                   child: Column(
@@ -393,12 +478,12 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'cum/day',
+                                    units! + 'day',
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -406,12 +491,12 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.5,
                               height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Align(
+                              child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'cum',
+                                    units!,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
+                                    style: const TextStyle(fontSize: 15),
                                   ))),
                         ),
                         Padding(
@@ -471,6 +556,19 @@ class _EarthWorksFormState extends State<EarthWorksForm> {
                         ),
                         const SizedBox(
                           height: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'worker/s',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  ))),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
