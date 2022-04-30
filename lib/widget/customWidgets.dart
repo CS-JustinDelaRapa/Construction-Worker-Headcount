@@ -119,12 +119,6 @@ class CustomWidgets {
       TextEditingController projectName) {
     return TextFormField(
       onChanged: (value) => projectName.text = value,
-      validator: (value) {
-        if (value == null || value.isEmpty || value == " ") {
-          return 'Please enter some text';
-        }
-        return null;
-      },
       decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(

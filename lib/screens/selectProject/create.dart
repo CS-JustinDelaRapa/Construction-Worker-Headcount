@@ -19,7 +19,7 @@ class _CreateProjectState extends State<CreateProject> {
   final _formKey = GlobalKey<FormState>();
   String val = "Bungalow";
   TextEditingController projectName = TextEditingController();
-
+  RegExp regex = new RegExp(r'(?!^ +$)^.+$');
   var outputFormat = DateFormat('MM/dd/yyyy');
   TextEditingController dateStartControler = TextEditingController();
   DateTime startSelectedDate = DateTime.now();
@@ -70,8 +70,25 @@ class _CreateProjectState extends State<CreateProject> {
             key: _formKey,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: CustomWidgets().textFormField_widget(
-                  'Project name', Colors.white, 0, projectName),
+              child: TextFormField(
+                initialValue: projectName.text,
+                decoration: const InputDecoration(hintText: ("Project Name")),
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      !regex.hasMatch(value)) {
+                    return 'This Field is Required';
+                  }
+                  return null;
+                },
+
+                // controller: projectName.text,
+                onChanged: (value) {
+                  setState(() {
+                    projectName.text = value;
+                  });
+                },
+              ),
             ),
           ),
           Padding(
