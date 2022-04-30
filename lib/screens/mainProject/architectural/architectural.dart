@@ -1,15 +1,23 @@
 // ignore_for_file: avoid_print
 
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/architectural/architecturalItem.dart';
+import 'package:engineering/screens/mainProject/architectural/items/bungalowArchitecturalItem.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../../model/ProjectItem.dart';
+import 'forms/oneWorkerForm.dart';
+import 'forms/twoWorkersForm.dart';
+import 'items/twoStoreyArchitecturalItem.dart';
+
 class Architectural extends StatefulWidget {
   final VoidCallback openDrawer;
+  final ProjectItem project;
 
-  const Architectural({Key? key, required this.openDrawer}) : super(key: key);
+  const Architectural(
+      {Key? key, required this.openDrawer, required this.project})
+      : super(key: key);
 
   @override
   _ArchitecturalState createState() => _ArchitecturalState();
@@ -161,7 +169,7 @@ class _ArchitecturalState extends State<Architectural> {
                     Flexible(
                       fit: FlexFit.loose,
                       child: Column(
-                        children: ArchitechturalItems.all
+                        children: BungalowArchitechturalItems.all
                             .map((item) => ListTile(
                                 onTap: () {
                                   print(item.title);
@@ -203,12 +211,30 @@ class _ArchitecturalState extends State<Architectural> {
     );
   }
 
-  Widget expandItem(List<String> columnList) {
+  Widget expandItem(List<String> columnList, String architecturalType) {
     Padding returnColumn;
     List<TextButton> buttonsList = [];
     for (int x = 0; x < columnList.length; x++) {
       buttonsList.add(TextButton(
-          onPressed: () {},
+          onPressed: () {
+            if (architecturalType == 'Painting Works' ||
+                architecturalType == 'Doors and Windows') {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OneWorkerForm(
+                          workType: columnList[x],
+                          architecturalType: architecturalType)));
+            } else {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TwoWorkersForm(
+                            workType: columnList[x],
+                            architecturalType: architecturalType,
+                          )));
+            }
+          },
           style: const ButtonStyle(alignment: Alignment.centerLeft),
           child: Text(
             columnList[x],
@@ -241,34 +267,58 @@ class _ArchitecturalState extends State<Architectural> {
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ArchitechturalItems.listPlasteringWorks);
+        return expandItem(
+            widget.project.type == 'Bungalow'
+                ? BungalowArchitechturalItems.listPlasteringWorks
+                : TwoStoreyArchitechturalItems.listPlasteringWorks,
+            itemName);
       case 'Painting Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ArchitechturalItems.listPaintingWorks);
+        return expandItem(
+            widget.project.type == 'Bungalow'
+                ? BungalowArchitechturalItems.listPaintingWorks
+                : TwoStoreyArchitechturalItems.listPaintingWorks,
+            itemName);
       case 'Doors and Windows':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ArchitechturalItems.listDoornWindowsWorks);
+        return expandItem(
+            widget.project.type == 'Bungalow'
+                ? BungalowArchitechturalItems.listDoornWindowsWorks
+                : TwoStoreyArchitechturalItems.listDoornWindowsWorks,
+            itemName);
       case 'Ceiling':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ArchitechturalItems.listCeilingWorks);
+        return expandItem(
+            widget.project.type == 'Bungalow'
+                ? BungalowArchitechturalItems.listCeilingWorks
+                : TwoStoreyArchitechturalItems.listCeilingWorks,
+            itemName);
 
       case 'Roofing Works':
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ArchitechturalItems.listRoofingWorks);
+        return expandItem(
+            widget.project.type == 'Bungalow'
+                ? BungalowArchitechturalItems.listRoofingWorks
+                : TwoStoreyArchitechturalItems.listRoofingWorks,
+            itemName);
       case 'Flooring':
       default:
         if (!isExpanded) {
           return Container();
         }
-        return expandItem(ArchitechturalItems.listFlooringWorks);
+        return expandItem(
+            widget.project.type == 'Bungalow'
+                ? BungalowArchitechturalItems.listFlooringWorks
+                : TwoStoreyArchitechturalItems.listFlooringWorks,
+            itemName);
     }
   }
 

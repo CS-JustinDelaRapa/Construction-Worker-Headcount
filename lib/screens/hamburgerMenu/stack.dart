@@ -150,6 +150,7 @@ class _StackWidgetState extends State<StackWidget> {
     switch (item) {
       case DrawerItems.architectural:
         return Architectural(
+          project: widget.project,
           openDrawer: openDrawer,
         );
       case DrawerItems.electricalAndPlumming:

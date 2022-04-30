@@ -3,9 +3,9 @@
 import 'package:engineering/model/itemModel.dart';
 import 'package:flutter/material.dart';
 
-class ArchitechturalItems {
+class BungalowArchitechturalItems {
   static const List<String> listFlooringWorks = [
-    'EXC T&B:',
+    'EXT T&B:',
     'T&B:',
   ];
   static const List<String> listPlasteringWorks = ['Inferior', 'Exterior'];
@@ -23,7 +23,7 @@ class ArchitechturalItems {
   ];
   static const List<String> listCeilingWorks = ['Steel Frame', 'Plywood'];
   static const List<String> listRoofingWorks = [
-    'Trusses ',
+    'Trusses',
     'GI Sheets',
     'Gutter'
   ];
