@@ -49,7 +49,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   String? _selectedWindowType;
 
   late String? units, label, worker, surface;
-  late double? defaultValue;
+  double? defaultValue;
 
   TextEditingController preferredTimeController = TextEditingController();
   TextEditingController volumeController = TextEditingController();
@@ -71,9 +71,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   @override
   void initState() {
     if (widget.architecturalType == 'Painting Works') {
-      if (widget.workType.contains('Interior skim coat')) {
+      if (widget.workType.contains('Interior Skim Coat')) {
         defaultValue = 6.4;
-      } else if (widget.workType.contains('Exterior skim coat')) {
+      } else if (widget.workType.contains('Exterior Skim Coat')) {
         defaultValue = 0; //no productivity rate for now
       } else if (widget.workType.contains('Interior')) {
         defaultValue = 0;
@@ -106,6 +106,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         units = 'sqm';
         defaultValue = 0;
       }
+      defaultValue = 0;
       worker = 'Door Installer';
     }
     productivityRateController.text = defaultValue.toString();
@@ -317,7 +318,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       ),
                                     ],
                                   )
-                                : widget.workType.contains('Interior')
+                                : !widget.workType.contains('Skim Coat') &&
+                                        widget.workType.contains('Interior')
                                     ? Row(
                                         children: [
                                           Flexible(
@@ -340,7 +342,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                           ),
                                         ],
                                       )
-                                    : widget.workType.contains('Exterior')
+                                    : !widget.workType.contains('Skim Coat') &&
+                                            widget.workType.contains('Exterior')
                                         ? Row(
                                             children: [
                                               Flexible(

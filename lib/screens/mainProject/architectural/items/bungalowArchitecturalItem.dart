@@ -10,8 +10,8 @@ class BungalowArchitechturalItems {
   ];
   static const List<String> listPlasteringWorks = ['Inferior', 'Exterior'];
   static const List<String> listPaintingWorks = [
-    'Internal Skim Coat',
-    'External Skim Coat',
+    'Interior Skim Coat',
+    'Exterior Skim Coat',
     "Interior",
     "Exterior"
   ];

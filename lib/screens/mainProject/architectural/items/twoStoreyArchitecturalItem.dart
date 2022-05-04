@@ -17,10 +17,10 @@ class TwoStoreyArchitechturalItems {
     'Exterior SF',
   ];
   static const List<String> listPaintingWorks = [
-    'Interior skim coat GF',
-    'Interior skim coat SF',
-    "Exterior skim coat GF",
-    "Exterior skim coat SF",
+    'Interior Skim Coat GF',
+    'Interior Skim Coat SF',
+    "Exterior Skim Coat GF",
+    "Exterior Skim Coat SF",
     'Interior GF',
     'Interior SF',
     'Exterior GF',
