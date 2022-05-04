@@ -8,7 +8,7 @@ class BungalowArchitechturalItems {
     'EXT T&B:',
     'T&B:',
   ];
-  static const List<String> listPlasteringWorks = ['Inferior', 'Exterior'];
+  static const List<String> listPlasteringWorks = ['Interior', 'Exterior'];
   static const List<String> listPaintingWorks = [
     'Interior Skim Coat',
     'Exterior Skim Coat',
