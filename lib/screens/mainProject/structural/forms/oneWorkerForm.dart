@@ -271,6 +271,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     Flexible(
                                       flex: 3,
                                       child: DropdownButtonFormField(
+                                          autofocus: true,
+                                          decoration: const InputDecoration(
+                                            helperText: ' ', // this is new
+                                          ),
                                           validator: (value) {
                                             if (value == null) {
                                               return 'Required Soil Type';
@@ -312,11 +316,15 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                         child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: TextFormField(
+                                              autofocus: true,
+                                              decoration: const InputDecoration(
+                                                helperText: ' ', // this is new
+                                              ),
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty ||
                                                     !regex.hasMatch(value)) {
-                                                  return ' ';
+                                                  return '';
                                                 }
                                                 return null;
                                               },
@@ -363,6 +371,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -391,6 +403,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||

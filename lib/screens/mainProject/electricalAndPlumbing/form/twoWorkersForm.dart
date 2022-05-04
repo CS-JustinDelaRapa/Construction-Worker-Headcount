@@ -277,6 +277,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                 child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: TextFormField(
+                                      autofocus: true,
+                                      decoration: const InputDecoration(
+                                        helperText: ' ', // this is new
+                                      ),
                                       validator: (value) {
                                         if (value == null ||
                                             value.isEmpty ||
@@ -299,6 +303,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -327,6 +335,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||

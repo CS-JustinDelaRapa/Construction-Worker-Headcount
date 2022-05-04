@@ -319,6 +319,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                         child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: TextFormField(
+                                              autofocus: true,
+                                              decoration: const InputDecoration(
+                                                helperText: ' ', // this is new
+                                              ),
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty ||
@@ -348,6 +352,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                             child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: TextFormField(
+                                                  autofocus: true,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    helperText:
+                                                        ' ', // this is new
+                                                  ),
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty ||
@@ -380,6 +390,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                           child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: TextFormField(
+                                                autofocus: true,
+                                                decoration:
+                                                    const InputDecoration(
+                                                  helperText:
+                                                      ' ', // this is new
+                                                ),
                                                 validator: (value) {
                                                   if (value == null ||
                                                       value.isEmpty ||
@@ -404,6 +420,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -432,6 +452,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -721,6 +745,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       child: const Text('Save'));
 
   Widget extDropdown() => DropdownButtonFormField(
+      autofocus: true,
+      decoration: const InputDecoration(
+        helperText: ' ', // this is new
+      ),
       validator: (value) {
         if (value == null) {
           return 'Required Tile Type';
@@ -761,6 +789,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       }).toList());
 
   Widget intDropdown() => DropdownButtonFormField(
+      autofocus: true,
+      decoration: const InputDecoration(
+        helperText: ' ', // this is new
+      ),
       validator: (value) {
         if (value == null) {
           return 'Required Tile Type';

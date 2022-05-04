@@ -300,6 +300,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                         child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: TextFormField(
+                                              autofocus: true,
+                                              decoration: const InputDecoration(
+                                                helperText: ' ', // this is new
+                                              ),
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty ||
@@ -329,6 +333,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: TextFormField(
+                                                  autofocus: true,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    helperText:
+                                                        ' ', // this is new
+                                                  ),
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty ||
@@ -362,6 +372,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: TextFormField(
+                                                      autofocus: true,
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        helperText:
+                                                            ' ', // this is new
+                                                      ),
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty ||
@@ -396,6 +412,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                         alignment: Alignment
                                                             .centerLeft,
                                                         child: TextFormField(
+                                                          autofocus: true,
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            helperText:
+                                                                ' ', // this is new
+                                                          ),
                                                           validator: (value) {
                                                             if (value == null ||
                                                                 value.isEmpty ||
@@ -448,6 +470,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -476,6 +502,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -736,7 +766,17 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       },
       child: const Text('Save'));
 
-  Widget doorDropdown() => DropdownButton(
+  Widget doorDropdown() => DropdownButtonFormField(
+      autofocus: true,
+      decoration: const InputDecoration(
+        helperText: ' ', // this is new
+      ),
+      validator: (value) {
+        if (value == null) {
+          return 'Required Door Type';
+        }
+        return null;
+      },
       hint: const Text('Door Type'), // Not necessary for Option 1
       value: _selectedDoorType,
       onChanged: (value) {
@@ -761,7 +801,17 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         );
       }).toList());
 
-  Widget windowDropdown() => DropdownButton(
+  Widget windowDropdown() => DropdownButtonFormField(
+      autofocus: true,
+      decoration: const InputDecoration(
+        helperText: ' ', // this is new
+      ),
+      validator: (value) {
+        if (value == null) {
+          return 'Required Window Type';
+        }
+        return null;
+      },
       hint: const Text('Window Type'), // Not necessary for Option 1
       value: _selectedWindowType,
       onChanged: (value) {
@@ -787,6 +837,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }).toList());
 
   Widget finishDropdown() => DropdownButtonFormField(
+      autofocus: true,
+      decoration: const InputDecoration(
+        helperText: ' ', // this is new
+      ),
       validator: (value) {
         if (value == null) {
           return 'Required Finish Type';
@@ -821,6 +875,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }).toList());
 
   Widget finishDropdown2() => DropdownButtonFormField(
+      autofocus: true,
+      decoration: const InputDecoration(
+        helperText: ' ', // this is new
+      ),
       validator: (value) {
         if (value == null) {
           return 'Required Finish Type';

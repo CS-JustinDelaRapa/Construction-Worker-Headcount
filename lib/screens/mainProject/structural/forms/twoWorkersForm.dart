@@ -302,6 +302,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     Flexible(
                                       flex: 3,
                                       child: DropdownButtonFormField(
+                                          autofocus: true,
+                                          decoration: const InputDecoration(
+                                            helperText: ' ', // this is new
+                                          ),
                                           validator: (value) {
                                             if (value == null) {
                                               return 'Required CHB Type';
@@ -342,6 +346,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                         child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: TextFormField(
+                                              autofocus: true,
+                                              decoration: const InputDecoration(
+                                                helperText: ' ', // this is new
+                                              ),
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty ||
@@ -374,7 +382,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                               if (value == null ||
                                                   value.isEmpty ||
                                                   !regex.hasMatch(value)) {
-                                                return ' ';
+                                                return '';
                                               }
                                               return null;
                                             },
@@ -393,6 +401,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
@@ -421,6 +433,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
                                     initialValue: '',
+                                    autofocus: true,
+                                    decoration: const InputDecoration(
+                                      helperText: ' ', // this is new
+                                    ),
                                     validator: (value) {
                                       if (value == null ||
                                           value.isEmpty ||
