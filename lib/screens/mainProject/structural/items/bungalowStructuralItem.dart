@@ -29,14 +29,14 @@ class BungalowStructuralItems {
     'Wall type',
   ];
 
-  static const earthWorks = DrawerItem(title: 'Earthworks', icon: Icons.home);
-  static const formWorks = DrawerItem(title: 'Formworks', icon: Icons.home);
+  static const earthWorks = DrawerItem(title: 'Earthworks', icon: Icons.landscape);
+  static const formWorks = DrawerItem(title: 'Formworks', icon: Icons.house_siding_outlined);
   static const masonryWorks =
-      DrawerItem(title: 'Masonry Works', icon: Icons.home);
+      DrawerItem(title: 'Masonry Works', icon: Icons.construction_rounded);
   static const reiforecedCementConcrete =
       DrawerItem(title: 'Reinforced Cement Works', icon: Icons.home);
   static const steelReinforcedmentWork =
-      DrawerItem(title: 'Steel Reinforcement Works', icon: Icons.home);
+      DrawerItem(title: 'Steel Reinforcement Works', icon: Icons.precision_manufacturing);
 
   static final List<DrawerItem> all = [
     earthWorks,

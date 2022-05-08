@@ -58,8 +58,8 @@ class DatabaseHelper{
     ${TblFormDataField.pref_time} INTEGER NOT NUll,
     ${TblFormDataField.num_days} INTEGER NOT NUll,
     ${TblFormDataField.num_workers} INTEGER NOT NUll,
-    ${TblFormDataField.worker_1} TEXT NOT NUll,
-    ${TblFormDataField.worker_2} TEXT,    
+    ${TblFormDataField.worker_1} INTEGER NOT NUll,
+    ${TblFormDataField.worker_2} INTEGER,    
     ${TblFormDataField.cost_of_labor} REAL NOT NUll,
     ${TblFormDataField.type} TEXT NOT NUll,
     ${TblFormDataField.work} TEXT NOT NUll

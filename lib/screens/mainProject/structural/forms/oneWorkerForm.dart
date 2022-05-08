@@ -41,12 +41,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   //database
   FormData? formData;
-  bool isLoading = false, isUpdating = false;
+  bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
   int? numberOfDays, numberOfWorkers, worker_1;
   DateTime? dateEnd;
-  double? costOfLabor;
+  double? costOfLabor, initialWorkers, initialNumberofDays;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -780,9 +780,40 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     );
   }
 
-  Widget saveButton() => ElevatedButton(
+    Widget saveButton() => ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
+          initialWorkers = (double.parse(volume!) /
+           	double.parse(productivityRateController.text))
+              .roundToDouble();
+          if (initialWorkers! <= 3) {
+            initialNumberofDays = 1;
+          } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+            initialNumberofDays = 2;
+          } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+            initialNumberofDays = 3;
+          } else if (initialWorkers! >= 10 && initialWorkers! <= 12) {
+            initialNumberofDays = 4;
+          } else if (initialWorkers! >= 13 && initialWorkers! <= 15) {
+            initialNumberofDays = 5;
+          } else {
+            isExceeded = true;
+          }
+
+          if (double.parse(preferedTime!) < initialNumberofDays!) {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+
+          numberOfDays = initialNumberofDays!.round();
+          numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
+
+          print("col_2:" + volume!.toString());
+          print(" pref_time:" + int.parse(preferedTime!).toString());
+          print("  num_days:" + numberOfDays.toString());
+          print(" date_end:" +
+              selectedDate.add(Duration(days: numberOfDays!)).toString());
+          print(" worker_1:" + worker!);
+
           if (isUpdating) {
             final formDataUpdate = FormData(
                 date_start: selectedDate,
@@ -793,7 +824,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                 num_days: numberOfDays!,
                 date_end: dateEnd!,
                 num_workers: numberOfWorkers!,
-                worker_1: worker_1!,
+                worker_1: numberOfWorkers!,
                 cost_of_labor: costOfLabor!,
                 type: widget.structuralType,
                 work: widget.workType,
@@ -806,13 +837,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               date_start: selectedDate,
               col_1: _selectedType ?? 'DEFAULT',
               col_1_val: defaultValue!,
-              col_2: 80,
-              pref_time: 82,
-              num_days: 12,
-              date_end: DateTime.now(),
-              num_workers: 12,
-              worker_1: 2,
-              cost_of_labor: 81,
+              col_2: double.parse(volume!),
+              pref_time: int.parse(preferedTime!),
+              num_days: numberOfDays!,
+              date_end: selectedDate.add(Duration(days: numberOfDays!)),
+              num_workers: numberOfWorkers!,
+              worker_1: numberOfWorkers!,
+              cost_of_labor: 410.0,
               type: widget.structuralType,
               work: widget.workType,
               fk: widget.projectFk,
@@ -825,3 +856,50 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       },
       child: const Text('Save'));
 }
+
+
+  // Widget saveButton() => ElevatedButton(
+  //     onPressed: () {
+  //       if (_formKey.currentState!.validate()) {
+  //         if (isUpdating) {
+  //           final formDataUpdate = FormData(
+  //               date_start: selectedDate,
+  //               col_1: _selectedType ?? 'DEFAULT',
+  //               col_1_val: defaultValue!,
+  //               col_2: double.parse(volume!),
+  //               pref_time: int.parse(preferedTime!),
+  //               num_days: numberOfDays!,
+  //               date_end: dateEnd!,
+  //               num_workers: numberOfWorkers!,
+  //               worker_1: worker_1!,
+  //               cost_of_labor: costOfLabor!,
+  //               type: widget.structuralType,
+  //               work: widget.workType,
+  //               fk: widget.projectFk,
+  //               id: formData!.id!);
+
+  //           DatabaseHelper.instance.updateFormData(formDataUpdate);
+  //         } else {
+  //           final formDataCreate = FormData(
+  //             date_start: selectedDate,
+  //             col_1: _selectedType ?? 'DEFAULT',
+  //             col_1_val: defaultValue!,
+  //             col_2: 80,
+  //             pref_time: 82,
+  //             num_days: 12,
+  //             date_end: DateTime.now(),
+  //             num_workers: 12,
+  //             worker_1: 2,
+  //             cost_of_labor: 81,
+  //             type: widget.structuralType,
+  //             work: widget.workType,
+  //             fk: widget.projectFk,
+  //           );
+
+  //           DatabaseHelper.instance.createFormData(formDataCreate);
+  //         }
+  //         refreshState();
+  //       }
+  //     },
+  //     child: const Text('Save'));
+
