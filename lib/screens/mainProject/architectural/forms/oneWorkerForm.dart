@@ -1,12 +1,17 @@
-import 'package:engineering/widget/customWidgets.dart';
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../../../databaseHelper/DataBaseHelper.dart';
+import '../../../../model/formModel.dart';
 
+// ignore: must_be_immutable
 class OneWorkerForm extends StatefulWidget {
   String workType;
   String architecturalType;
+  int projectFk;
   OneWorkerForm(
-      {Key? key, required this.workType, required this.architecturalType})
+      {Key? key, required this.workType, required this.architecturalType, required this.projectFk })
       : super(key: key);
 
   @override
@@ -16,7 +21,7 @@ class OneWorkerForm extends StatefulWidget {
 class _OneWorkerFormState extends State<OneWorkerForm> {
   TextEditingController dateStartControler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  RegExp regex = new RegExp(r'(?!^ +$)^.+$');
+  RegExp regex = RegExp(r'(?!^ +$)^.+$');
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
 
@@ -26,35 +31,48 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     'Texture',
     'Enamel',
   ];
-  String? _selectedFinishType;
 
   List<String> finishType2 = [
     'Snowcem',
     'Enamel',
     'Emulsion',
   ];
-  String? _selectedFinishType2;
 
   List<String> doorType = [
     'Wooden',
     'Steel',
     'Aluminum',
   ];
-  String? _selectedDoorType;
 
   List<String> windowType = [
     'Glass',
     'Louver',
     'Steel',
   ];
-  String? _selectedWindowType;
 
-  late String? units, label, worker, surface;
-  late double? defaultValue;
+  // String? _selectedFinishType;
+  // String? _selectedFinishType2;
+  // String? _selectedDoorType;  
+  // String? _selectedWindowType;
 
-  String? preferredTimeController;
-  String? volumeController;
+  String? _selectedType;
+
+  String? units, label, worker, surface;
+  double? defaultValue;
+
+  String? preferedTime;
+  String? volume;
   TextEditingController productivityRateController = TextEditingController();
+
+  //database
+  FormData? formData;
+  bool isLoading = false, isUpdating = false;
+
+  //auto populated
+  int? numberOfDays, numberOfWorkers;
+  DateTime? dateEnd;
+  double? worker_1, costOfLabor;
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -110,7 +128,30 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       worker = 'Door Installer';
     }
     productivityRateController.text = defaultValue.toString();
+    refreshState();
     super.initState();
+  }
+
+  
+  Future refreshState() async {
+    setState(() => isLoading = true);
+    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.architecturalType, widget.workType);
+    if(formData != null){
+      dateStartControler.text = DateFormat('MM/dd/yyyy').format(formData!.date_start);
+      defaultValue = formData!.col_1_val;
+      volume = formData!.col_2.toString();
+      numberOfDays = formData!.num_days;
+      numberOfWorkers = formData!.num_workers;
+      dateEnd = formData!.date_end;
+      worker_1 = double.parse(formData!.worker_1);
+      costOfLabor = formData!.cost_of_labor;
+      preferedTime = formData!.pref_time.toString();
+
+      _selectedType = formData!.col_1;
+      defaultValue = formData!.col_1_val;
+      isUpdating = true;
+    }
+    setState(() => isLoading = false);
   }
 
   @override
@@ -120,7 +161,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         title: Text(widget.workType),
         actions: [saveButton()],
       ),
-      body: Form(
+      body: isLoading? const Center(child: CircularProgressIndicator()):
+       Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -469,7 +511,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
-                                    initialValue: '',
+                                    initialValue: volume ?? '',
                                     autofocus: true,
                                     decoration: const InputDecoration(
                                       helperText: ' ', // this is new
@@ -486,7 +528,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     // controller: projectName.text,
                                     onChanged: (value) {
                                       setState(() {
-                                        volumeController = value;
+                                        volume = value;
                                       });
                                     },
                                   ),
@@ -501,7 +543,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
-                                    initialValue: '',
+                                    initialValue: preferedTime ?? '',
                                     autofocus: true,
                                     decoration: const InputDecoration(
                                       helperText: ' ', // this is new
@@ -518,7 +560,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     // controller: projectName.text,
                                     onChanged: (value) {
                                       setState(() {
-                                        preferredTimeController = value;
+                                        preferedTime = value;
                                       });
                                     },
                                   ),
@@ -533,12 +575,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
+                                      numberOfDays != null ?
+                                      numberOfDays!.toString() :
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -547,12 +591,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
+                                      dateEnd != null?
+                                      outputFormat.format(dateEnd!) :
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -561,12 +607,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
+                                      numberOfWorkers != null?
+                                      numberOfWorkers!.toString() :
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           const SizedBox(
@@ -578,9 +626,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
+                                      worker_1 != null?
+                                      worker_1.toString() :
                                       '',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 15),
@@ -595,7 +645,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: const Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      '',
+                                      'cost of labor',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 15),
                                     ))),
@@ -755,13 +805,46 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   Widget saveButton() => ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          print(volumeController! +
-              "\n" +
-              preferredTimeController! +
-              "\n" +
-              selectedDate.toString() +
-              "\n" +
-              productivityRateController.text);
+            if(isUpdating){
+            final formDataUpdate = FormData(
+            date_start: selectedDate,
+            col_1: _selectedType ?? 'DEFAULT',
+            col_1_val: defaultValue!,
+            col_2: double.parse(volume!),       
+            pref_time: int.parse(preferedTime!),     
+            num_days: numberOfDays!,
+            date_end: dateEnd!,
+            num_workers: numberOfWorkers!,
+            worker_1: worker_1.toString(),
+            cost_of_labor: costOfLabor!,
+            type: widget.architecturalType,
+            work: widget.workType,
+            fk: widget.projectFk,
+            id: formData!.id!
+            );
+
+            DatabaseHelper.instance.updateFormData(formDataUpdate);           
+            
+            }else{
+               final formDataCreate = FormData(
+            date_start: selectedDate,
+            col_1: _selectedType ?? 'DEFAULT',
+            col_1_val: defaultValue!,
+            col_2: 80,       
+            pref_time: 82,     
+            num_days: 12,
+            date_end: DateTime.now(),
+            num_workers: 12,
+            worker_1: '2',
+            cost_of_labor: 81,
+            type: widget.architecturalType,
+            work: widget.workType,
+            fk: widget.projectFk,
+            );
+            
+            DatabaseHelper.instance.createFormData(formDataCreate);   
+        }
+        refreshState();
         }
       },
       child: const Text('Save'));
@@ -778,14 +861,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Door Type'), // Not necessary for Option 1
-      value: _selectedDoorType,
+      value:_selectedType,
       onChanged: (value) {
         setState(() {
-          _selectedDoorType = value.toString();
-          if (_selectedDoorType == "Wooden") {
+         _selectedType = value.toString();
+          if (_selectedType == "Wooden") {
             defaultValue = 3.38;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedDoorType == "Steel") {
+          } else if (_selectedType == "Steel") {
             defaultValue = 1.05;
             productivityRateController.text = defaultValue.toString();
           } else {
@@ -813,14 +896,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Window Type'), // Not necessary for Option 1
-      value: _selectedWindowType,
+      value:_selectedType,
       onChanged: (value) {
         setState(() {
-          _selectedWindowType = value.toString();
-          if (_selectedWindowType == "Glass") {
+         _selectedType = value.toString();
+          if (_selectedType == "Glass") {
             defaultValue = 2.48;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedWindowType == "Louvre") {
+          } else if (_selectedType == "Louvre") {
             defaultValue = 1.73;
             productivityRateController.text = defaultValue.toString();
           } else {
@@ -848,17 +931,18 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Finish Type'), // Not necessary for Option 1
-      value: _selectedFinishType,
+      value:_selectedType,
       onChanged: (value) {
+        print(value);
         setState(() {
-          _selectedFinishType = value.toString();
-          if (_selectedFinishType == "OBD") {
+         _selectedType = value.toString();
+          if (_selectedType == "OBD") {
             defaultValue = 12;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedFinishType == "Emulsion") {
+          } else if (_selectedType == "Emulsion") {
             defaultValue = 12;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedFinishType == "Texture") {
+          } else if (_selectedType == "Texture") {
             defaultValue = 10;
             productivityRateController.text = defaultValue.toString();
           } else {
@@ -872,7 +956,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
           child: Text(finishType),
           value: finishType,
         );
-      }).toList());
+      }).toList()
+      );
 
   Widget finishDropdown2() => DropdownButtonFormField(
       autofocus: true,
@@ -886,14 +971,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Finished Type'), // Not necessary for Option 1
-      value: _selectedFinishType2,
+      value:_selectedType,
       onChanged: (value) {
         setState(() {
-          _selectedFinishType2 = value.toString();
-          if (_selectedFinishType2 == "Snowcem") {
+         _selectedType = value.toString();
+          if (_selectedType == "Snowcem") {
             defaultValue = 20;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedFinishType2 == "Emulsion") {
+          } else if (_selectedType == "Emulsion") {
             defaultValue = 7;
             productivityRateController.text = defaultValue.toString();
           } else {

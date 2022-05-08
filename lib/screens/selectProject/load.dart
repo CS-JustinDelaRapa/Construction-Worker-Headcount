@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use, unused_import, unnecessary_new, prefer_const_constructors, avoid_print
 import 'package:engineering/databaseHelper/DataBaseHelper.dart';
-import 'package:engineering/model/ProjectItem.dart';
+import 'package:engineering/model/ProjectModel.dart';
 import 'package:engineering/screens/hamburgerMenu/stack.dart';
 import 'package:engineering/screens/selectProject/about.dart';
 import 'package:engineering/widget/customWidgets.dart';

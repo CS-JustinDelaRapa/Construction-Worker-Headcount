@@ -1,4 +1,6 @@
-import 'package:engineering/widget/customWidgets.dart';
+// ignore_for_file: file_names
+import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,8 +8,9 @@ import 'package:intl/intl.dart';
 class TwoWorkersForm extends StatefulWidget {
   String workType;
   String architecturalType;
+  int projectFk;
   TwoWorkersForm(
-      {Key? key, required this.workType, required this.architecturalType})
+      {Key? key, required this.workType, required this.architecturalType, required this.projectFk})
       : super(key: key);
 
   @override
@@ -18,7 +21,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   late String? units, label, worker, secondWorker, surface;
   late double? defaultValue;
   final _formKey = GlobalKey<FormState>();
-  RegExp regex = new RegExp(r'(?!^ +$)^.+$');
+  RegExp regex = RegExp(r'(?!^ +$)^.+$');
   List<String> extTileType = [
     'Mosaic Tile',
     'Ceramic Tile',
@@ -27,14 +30,17 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     'Marble Tile',
     'Glazed Tile',
   ];
-  String? _selectedExtTileType;
 
   List<String> tileType = [
     'Mosaic Tile',
     'Ceramic Tile',
     'Marble Tile',
   ];
-  String? _selectedTileType;
+  
+  // String? _selectedTileType;
+  // String? _selectedExtTileType;
+
+  String? _selectedType;
 
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
@@ -51,14 +57,22 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     }
   }
 
-  String? preferredTimeController;
-  String? volumeController;
+  String? preferedTime;
+  String? volume;
   TextEditingController productivityRateController = TextEditingController();
   TextEditingController dateStartControler = TextEditingController();
 
+  //database
+  FormData? formData;
+  bool isLoading = false, isUpdating = false;
+
+  //auto populated
+  int? numberOfDays, numberOfWorkers;
+  DateTime? dateEnd;
+  double? worker1, worker2, costOfLabor;
+
   @override
   void initState() {
-    print(widget.workType);
     if (widget.architecturalType == 'Flooring') {
       if (widget.workType.contains('EXT')) {
         label = 'EXT T&B';
@@ -115,7 +129,30 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       secondWorker = 'Labourer';
     }
     productivityRateController.text = defaultValue.toString();
+    refreshState();
     super.initState();
+  }
+
+  Future refreshState() async {
+    setState(() => isLoading = true);
+    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.architecturalType, widget.workType);
+    if(formData != null){
+      dateStartControler.text = DateFormat('MM/dd/yyyy').format(formData!.date_start);
+      defaultValue = formData!.col_1_val;
+      volume = formData!.col_2.toString();
+      numberOfDays = formData!.num_days;
+      numberOfWorkers = formData!.num_workers;
+      dateEnd = formData!.date_end;
+      worker1 = double.parse(formData!.worker_1);
+      worker2 = double.parse(formData!.worker_2!);
+      costOfLabor = formData!.cost_of_labor;
+      preferedTime = formData!.pref_time.toString();
+
+      _selectedType = formData!.col_1;
+      defaultValue = formData!.col_1_val;
+      isUpdating = true;
+    }
+    setState(() => isLoading = false);
   }
 
   @override
@@ -125,7 +162,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         title: Text(widget.workType),
         actions: [saveButton()],
       ),
-      body: Form(
+      body: isLoading? const Center(child: CircularProgressIndicator()):
+      Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -419,7 +457,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
-                                    initialValue: '',
+                                    initialValue: volume ?? '',
                                     autofocus: true,
                                     decoration: const InputDecoration(
                                       helperText: ' ', // this is new
@@ -436,7 +474,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     // controller: projectName.text,
                                     onChanged: (value) {
                                       setState(() {
-                                        volumeController = value;
+                                        volume = value;
                                       });
                                     },
                                   ),
@@ -451,7 +489,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
-                                    initialValue: '',
+                                    initialValue: preferedTime ?? '',
                                     autofocus: true,
                                     decoration: const InputDecoration(
                                       helperText: ' ', // this is new
@@ -468,7 +506,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     // controller: projectName.text,
                                     onChanged: (value) {
                                       setState(() {
-                                        preferredTimeController = value;
+                                        preferedTime = value;
                                       });
                                     },
                                   ),
@@ -483,12 +521,13 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(numberOfDays != null?
+                                    numberOfDays.toString():
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -497,12 +536,13 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(dateEnd != null?
+                                    outputFormat.format(dateEnd!) :
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -511,12 +551,13 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(numberOfWorkers != null?
+                                    numberOfWorkers.toString() :
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -525,12 +566,13 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(worker1 != null? 
+                                    worker1.toString() :
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           const SizedBox(
@@ -542,9 +584,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(worker2 != null?
+                                    worker2.toString():
                                       '',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 15),
@@ -556,12 +599,13 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(costOfLabor != null?
+                                    costOfLabor.toString():
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                         ],
@@ -582,7 +626,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 child: const Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
-                                      '',
+                                      'cost of labor',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 15),
                                     ))),
@@ -655,6 +699,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 child: const Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
+                                      //date end row
                                       '',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 15),
@@ -733,13 +778,48 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   Widget saveButton() => ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          print(volumeController! +
-              "\n" +
-              preferredTimeController! +
-              "\n" +
-              selectedDate.toString() +
-              "\n" +
-              productivityRateController.text);
+          if(isUpdating){
+            final formDataUpdate = FormData(
+            date_start: selectedDate,
+            col_1: _selectedType ?? 'DEFAULT',
+            col_1_val: defaultValue!,
+            col_2: double.parse(volume!),       
+            pref_time: int.parse(preferedTime!),     
+            num_days: numberOfDays!,
+            date_end: dateEnd!,
+            num_workers: numberOfWorkers!,
+            worker_1: worker1.toString(),
+            worker_2: worker2.toString(),
+            cost_of_labor: costOfLabor!,
+            type: widget.architecturalType,
+            work: widget.workType,
+            fk: widget.projectFk,
+            id: formData!.id!
+            );
+
+            DatabaseHelper.instance.updateFormData(formDataUpdate);   
+
+          }else{
+            final formDataCreate = FormData(
+            date_start: selectedDate,
+            col_1: _selectedType ?? 'DEFAULT',
+            col_1_val: defaultValue!,
+            col_2: 80,       
+            pref_time: 82,     
+            num_days: 12,
+            date_end: DateTime.now(),
+            num_workers: 12,
+            worker_1: '2',
+            worker_2: '3',
+            cost_of_labor: 81,
+            type: widget.architecturalType,
+            work: widget.workType,
+            fk: widget.projectFk,
+            );
+            
+            DatabaseHelper.instance.createFormData(formDataCreate);  
+          }
+          refreshState();
         }
       },
       child: const Text('Save'));
@@ -756,23 +836,23 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         return null;
       },
       hint: const Text('Tile Type'), // Not necessary for Option 1
-      value: _selectedExtTileType,
+      value: _selectedType,
       onChanged: (value) {
         setState(() {
-          _selectedExtTileType = value.toString();
-          if (_selectedExtTileType == "Mosaic Tile") {
+          _selectedType = value.toString();
+          if (_selectedType == "Mosaic Tile") {
             defaultValue = 7;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedExtTileType == "Ceramic Tile") {
+          } else if (_selectedType == "Ceramic Tile") {
             defaultValue = 7;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedExtTileType == "Vitrified Tile") {
+          } else if (_selectedType == "Vitrified Tile") {
             defaultValue = 10;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedExtTileType == "Granite Tile") {
+          } else if (_selectedType == "Granite Tile") {
             defaultValue = 5;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedExtTileType == "Marble Tile") {
+          } else if (_selectedType == "Marble Tile") {
             defaultValue = 5;
             productivityRateController.text = defaultValue.toString();
           } else {
@@ -800,14 +880,14 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         return null;
       },
       hint: const Text('Tile Type'), // Not necessary for Option 1
-      value: _selectedTileType,
+      value: _selectedType,
       onChanged: (value) {
         setState(() {
-          _selectedTileType = value.toString();
-          if (_selectedTileType == "Mosaic Tile") {
+          _selectedType = value.toString();
+          if (_selectedType == "Mosaic Tile") {
             defaultValue = 7;
             productivityRateController.text = defaultValue.toString();
-          } else if (_selectedTileType == "Ceramic Tile") {
+          } else if (_selectedType == "Ceramic Tile") {
             defaultValue = 7;
             productivityRateController.text = defaultValue.toString();
           } else {

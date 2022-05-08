@@ -4,9 +4,7 @@ import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/architectural/items/bungalowArchitecturalItem.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-
-import '../../../model/ProjectItem.dart';
+import '../../../model/ProjectModel.dart';
 import 'forms/oneWorkerForm.dart';
 import 'forms/twoWorkersForm.dart';
 import 'items/twoStoreyArchitecturalItem.dart';
@@ -172,7 +170,7 @@ class _ArchitecturalState extends State<Architectural> {
                         children: BungalowArchitechturalItems.all
                             .map((item) => ListTile(
                                 onTap: () {
-                                  print(item.title);
+                                  expandDrawer();
                                 },
                                 title: Row(
                                   children: [
@@ -224,7 +222,8 @@ class _ArchitecturalState extends State<Architectural> {
                   MaterialPageRoute(
                       builder: (context) => OneWorkerForm(
                           workType: columnList[x],
-                          architecturalType: architecturalType)));
+                          architecturalType: architecturalType,
+                          projectFk: widget.project.id!,)));
             } else {
               Navigator.push(
                   context,
@@ -232,6 +231,7 @@ class _ArchitecturalState extends State<Architectural> {
                       builder: (context) => TwoWorkersForm(
                             workType: columnList[x],
                             architecturalType: architecturalType,
+                            projectFk: widget.project.id!,
                           )));
             }
           },

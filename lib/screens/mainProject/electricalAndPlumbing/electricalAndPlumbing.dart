@@ -2,12 +2,10 @@
 
 import 'dart:ffi';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import '../../../model/ProjectItem.dart';
-import 'electricalAndPlumbingItem.dart';
+import '../../../model/ProjectModel.dart';
+import 'items/electricalAndPlumbingItem.dart';
 import 'form/twoWorkersForm.dart';
 
 class ElectricalAndPlumbing extends StatefulWidget {
@@ -166,7 +164,7 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
                         children: ElectricalAndPlumbingItems.all
                             .map((item) => ListTile(
                                 onTap: () {
-                                  print(item.title);
+                                  expandDrawer();
                                 },
                                 title: Row(
                                   children: [
@@ -217,7 +215,9 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
                     builder: (context) => TwoWorkersForm(
                         workType: columnList[x],
                         elecAndPlumbType: elecAndPlumbType,
-                        projectType: widget.project.type)));
+                        projectType: widget.project.type,
+                        projectFk: widget.project.id!,
+                        )));
           },
           style: const ButtonStyle(alignment: Alignment.centerLeft),
           child: Text(

@@ -1,4 +1,7 @@
-import 'package:engineering/widget/customWidgets.dart';
+// ignore_for_file: file_names
+
+import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,8 +9,9 @@ import 'package:intl/intl.dart';
 class OneWorkerForm extends StatefulWidget {
   String workType;
   String structuralType;
+  int projectFk;
   OneWorkerForm(
-      {Key? key, required this.workType, required this.structuralType})
+      {Key? key, required this.workType, required this.structuralType, required this.projectFk })
       : super(key: key);
 
   @override
@@ -22,13 +26,25 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   final _formKey = GlobalKey<FormState>();
   RegExp regex = new RegExp(r'(?!^ +$)^.+$');
   List<String> soilType = ['Soft Soil', 'Hard Soil'];
-  String? _selectedSoilType;
-  late String? units, label, worker, surface;
-  late double? defaultValue;
 
-  String? preferredTimeController;
-  String? volumeController;
+  String? _selectedType;
+  
+  String? units, label, worker, surface;
+  double? defaultValue;
+
+
+  String? preferedTime;
+  String? volume;
   TextEditingController productivityRateController = TextEditingController();
+
+      //database
+  FormData? formData;
+  bool isLoading = false, isUpdating = false;
+
+  //auto populated
+  int? numberOfDays, numberOfWorkers;
+  DateTime? dateEnd;
+  double? worker_1, costOfLabor;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -42,6 +58,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       });
     }
   }
+
 
   @override
   void initState() {
@@ -87,7 +104,29 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       surface = 'Weight';
     }
     productivityRateController.text = defaultValue.toString();
+    refreshState();
     super.initState();
+  }
+
+    Future refreshState() async {
+    setState(() => isLoading = true);
+    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    if(formData != null){
+      dateStartControler.text = DateFormat('MM/dd/yyyy').format(formData!.date_start);
+      defaultValue = formData!.col_1_val;
+      volume = formData!.col_2.toString();
+      numberOfDays = formData!.num_days;
+      numberOfWorkers = formData!.num_workers;
+      dateEnd = formData!.date_end;
+      worker_1 = double.parse(formData!.worker_1);
+      costOfLabor = formData!.cost_of_labor;
+      preferedTime = formData!.pref_time.toString();
+
+      _selectedType = formData!.col_1;
+      defaultValue = formData!.col_1_val;
+      isUpdating = true;
+    }
+    setState(() => isLoading = false);
   }
 
   @override
@@ -97,7 +136,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         title: Text(widget.workType),
         actions: [saveButton()],
       ),
-      body: Form(
+      body: isLoading? const Center(child: CircularProgressIndicator()): 
+      Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
@@ -283,12 +323,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                           },
                                           hint: const Text(
                                               'Soil Type'), // Not necessary for Option 1
-                                          value: _selectedSoilType,
+                                          value: _selectedType,
                                           onChanged: (value) {
                                             setState(() {
-                                              _selectedSoilType =
+                                              _selectedType =
                                                   value.toString();
-                                              if (_selectedSoilType ==
+                                              if (_selectedType ==
                                                   "Soft Soil") {
                                                 defaultValue = 3;
                                                 productivityRateController
@@ -370,7 +410,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
-                                    initialValue: '',
+                                    initialValue: volume,
                                     autofocus: true,
                                     decoration: const InputDecoration(
                                       helperText: ' ', // this is new
@@ -387,7 +427,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     // controller: projectName.text,
                                     onChanged: (value) {
                                       setState(() {
-                                        volumeController = value;
+                                        volume = value;
                                       });
                                     },
                                   ),
@@ -402,7 +442,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextFormField(
-                                    initialValue: '',
+                                    initialValue: preferedTime ?? '',
                                     autofocus: true,
                                     decoration: const InputDecoration(
                                       helperText: ' ', // this is new
@@ -419,7 +459,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     // controller: projectName.text,
                                     onChanged: (value) {
                                       setState(() {
-                                        preferredTimeController = value;
+                                        preferedTime = value;
                                       });
                                     },
                                   ),
@@ -434,12 +474,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(numberOfDays != null?
+                                    numberOfDays.toString():
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -448,12 +489,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(dateEnd != null?
+                                    outputFormat.format(dateEnd!):
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -462,12 +504,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(numberOfWorkers != null?
+                                    numberOfWorkers.toString():
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           const SizedBox(
@@ -479,12 +522,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(worker_1 != null?
+                                    worker_1.toString():
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                           Padding(
@@ -493,12 +537,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 height:
                                     MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
+                                child: Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
+                                    child: Text(costOfLabor != null?
+                                    costOfLabor.toString():
                                       '',
                                       textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     ))),
                           ),
                         ],
@@ -518,6 +563,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: const Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
+                                      //date start right
                                       '',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 15),
@@ -591,6 +637,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: const Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
+                                      //date right side
                                       '',
                                       textAlign: TextAlign.left,
                                       style: TextStyle(fontSize: 15),
@@ -655,14 +702,46 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   Widget saveButton() => ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          // ignore: avoid_print
-          print(volumeController! +
-              "\n" +
-              preferredTimeController! +
-              "\n" +
-              selectedDate.toString() +
-              "\n" +
-              productivityRateController.text);
+            if(isUpdating){
+            final formDataUpdate = FormData(
+            date_start: selectedDate,
+            col_1: _selectedType ?? 'DEFAULT',
+            col_1_val: defaultValue!,
+            col_2: double.parse(volume!),       
+            pref_time: int.parse(preferedTime!),     
+            num_days: numberOfDays!,
+            date_end: dateEnd!,
+            num_workers: numberOfWorkers!,
+            worker_1:  worker_1.toString(),
+            cost_of_labor: costOfLabor!,
+            type: widget.structuralType,
+            work: widget.workType,
+            fk: widget.projectFk,
+            id: formData!.id!
+            );
+
+            DatabaseHelper.instance.updateFormData(formDataUpdate);           
+            
+            }else{
+               final formDataCreate = FormData(
+            date_start: selectedDate,
+            col_1: _selectedType ?? 'DEFAULT',
+            col_1_val: defaultValue!,
+            col_2: 80,       
+            pref_time: 82,     
+            num_days: 12,
+            date_end: DateTime.now(),
+            num_workers: 12,
+            worker_1: '2',
+            cost_of_labor: 81,
+            type: widget.structuralType,
+            work: widget.workType,
+            fk: widget.projectFk,
+            );
+            
+            DatabaseHelper.instance.createFormData(formDataCreate);   
+        }
+        refreshState();
         }
       },
       child: const Text('Save'));

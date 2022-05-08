@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import '../../model/itemModel.dart';
 import 'drawerItems.dart';
 import 'hiddenDrawer.dart';
-import 'package:engineering/model/ProjectItem.dart';
+import 'package:engineering/model/ProjectModel.dart';
 
 class StackWidget extends StatefulWidget {
   final ProjectItem project;

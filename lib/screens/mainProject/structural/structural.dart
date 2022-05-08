@@ -2,12 +2,12 @@
 
 import 'dart:ffi';
 
-import 'package:engineering/model/ProjectItem.dart';
+import 'package:engineering/model/ProjectModel.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/structural/bungalowStructuralItem.dart';
 import 'package:engineering/screens/mainProject/structural/forms/oneWorkerForm.dart';
 import 'package:engineering/screens/mainProject/structural/forms/twoWorkersForm.dart';
-import 'package:engineering/screens/mainProject/structural/twoStoreyStructuralItems.dart';
+import 'package:engineering/screens/mainProject/structural/items/bungalowStructuralItem.dart';
+import 'package:engineering/screens/mainProject/structural/items/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 
@@ -171,7 +171,7 @@ class _StructuralState extends State<Structural> {
                         children: BungalowStructuralItems.all
                             .map((item) => ListTile(
                                 onTap: () {
-                                  print(item.title);
+                                  expandDrawer();
                                 },
                                 title: Row(
                                   children: [
@@ -223,7 +223,9 @@ class _StructuralState extends State<Structural> {
                   MaterialPageRoute(
                       builder: (context) => OneWorkerForm(
                           workType: columnList[x],
-                          structuralType: structuralType)));
+                          structuralType: structuralType,
+                          projectFk: widget.project.id!,
+                          )));
             } else {
               Navigator.push(
                   context,
@@ -231,6 +233,7 @@ class _StructuralState extends State<Structural> {
                       builder: (context) => TwoWorkersForm(
                             workType: columnList[x],
                             structuralType: structuralType,
+                            projectFk: widget.project.id!,
                           )));
             }
 
