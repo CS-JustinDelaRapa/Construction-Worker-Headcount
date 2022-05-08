@@ -11,7 +11,10 @@ class OneWorkerForm extends StatefulWidget {
   String architecturalType;
   int projectFk;
   OneWorkerForm(
-      {Key? key, required this.workType, required this.architecturalType, required this.projectFk })
+      {Key? key,
+      required this.workType,
+      required this.architecturalType,
+      required this.projectFk})
       : super(key: key);
 
   @override
@@ -52,7 +55,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   // String? _selectedFinishType;
   // String? _selectedFinishType2;
-  // String? _selectedDoorType;  
+  // String? _selectedDoorType;
   // String? _selectedWindowType;
 
   String? _selectedType;
@@ -72,7 +75,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   int? numberOfDays, numberOfWorkers;
   DateTime? dateEnd;
   double? worker_1, costOfLabor;
-
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -132,12 +134,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     super.initState();
   }
 
-  
   Future refreshState() async {
     setState(() => isLoading = true);
-    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.architecturalType, widget.workType);
-    if(formData != null){
-      dateStartControler.text = DateFormat('MM/dd/yyyy').format(formData!.date_start);
+    formData = await DatabaseHelper.instance.readFormData(
+        widget.projectFk, widget.architecturalType, widget.workType);
+    if (formData != null) {
+      dateStartControler.text =
+          DateFormat('MM/dd/yyyy').format(formData!.date_start);
       defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
@@ -161,696 +164,772 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         title: Text(widget.workType),
         actions: [saveButton()],
       ),
-      body: isLoading? const Center(child: CircularProgressIndicator()):
-       Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  // first column
-                  Flexible(
-                      flex: 3,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'DATE START',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      label!.toUpperCase(),
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      surface!.toUpperCase(),
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'PREFERRED TIME',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Number of days',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Date End',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Number of workers',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      worker!.toUpperCase(),
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Cost of Laborer',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                        ],
-                      )),
-                  //second column
-                  Flexible(
-                      flex: 5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //date start
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                                child: TextField(
-                              readOnly: true,
-                              controller: dateStartControler,
-                              onTap: () async {
-                                _selectDate(context);
-                              },
-                              decoration: InputDecoration(
-                                  hintText: outputFormat
-                                      .format(selectedDate)
-                                      .toString()),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        // first column
+                        Flexible(
+                            flex: 3,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'DATE START',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            label!.toUpperCase(),
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            surface!.toUpperCase(),
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'PREFERRED TIME',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Number of days',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Date End',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Number of workers',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            worker!.toUpperCase(),
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Cost of Laborer',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                              ],
                             )),
-                          ),
-                          widget.workType == 'Doors'
-                              ? Row(
-                                  children: [
-                                    Flexible(flex: 3, child: doorDropdown()),
-                                    Flexible(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: TextFormField(
-                                              autofocus: true,
-                                              decoration: const InputDecoration(
-                                                helperText: ' ', // this is new
-                                              ),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.isEmpty ||
-                                                    !regex.hasMatch(value)) {
-                                                  return '';
-                                                }
-                                                return null;
-                                              },
-                                              controller:
-                                                  productivityRateController,
-                                              keyboardType:
-                                                  TextInputType.number,
-                                            )),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : widget.workType == 'Windows'
-                                  ? Row(
-                                      children: [
-                                        Flexible(
-                                            flex: 3, child: windowDropdown()),
-                                        Flexible(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: TextFormField(
-                                                  autofocus: true,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    helperText:
-                                                        ' ', // this is new
-                                                  ),
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty ||
-                                                        !regex
-                                                            .hasMatch(value)) {
-                                                      return '';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  controller:
-                                                      productivityRateController,
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                )),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : widget.workType.contains('Interior')
-                                      ? Row(
-                                          children: [
-                                            Flexible(
-                                                flex: 3,
-                                                child: finishDropdown()),
-                                            Flexible(
-                                              flex: 1,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: TextFormField(
-                                                      autofocus: true,
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        helperText:
-                                                            ' ', // this is new
-                                                      ),
-                                                      validator: (value) {
-                                                        if (value == null ||
-                                                            value.isEmpty ||
-                                                            !regex.hasMatch(
-                                                                value)) {
-                                                          return '';
-                                                        }
-                                                        return null;
-                                                      },
-                                                      controller:
-                                                          productivityRateController,
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                    )),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      : widget.workType.contains('Exterior')
-                                          ? Row(
-                                              children: [
-                                                Flexible(
-                                                    flex: 3,
-                                                    child: finishDropdown2()),
-                                                Flexible(
-                                                  flex: 1,
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Align(
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: TextFormField(
-                                                          autofocus: true,
-                                                          decoration:
-                                                              const InputDecoration(
-                                                            helperText:
-                                                                ' ', // this is new
-                                                          ),
-                                                          validator: (value) {
-                                                            if (value == null ||
-                                                                value.isEmpty ||
-                                                                !regex.hasMatch(
-                                                                    value)) {
-                                                              return '';
-                                                            }
-                                                            return null;
-                                                          },
-                                                          controller:
-                                                              productivityRateController,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                        )),
-                                                  ),
-                                                ),
-                                              ],
-                                            )
-                                          : Padding(
+                        //second column
+                        Flexible(
+                            flex: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //date start
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                      child: TextField(
+                                    readOnly: true,
+                                    controller: dateStartControler,
+                                    onTap: () async {
+                                      _selectDate(context);
+                                    },
+                                    decoration: InputDecoration(
+                                        hintText: outputFormat
+                                            .format(selectedDate)
+                                            .toString()),
+                                  )),
+                                ),
+                                widget.workType == 'Doors'
+                                    ? Row(
+                                        children: [
+                                          Flexible(
+                                              flex: 3, child: doorDropdown()),
+                                          Flexible(
+                                            flex: 1,
+                                            child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child: SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.5,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.07,
+                                              child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: TextFormField(
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      helperText:
+                                                          ' ', // this is new
+                                                    ),
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty ||
+                                                          !regex.hasMatch(
+                                                              value)) {
+                                                        return '';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    controller:
+                                                        productivityRateController,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                  )),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : widget.workType == 'Windows'
+                                        ? Row(
+                                            children: [
+                                              Flexible(
+                                                  flex: 3,
+                                                  child: windowDropdown()),
+                                              Flexible(
+                                                flex: 1,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
                                                   child: Align(
                                                       alignment:
                                                           Alignment.centerLeft,
                                                       child: TextFormField(
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          helperText:
+                                                              ' ', // this is new
+                                                        ),
+                                                        validator: (value) {
+                                                          if (value == null ||
+                                                              value.isEmpty ||
+                                                              !regex.hasMatch(
+                                                                  value)) {
+                                                            return '';
+                                                          }
+                                                          return null;
+                                                        },
                                                         controller:
                                                             productivityRateController,
                                                         keyboardType:
                                                             TextInputType
                                                                 .number,
-                                                      ))),
-                                            ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: TextFormField(
-                                    initialValue: volume ?? '',
-                                    autofocus: true,
-                                    decoration: const InputDecoration(
-                                      helperText: ' ', // this is new
-                                    ),
-                                    validator: (value) {
-                                      if (value == null ||
-                                          value.isEmpty ||
-                                          !regex.hasMatch(value)) {
-                                        return 'This Field is Required';
-                                      }
-                                      return null;
-                                    },
+                                                      )),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : widget.workType.contains('Interior')
+                                            ? Row(
+                                                children: [
+                                                  Flexible(
+                                                      flex: 3,
+                                                      child: finishDropdown()),
+                                                  Flexible(
+                                                    flex: 1,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Align(
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: TextFormField(
+                                                            decoration:
+                                                                const InputDecoration(
+                                                              helperText:
+                                                                  ' ', // this is new
+                                                            ),
+                                                            validator: (value) {
+                                                              if (value ==
+                                                                      null ||
+                                                                  value
+                                                                      .isEmpty ||
+                                                                  !regex.hasMatch(
+                                                                      value)) {
+                                                                return '';
+                                                              }
+                                                              return null;
+                                                            },
+                                                            controller:
+                                                                productivityRateController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                          )),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : widget.workType
+                                                    .contains('Exterior')
+                                                ? Row(
+                                                    children: [
+                                                      Flexible(
+                                                          flex: 3,
+                                                          child:
+                                                              finishDropdown2()),
+                                                      Flexible(
+                                                        flex: 1,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Align(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child:
+                                                                  TextFormField(
+                                                                decoration:
+                                                                    const InputDecoration(
+                                                                  helperText:
+                                                                      ' ', // this is new
+                                                                ),
+                                                                validator:
+                                                                    (value) {
+                                                                  if (value ==
+                                                                          null ||
+                                                                      value
+                                                                          .isEmpty ||
+                                                                      !regex.hasMatch(
+                                                                          value)) {
+                                                                    return '';
+                                                                  }
+                                                                  return null;
+                                                                },
+                                                                controller:
+                                                                    productivityRateController,
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .number,
+                                                              )),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: SizedBox(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.5,
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.07,
+                                                        child: Align(
+                                                            alignment: Alignment
+                                                                .centerLeft,
+                                                            child:
+                                                                TextFormField(
+                                                              controller:
+                                                                  productivityRateController,
+                                                              keyboardType:
+                                                                  TextInputType
+                                                                      .number,
+                                                            ))),
+                                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextFormField(
+                                          initialValue: volume ?? '',
+                                          decoration: const InputDecoration(
+                                            helperText: ' ', // this is new
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty ||
+                                                !regex.hasMatch(value)) {
+                                              return 'This Field is Required';
+                                            }
+                                            return null;
+                                          },
 
-                                    // controller: projectName.text,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        volume = value;
-                                      });
-                                    },
-                                  ),
-                                )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: TextFormField(
-                                    initialValue: preferedTime ?? '',
-                                    autofocus: true,
-                                    decoration: const InputDecoration(
-                                      helperText: ' ', // this is new
-                                    ),
-                                    validator: (value) {
-                                      if (value == null ||
-                                          value.isEmpty ||
-                                          !regex.hasMatch(value)) {
-                                        return 'This Field is Required';
-                                      }
-                                      return null;
-                                    },
+                                          // controller: projectName.text,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              volume = value;
+                                            });
+                                          },
+                                        ),
+                                      )),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextFormField(
+                                          initialValue: preferedTime ?? '',
+                                          decoration: const InputDecoration(
+                                            helperText: ' ', // this is new
+                                          ),
+                                          keyboardType: TextInputType.number,
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty ||
+                                                !regex.hasMatch(value)) {
+                                              return 'This Field is Required';
+                                            }
+                                            return null;
+                                          },
 
-                                    // controller: projectName.text,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        preferedTime = value;
-                                      });
-                                    },
-                                  ),
-                                )),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      numberOfDays != null ?
-                                      numberOfDays!.toString() :
-                                      '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      dateEnd != null?
-                                      outputFormat.format(dateEnd!) :
-                                      '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      numberOfWorkers != null?
-                                      numberOfWorkers!.toString() :
-                                      '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      worker_1 != null?
-                                      worker_1.toString() :
-                                      '',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'cost of labor',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                        ],
-                      )),
-                  // third column
-                  Flexible(
-                    flex: 2,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      '',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      units! + '/day',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      units!,
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Day/s',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Day/s',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      '',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'worker/s',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'worker/s',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.07,
-                                child: const Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'php',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 15),
-                                    ))),
-                          ),
-                        ]),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
+                                          // controller: projectName.text,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              preferedTime = value;
+                                            });
+                                          },
+                                        ),
+                                      )),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            numberOfDays != null
+                                                ? numberOfDays!.toString()
+                                                : '',
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            dateEnd != null
+                                                ? outputFormat.format(dateEnd!)
+                                                : '',
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            numberOfWorkers != null
+                                                ? numberOfWorkers!.toString()
+                                                : '',
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            worker_1 != null
+                                                ? worker_1.toString()
+                                                : '',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'cost of labor',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                              ],
+                            )),
+                        // third column
+                        Flexible(
+                          flex: 2,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            '',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            units! + '/day',
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            units!,
+                                            textAlign: TextAlign.left,
+                                            style:
+                                                const TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Day/s',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'Day/s',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            '',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'worker/s',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'worker/s',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      child: const Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'php',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ))),
+                                ),
+                              ]),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
     );
   }
 
   Widget saveButton() => ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-            if(isUpdating){
+          if (isUpdating) {
             final formDataUpdate = FormData(
-            date_start: selectedDate,
-            col_1: _selectedType ?? 'DEFAULT',
-            col_1_val: defaultValue!,
-            col_2: double.parse(volume!),       
-            pref_time: int.parse(preferedTime!),     
-            num_days: numberOfDays!,
-            date_end: dateEnd!,
-            num_workers: numberOfWorkers!,
-            worker_1: worker_1.toString(),
-            cost_of_labor: costOfLabor!,
-            type: widget.architecturalType,
-            work: widget.workType,
-            fk: widget.projectFk,
-            id: formData!.id!
+                date_start: selectedDate,
+                col_1: _selectedType ?? 'DEFAULT',
+                col_1_val: defaultValue!,
+                col_2: double.parse(volume!),
+                pref_time: int.parse(preferedTime!),
+                num_days: numberOfDays!,
+                date_end: dateEnd!,
+                num_workers: numberOfWorkers!,
+                worker_1: worker_1.toString(),
+                cost_of_labor: costOfLabor!,
+                type: widget.architecturalType,
+                work: widget.workType,
+                fk: widget.projectFk,
+                id: formData!.id!);
+
+            DatabaseHelper.instance.updateFormData(formDataUpdate);
+          } else {
+            final formDataCreate = FormData(
+              date_start: selectedDate,
+              col_1: _selectedType ?? 'DEFAULT',
+              col_1_val: defaultValue!,
+              col_2: 80,
+              pref_time: 82,
+              num_days: 12,
+              date_end: DateTime.now(),
+              num_workers: 12,
+              worker_1: '2',
+              cost_of_labor: 81,
+              type: widget.architecturalType,
+              work: widget.workType,
+              fk: widget.projectFk,
             );
 
-            DatabaseHelper.instance.updateFormData(formDataUpdate);           
-            
-            }else{
-               final formDataCreate = FormData(
-            date_start: selectedDate,
-            col_1: _selectedType ?? 'DEFAULT',
-            col_1_val: defaultValue!,
-            col_2: 80,       
-            pref_time: 82,     
-            num_days: 12,
-            date_end: DateTime.now(),
-            num_workers: 12,
-            worker_1: '2',
-            cost_of_labor: 81,
-            type: widget.architecturalType,
-            work: widget.workType,
-            fk: widget.projectFk,
-            );
-            
-            DatabaseHelper.instance.createFormData(formDataCreate);   
-        }
-        refreshState();
+            DatabaseHelper.instance.createFormData(formDataCreate);
+          }
+          refreshState();
         }
       },
       child: const Text('Save'));
 
   Widget doorDropdown() => DropdownButtonFormField(
-      autofocus: true,
       decoration: const InputDecoration(
         helperText: ' ', // this is new
       ),
@@ -861,10 +940,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Door Type'), // Not necessary for Option 1
-      value:_selectedType,
+      value: _selectedType,
       onChanged: (value) {
         setState(() {
-         _selectedType = value.toString();
+          _selectedType = value.toString();
           if (_selectedType == "Wooden") {
             defaultValue = 3.38;
             productivityRateController.text = defaultValue.toString();
@@ -885,7 +964,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }).toList());
 
   Widget windowDropdown() => DropdownButtonFormField(
-      autofocus: true,
       decoration: const InputDecoration(
         helperText: ' ', // this is new
       ),
@@ -896,10 +974,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Window Type'), // Not necessary for Option 1
-      value:_selectedType,
+      value: _selectedType,
       onChanged: (value) {
         setState(() {
-         _selectedType = value.toString();
+          _selectedType = value.toString();
           if (_selectedType == "Glass") {
             defaultValue = 2.48;
             productivityRateController.text = defaultValue.toString();
@@ -920,7 +998,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }).toList());
 
   Widget finishDropdown() => DropdownButtonFormField(
-      autofocus: true,
       decoration: const InputDecoration(
         helperText: ' ', // this is new
       ),
@@ -931,11 +1008,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Finish Type'), // Not necessary for Option 1
-      value:_selectedType,
+      value: _selectedType,
       onChanged: (value) {
         print(value);
         setState(() {
-         _selectedType = value.toString();
+          _selectedType = value.toString();
           if (_selectedType == "OBD") {
             defaultValue = 12;
             productivityRateController.text = defaultValue.toString();
@@ -956,11 +1033,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
           child: Text(finishType),
           value: finishType,
         );
-      }).toList()
-      );
+      }).toList());
 
   Widget finishDropdown2() => DropdownButtonFormField(
-      autofocus: true,
       decoration: const InputDecoration(
         helperText: ' ', // this is new
       ),
@@ -971,10 +1046,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         return null;
       },
       hint: const Text('Finished Type'), // Not necessary for Option 1
-      value:_selectedType,
+      value: _selectedType,
       onChanged: (value) {
         setState(() {
-         _selectedType = value.toString();
+          _selectedType = value.toString();
           if (_selectedType == "Snowcem") {
             defaultValue = 20;
             productivityRateController.text = defaultValue.toString();
