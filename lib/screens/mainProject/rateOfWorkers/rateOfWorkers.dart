@@ -579,37 +579,40 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                       ],
                     ),
                     const SizedBox(height: 30),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              for (int i = 0; i < workers.length; i++) {
-                                await DatabaseHelper.instance.updateWorker(
-                                    WorkerType(
-                                        id: workers[i].id,
-                                        workerType: workers[i].workerType,
-                                        rate: double.parse(rate[i]),
-                                        fk: workers[i].fk));
-                                refreshState();
-                              }
-                            }
-                          },
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Text('Save'),
-                              SizedBox(
-                                width: 15,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.07,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
-                            ],
-                          )),
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                for (int i = 0; i < workers.length; i++) {
+                                  await DatabaseHelper.instance.updateWorker(
+                                      WorkerType(
+                                          id: workers[i].id,
+                                          workerType: workers[i].workerType,
+                                          rate: double.parse(rate[i]),
+                                          fk: workers[i].fk));
+                                  refreshState();
+                                }
+                              }
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Text('Save'),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                              ],
+                            )),
+                      ),
                     )
                   ],
                 ),

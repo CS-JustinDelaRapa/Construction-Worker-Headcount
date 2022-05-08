@@ -2,6 +2,7 @@
 
 import 'package:engineering/databaseHelper/DataBaseHelper.dart';
 import 'package:engineering/model/formModel.dart';
+import 'package:engineering/model/workerModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,6 +30,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   final _formKey = GlobalKey<FormState>();
   RegExp regex = new RegExp(r'(?!^ +$)^.+$');
   List<String> soilType = ['Soft Soil', 'Hard Soil'];
+  List<WorkerType>? rateOfWorkers;
 
   String? _selectedType;
 
@@ -46,7 +48,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   //auto populated
   int? numberOfDays, numberOfWorkers, worker_1;
   DateTime? dateEnd;
-  double? costOfLabor, initialWorkers, initialNumberofDays;
+  double? costOfLabor, initialWorkers, initialNumberofDays, workerCost;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -73,7 +75,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }
       units = 'cum';
       surface = 'Volume';
-      worker = 'Labourer';
+      worker = 'Laborer';
     } else {
       if (widget.workType.contains('Column')) {
         label = 'Column';
@@ -113,6 +115,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     setState(() => isLoading = true);
     formData = await DatabaseHelper.instance
         .readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
+    for (int i = 0; i < rateOfWorkers!.length; i++) {
+      if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
+        workerCost = rateOfWorkers![i].rate;
+      }
+    }
     if (formData != null) {
       dateStartControler.text =
           DateFormat('MM/dd/yyyy').format(formData!.date_start);
@@ -311,8 +319,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         Flexible(
                             flex: 5,
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 //date start
                                 Padding(
@@ -330,6 +338,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             .toString()),
                                   )),
                                 ),
+                                //productivity rate
                                 widget.workType == 'Excavation'
                                     ? Row(
                                         children: [
@@ -444,6 +453,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                       TextInputType.number,
                                                 ))),
                                       ),
+                                //volume
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(8, 10, 8, 0),
@@ -479,6 +489,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                         ),
                                       )),
                                 ),
+                                //preferred time
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(8, 15, 8, 0),
@@ -517,6 +528,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 const SizedBox(
                                   height: 30,
                                 ),
+                                //number of days
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
@@ -525,17 +537,15 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.07,
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            numberOfDays != null
-                                                ? numberOfDays.toString()
-                                                : '',
-                                            textAlign: TextAlign.left,
-                                            style:
-                                                const TextStyle(fontSize: 15),
-                                          ))),
+                                      child: Text(
+                                        numberOfDays != null
+                                            ? numberOfDays.toString()
+                                            : '',
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(fontSize: 15),
+                                      )),
                                 ),
+                                //date end
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
@@ -544,17 +554,15 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.07,
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            dateEnd != null
-                                                ? outputFormat.format(dateEnd!)
-                                                : '',
-                                            textAlign: TextAlign.left,
-                                            style:
-                                                const TextStyle(fontSize: 15),
-                                          ))),
+                                      child: Text(
+                                        dateEnd != null
+                                            ? outputFormat.format(dateEnd!)
+                                            : '',
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(fontSize: 15),
+                                      )),
                                 ),
+                                //number of workers
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
@@ -563,20 +571,18 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.07,
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            numberOfWorkers != null
-                                                ? numberOfWorkers.toString()
-                                                : '',
-                                            textAlign: TextAlign.left,
-                                            style:
-                                                const TextStyle(fontSize: 15),
-                                          ))),
+                                      child: Text(
+                                        numberOfWorkers != null
+                                            ? numberOfWorkers.toString()
+                                            : '',
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(fontSize: 15),
+                                      )),
                                 ),
                                 const SizedBox(
                                   height: 30,
                                 ),
+                                //number of workers
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
@@ -585,17 +591,15 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.07,
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            worker_1 != null
-                                                ? worker_1.toString()
-                                                : '',
-                                            textAlign: TextAlign.left,
-                                            style:
-                                                const TextStyle(fontSize: 15),
-                                          ))),
+                                      child: Text(
+                                        worker_1 != null
+                                            ? worker_1.toString()
+                                            : '',
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(fontSize: 15),
+                                      )),
                                 ),
+                                //cost of labor
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SizedBox(
@@ -604,16 +608,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.07,
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            costOfLabor != null
-                                                ? costOfLabor.toString()
-                                                : '',
-                                            textAlign: TextAlign.left,
-                                            style:
-                                                const TextStyle(fontSize: 15),
-                                          ))),
+                                      child: Text(
+                                        costOfLabor != null
+                                            ? costOfLabor.toString()
+                                            : '',
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(fontSize: 15),
+                                      )),
                                 ),
                               ],
                             )),
@@ -788,11 +789,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     );
   }
 
-    Widget saveButton() => ElevatedButton(
+  Widget saveButton() => ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           initialWorkers = (double.parse(volume!) /
-           	double.parse(productivityRateController.text))
+                  double.parse(productivityRateController.text))
               .roundToDouble();
           if (initialWorkers! <= 3) {
             initialNumberofDays = 1;
@@ -814,13 +815,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
           numberOfDays = initialNumberofDays!.round();
           numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-
-          print("col_2:" + volume!.toString());
-          print(" pref_time:" + int.parse(preferedTime!).toString());
-          print("  num_days:" + numberOfDays.toString());
-          print(" date_end:" +
-              selectedDate.add(Duration(days: numberOfDays!)).toString());
-          print(" worker_1:" + worker!);
+          costOfLabor = numberOfWorkers! * workerCost!;
 
           if (isUpdating) {
             final formDataUpdate = FormData(
@@ -851,7 +846,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               date_end: selectedDate.add(Duration(days: numberOfDays!)),
               num_workers: numberOfWorkers!,
               worker_1: numberOfWorkers!,
-              cost_of_labor: 410.0,
+              cost_of_labor: costOfLabor!,
               type: widget.structuralType,
               work: widget.workType,
               fk: widget.projectFk,

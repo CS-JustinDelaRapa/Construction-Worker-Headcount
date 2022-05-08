@@ -83,7 +83,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       units = 'sqm';
       surface = 'Area';
       worker = 'Carpenter';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     } else if (widget.structuralType == 'Masonry Works') {
       if (widget.workType.contains('Interior')) {
         surface = 'Area';
@@ -96,7 +96,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       }
       units = 'sqm';
       worker = 'Tile man';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     } else {
       if (widget.workType == 'Footings') {
         label = 'Footings';
@@ -117,7 +117,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       units = 'cum';
       surface = 'Volume';
       worker = 'Mason';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     }
     productivityRateController.text = defaultValue.toString();
     refreshState();

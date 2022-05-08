@@ -87,7 +87,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       units = 'sqm';
       surface = 'Area';
       worker = 'Tile man';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     } else if (widget.architecturalType == 'Plastering') {
       if (widget.workType.contains('Interior')) {
         defaultValue = 10;
@@ -98,7 +98,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       surface = 'Area';
       units = 'sqm';
       worker = 'Mason';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     } else if (widget.architecturalType == 'Ceiling') {
       if (widget.workType.contains('Steel Frame')) {
         defaultValue = 21.28;
@@ -110,7 +110,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       surface = 'Area';
       units = 'sqm';
       worker = 'Carpenter';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     } else {
       if (widget.workType.contains('Trusses')) {
         label = 'Trusses';
@@ -129,7 +129,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         surface = 'Area';
       }
       units = 'sqm';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     }
     productivityRateController.text = defaultValue.toString();
     refreshState();

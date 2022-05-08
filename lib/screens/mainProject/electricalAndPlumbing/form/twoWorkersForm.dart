@@ -74,7 +74,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         defaultValue = 10;
       }
       worker = 'Electrician';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     } else {
       if (widget.workType == 'Works') {
         label = 'Pipes and Fittings';
@@ -88,7 +88,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         defaultValue = 5;
       }
       worker = 'Plumber';
-      secondWorker = 'Labourer';
+      secondWorker = 'Laborer';
     }
     productivityRateController.text = defaultValue.toString();
     refreshState();
