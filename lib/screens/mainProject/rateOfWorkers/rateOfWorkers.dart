@@ -1,22 +1,45 @@
 // ignore_for_file: file_names
+import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/workerModel.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 
 class RateOfWorkers extends StatefulWidget {
   final VoidCallback openDrawer;
+  final int projectFk;
 
-  const RateOfWorkers({Key? key, required this.openDrawer}) : super(key: key);
+  const RateOfWorkers({Key? key, required this.openDrawer, required this.projectFk }) : super(key: key);
 
   @override
   _RateOfWorkersState createState() => _RateOfWorkersState();
 }
 
+
 List<TextEditingController> myController = [
   for (int i = 0; i <= 11; i++) TextEditingController()
 ];
 
+
 class _RateOfWorkersState extends State<RateOfWorkers> {
+  bool isLoading = false;
+
+  late List<WorkerType> workers;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    refreshState();
+    super.initState();
+  }
+
+    Future refreshState() async {
+    setState(() => isLoading = true);
+    workers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
+    print(workers[0].workerType);
+    setState(() => isLoading = false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +50,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
         ),
         title: const Text('Rate of Workers'),
       ),
-      body: SingleChildScrollView(
+      body: isLoading? const Center(child: CircularProgressIndicator()): 
+      SingleChildScrollView(
         child: Column(
           children: [
             Row(

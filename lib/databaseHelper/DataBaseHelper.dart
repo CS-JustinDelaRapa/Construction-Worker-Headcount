@@ -32,8 +32,9 @@ class DatabaseHelper{
       await query.execute('''
   CREATE TABLE $tableWorker(
     ${TblWorkerField.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-    ${TblWorkerField.worker_type} TEXT NOT NUll,
-    ${TblWorkerField.rate} REAL NOT NUll    
+    ${TblWorkerField.workerType} TEXT NOT NUll,
+    ${TblWorkerField.rate} REAL NOT NUll,
+    ${TblWorkerField.fk} INTEGER NOT NUll    
     )
   ''');
       await query.execute('''
@@ -72,6 +73,9 @@ class DatabaseHelper{
 
     //irereturn nito ang Primary key ng table, which is ID
     final id = await reference.insert(tableProject, projectItem.toJson());
+
+    createDefaultWorkers(id);
+
     return id;
   }
 
@@ -157,8 +161,37 @@ class DatabaseHelper{
   Future createWorker(WorkerType workerType) async {
     final reference = await instance.database;
 
+    print('creating worker');
     //irereturn nito ang Primary key ng table, which is ID
     await reference.insert(tableWorker, workerType.toJson());
+  }
+
+  Future createDefaultWorkers(int fk) async {
+    List<WorkerType> defaultWorker = [
+      WorkerType(workerType: 'CARPENTER', rate: 600, fk: fk),
+      WorkerType(workerType: 'LABORER', rate: 400, fk: fk),
+      WorkerType(workerType: 'MASON', rate: 550, fk: fk),
+      WorkerType(workerType: 'STEEL MAN', rate: 550, fk: fk),
+      WorkerType(workerType: 'PAINTER', rate: 600, fk: fk),
+      WorkerType(workerType: 'TILE MAN', rate: 600, fk: fk),
+      WorkerType(workerType: 'DOOR INSTALLER', rate: 500, fk: fk),
+      WorkerType(workerType: 'WINDOW INSTALLER', rate: 500, fk: fk),
+      WorkerType(workerType: 'ELECTRICIAN', rate: 600, fk: fk),
+      WorkerType(workerType: 'PLUMBER', rate: 550, fk: fk),
+      WorkerType(workerType: 'WELDER', rate: 600, fk: fk),
+      WorkerType(workerType: 'TINSMITH', rate: 600, fk: fk),
+    ];
+
+    print('at created default workers');
+
+    for(int x = 0; x < defaultWorker.length ; x++){
+      await createWorker(defaultWorker[x]);
+    }
+
+    // defaultWorker.map((e){
+    //   print(e);
+    //   // createWorker(e);
+    // });
   }
 
   Future<List<WorkerType>> readAllWorkerType() async {
@@ -170,10 +203,24 @@ class DatabaseHelper{
     return fromTable.map((fromSQL) => WorkerType.fromJson(fromSQL)).toList();
   }
 
+  Future<List<WorkerType>> readWorkers(int fk) async {
+    final reference = await instance.database;
+
+    final specificID = await reference.query(
+      tableWorker,
+      columns: TblWorkerField.workerFieldNames,
+      where: '${TblWorkerField.fk} = ?',
+      whereArgs: [fk]
+    );
+
+    return specificID.map((fromSQL) => WorkerType.fromJson(fromSQL)).toList();
+  }
+
   Future<int> updateWorker(WorkerType workerInstance) async {
     final reference = await instance.database;
 
     return reference.update(tableProject, workerInstance.toJson(),
-        where: '${TblWorkerField.id} = ?', whereArgs: [workerInstance.id]);
+        where: '${TblFormDataField.fk} = ? and ${TblFormDataField.type} = ? and ${TblFormDataField.work} = ?', 
+        whereArgs: [workerInstance.id]);
   }
 }
