@@ -44,9 +44,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   bool isLoading = false, isUpdating = false;
 
   //auto populated
-  int? numberOfDays, numberOfWorkers;
+  int? numberOfDays, numberOfWorkers, worker_1;
   DateTime? dateEnd;
-  double? worker_1, costOfLabor;
+  double? costOfLabor;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -121,7 +121,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
       dateEnd = formData!.date_end;
-      worker_1 = double.parse(formData!.worker_1);
+      worker_1 = formData!.worker_1;
       costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
 
@@ -793,7 +793,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                 num_days: numberOfDays!,
                 date_end: dateEnd!,
                 num_workers: numberOfWorkers!,
-                worker_1: worker_1.toString(),
+                worker_1: worker_1!,
                 cost_of_labor: costOfLabor!,
                 type: widget.structuralType,
                 work: widget.workType,
@@ -811,7 +811,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               num_days: 12,
               date_end: DateTime.now(),
               num_workers: 12,
-              worker_1: '2',
+              worker_1: 2,
               cost_of_labor: 81,
               type: widget.structuralType,
               work: widget.workType,

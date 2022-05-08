@@ -51,8 +51,8 @@ class FormData {
   final int pref_time;
   final int num_days;
   final int num_workers;
-  final String worker_1;
-  final String? worker_2;  
+  final int worker_1;
+  final int? worker_2;  
   final double cost_of_labor;
   final String type;
   final String work;
@@ -109,8 +109,8 @@ class FormData {
           int? pref_time,
           int? num_days,
           int? num_workers,
-          String? worker_1,
-          String? worker_2,
+          int? worker_1,
+          int? worker_2,
           double? cost_of_labor,
           String? type,
           String? work
@@ -147,8 +147,8 @@ class FormData {
       pref_time: fromSQL[TblFormDataField.pref_time] as int,
       num_days: fromSQL[TblFormDataField.num_days] as int,
       num_workers: fromSQL[TblFormDataField.num_workers] as int,
-      worker_1: fromSQL[TblFormDataField.worker_1] as String,
-      worker_2: fromSQL[TblFormDataField.worker_2] as String?,
+      worker_1: fromSQL[TblFormDataField.worker_1] as int,
+      worker_2: fromSQL[TblFormDataField.worker_2] as int?,
       cost_of_labor: fromSQL[TblFormDataField.cost_of_labor] as double,
       type: fromSQL[TblFormDataField.type] as String,
       work: fromSQL[TblFormDataField.work] as String

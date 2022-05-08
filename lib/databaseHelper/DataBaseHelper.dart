@@ -219,8 +219,8 @@ class DatabaseHelper{
   Future<int> updateWorker(WorkerType workerInstance) async {
     final reference = await instance.database;
 
-    return reference.update(tableProject, workerInstance.toJson(),
-        where: '${TblFormDataField.fk} = ? and ${TblFormDataField.type} = ? and ${TblFormDataField.work} = ?', 
-        whereArgs: [workerInstance.id]);
+    return reference.update(tableWorker, workerInstance.toJson(),
+        where: '${TblWorkerField.fk} = ? and ${TblWorkerField.workerType} = ? and ${TblFormDataField.work} = ?', 
+        whereArgs: [workerInstance.fk]);
   }
 }

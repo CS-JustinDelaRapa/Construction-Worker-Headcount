@@ -70,9 +70,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   bool isLoading = false, isUpdating = false;
 
   //auto populated
-  int? numberOfDays, numberOfWorkers;
+  int? numberOfDays, numberOfWorkers, worker1, worker2;
   DateTime? dateEnd;
-  double? worker1, worker2, costOfLabor;
+  double? costOfLabor;
 
   @override
   void initState() {
@@ -148,8 +148,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
       dateEnd = formData!.date_end;
-      worker1 = double.parse(formData!.worker_1);
-      worker2 = double.parse(formData!.worker_2!);
+      worker1 = formData!.worker_1;
+      worker2 = formData!.worker_2;
       costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
 
@@ -878,8 +878,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                 num_days: numberOfDays!,
                 date_end: dateEnd!,
                 num_workers: numberOfWorkers!,
-                worker_1: worker1.toString(),
-                worker_2: worker2.toString(),
+                worker_1: worker1!,
+                worker_2: worker2,
                 cost_of_labor: costOfLabor!,
                 type: widget.architecturalType,
                 work: widget.workType,
@@ -897,8 +897,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               num_days: 12,
               date_end: DateTime.now(),
               num_workers: 12,
-              worker_1: '2',
-              worker_2: '3',
+              worker_1: 2,
+              worker_2: 3,
               cost_of_labor: 81,
               type: widget.architecturalType,
               work: widget.workType,
