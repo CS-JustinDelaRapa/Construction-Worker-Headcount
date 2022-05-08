@@ -410,7 +410,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                         ],
                                       )
                                     : Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            8, 25, 8, 0),
                                         child: SizedBox(
                                             width: MediaQuery.of(context)
                                                     .size
@@ -423,6 +424,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             child: Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: TextFormField(
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    helperText:
+                                                        ' ', // this is new
+                                                  ),
                                                   validator: (value) {
                                                     if (value == null ||
                                                         value.isEmpty ||
@@ -439,7 +445,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                 ))),
                                       ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 10, 8, 0),
                                   child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.5,
@@ -473,7 +480,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       )),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 15, 8, 0),
                                   child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.5,

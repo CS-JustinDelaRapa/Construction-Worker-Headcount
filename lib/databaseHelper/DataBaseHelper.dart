@@ -4,8 +4,7 @@ import '../model/ProjectModel.dart';
 import '../model/formModel.dart';
 import '../model/workerModel.dart';
 
-class DatabaseHelper{
-  
+class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper();
 
   static Database? _database;
@@ -29,7 +28,7 @@ class DatabaseHelper{
 
   //**Table */
   Future _createTable(Database query, int version) async {
-      await query.execute('''
+    await query.execute('''
   CREATE TABLE $tableWorker(
     ${TblWorkerField.id} INTEGER PRIMARY KEY AUTOINCREMENT,
     ${TblWorkerField.workerType} TEXT NOT NUll,
@@ -37,7 +36,7 @@ class DatabaseHelper{
     ${TblWorkerField.fk} INTEGER NOT NUll    
     )
   ''');
-      await query.execute('''
+    await query.execute('''
   CREATE TABLE $tableProject(
     ${TblProjectField.id} INTEGER PRIMARY KEY AUTOINCREMENT,
     ${TblProjectField.date_start} TEXT NOT NULL,
@@ -46,7 +45,7 @@ class DatabaseHelper{
     ${TblProjectField.type} TEXT NOT NUll    
     )
   ''');
-      await query.execute('''
+    await query.execute('''
   CREATE TABLE $tableAllData(
     ${TblFormDataField.id} INTEGER PRIMARY KEY AUTOINCREMENT,
     ${TblFormDataField.fk} INTEGER NOT NUll,
@@ -83,8 +82,8 @@ class DatabaseHelper{
     final reference = await instance.database;
 
     //SELECT * FROM tbl_diary ORDER BY dateTime
-    final fromTable =
-        await reference.query(tableProject, orderBy: '${TblProjectField.id} DESC');
+    final fromTable = await reference.query(tableProject,
+        orderBy: '${TblProjectField.id} DESC');
     return fromTable.map((fromSQL) => ProjectItem.fromJson(fromSQL)).toList();
   }
 
@@ -117,8 +116,8 @@ class DatabaseHelper{
 
     return refererence.delete(tableProject,
         where: '${TblProjectField.id} = ?', whereArgs: [searchKey]);
-  }  
-  
+  }
+
 //formData
   Future createFormData(FormData formTwo) async {
     final reference = await instance.database;
@@ -130,12 +129,11 @@ class DatabaseHelper{
   Future<FormData?> readFormData(int fk, String type, String work) async {
     final reference = await instance.database;
 
-    final specificID = await reference.query(
-      tableAllData,
-      columns: TblFormDataField.formTwoFieldNames,
-      where: '${TblFormDataField.fk} = ? and ${TblFormDataField.type} = ? and ${TblFormDataField.work} = ?',
-      whereArgs: [fk, type, work]
-    );
+    final specificID = await reference.query(tableAllData,
+        columns: TblFormDataField.formTwoFieldNames,
+        where:
+            '${TblFormDataField.fk} = ? and ${TblFormDataField.type} = ? and ${TblFormDataField.work} = ?',
+        whereArgs: [fk, type, work]);
 
     if (specificID.isNotEmpty) {
       return FormData.fromJson(specificID.first);
@@ -155,7 +153,7 @@ class DatabaseHelper{
   //   final refererence = await instance.database;
   //   return refererence.delete(tableName,
   //       where: '${TblFormField.id} = ?', whereArgs: [searchKey]);
-  // }      
+  // }
 
 //worker
   Future createWorker(WorkerType workerType) async {
@@ -184,7 +182,7 @@ class DatabaseHelper{
 
     print('at created default workers');
 
-    for(int x = 0; x < defaultWorker.length ; x++){
+    for (int x = 0; x < defaultWorker.length; x++) {
       await createWorker(defaultWorker[x]);
     }
 
@@ -198,20 +196,18 @@ class DatabaseHelper{
     final reference = await instance.database;
 
     //SELECT * FROM tbl_diary ORDER BY dateTime
-    final fromTable =
-        await reference.query(tableProject, orderBy: '${TblWorkerField.id} DESC');
+    final fromTable = await reference.query(tableProject,
+        orderBy: '${TblWorkerField.id} DESC');
     return fromTable.map((fromSQL) => WorkerType.fromJson(fromSQL)).toList();
   }
 
   Future<List<WorkerType>> readWorkers(int fk) async {
     final reference = await instance.database;
 
-    final specificID = await reference.query(
-      tableWorker,
-      columns: TblWorkerField.workerFieldNames,
-      where: '${TblWorkerField.fk} = ?',
-      whereArgs: [fk]
-    );
+    final specificID = await reference.query(tableWorker,
+        columns: TblWorkerField.workerFieldNames,
+        where: '${TblWorkerField.fk} = ?',
+        whereArgs: [fk]);
 
     return specificID.map((fromSQL) => WorkerType.fromJson(fromSQL)).toList();
   }
@@ -220,7 +216,6 @@ class DatabaseHelper{
     final reference = await instance.database;
 
     return reference.update(tableWorker, workerInstance.toJson(),
-        where: '${TblWorkerField.fk} = ? and ${TblWorkerField.workerType} = ? and ${TblFormDataField.work} = ?', 
-        whereArgs: [workerInstance.fk]);
+        where: '${TblWorkerField.id} = ?', whereArgs: [workerInstance.id]);
   }
 }

@@ -473,7 +473,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                                 ))),
                                       ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 20, 8, 0),
                                   child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.5,
@@ -507,7 +508,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                       )),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 15, 8, 0),
                                   child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.5,

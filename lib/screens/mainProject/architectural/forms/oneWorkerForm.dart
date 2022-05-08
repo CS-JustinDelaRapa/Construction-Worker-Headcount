@@ -548,7 +548,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                             ))),
                                                   ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 5, 8, 0),
                                   child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.5,
@@ -567,7 +568,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             if (value == null ||
                                                 value.isEmpty ||
                                                 !regex.hasMatch(value)) {
-                                              return 'This Field is Required';
+                                              return 'This Fields is Required';
                                             }
                                             return null;
                                           },
@@ -582,7 +583,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       )),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 16, 8, 0),
                                   child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.5,
