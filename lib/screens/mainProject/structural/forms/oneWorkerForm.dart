@@ -130,7 +130,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       numberOfWorkers = formData!.num_workers;
       dateEnd = formData!.date_end;
       worker_1 = formData!.worker_1;
-      costOfLabor = formData!.cost_of_labor;
+      costOfLabor = formData!.worker_1 * workerCost!;
+      // costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
 
       _selectedType = formData!.col_1;
