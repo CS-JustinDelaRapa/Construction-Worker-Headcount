@@ -24,6 +24,7 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
           onClicked: widget.openDrawer,
         ),
         title: const Text('Manpower Distribution'),
+        actions: [printPDF()],
       ),
       body: Center(
         child: Column(
@@ -35,4 +36,6 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
       ),
     );
   }
+
+  printPDF() => ElevatedButton(onPressed: null, child: Text('Print as PDF'));
 }

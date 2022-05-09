@@ -51,18 +51,18 @@ class _LoadProjectState extends State<LoadProject> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : projects!.isEmpty
-              ? Center(child: Text('no projects'))
-              : Column(
-                  key: _scaffoldKey,
-                  children: [
-                    const ListTile(
-                      leading: Text('ID'),
-                      title: Text('Project Name'),
-                      trailing: Text('Style'),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
+          : Column(
+              key: _scaffoldKey,
+              children: [
+                const ListTile(
+                  leading: Text('ID'),
+                  title: Text('Project Name'),
+                  trailing: Text('Style'),
+                ),
+                Expanded(
+                  child: projects!.isEmpty
+                      ? Center(child: Text('No Projects'))
+                      : ListView.builder(
                           itemCount: projects!.length,
                           itemBuilder: (context, index) {
                             return Ink(
@@ -165,29 +165,31 @@ class _LoadProjectState extends State<LoadProject> {
                               ),
                             );
                           }),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CustomWidgets().funtion_Button(
-                            "Delete",
-                            const Icon(Icons.delete_outline_outlined),
-                            0.45,
-                            0.07,
-                            context,
-                            deleteProject),
-                        CustomWidgets().funtion_Button(
-                            'Load',
-                            const Icon(Icons.menu_open),
-                            0.45,
-                            0.07,
-                            context,
-                            loadProject)
-                      ],
-                    ),
-                    SizedBox(height: 10)
-                  ],
                 ),
+                projects!.isEmpty
+                    ? Container()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          CustomWidgets().funtion_Button(
+                              "Delete",
+                              const Icon(Icons.delete_outline_outlined),
+                              0.45,
+                              0.07,
+                              context,
+                              deleteProject),
+                          CustomWidgets().funtion_Button(
+                              'Load',
+                              const Icon(Icons.menu_open),
+                              0.45,
+                              0.07,
+                              context,
+                              loadProject)
+                        ],
+                      ),
+                SizedBox(height: 10)
+              ],
+            ),
     );
   }
 

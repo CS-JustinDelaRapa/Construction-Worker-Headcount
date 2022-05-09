@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:engineering/model/itemModel.dart';
+import 'package:engineering/custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 
 class BungalowArchitechturalItems {
@@ -28,15 +29,18 @@ class BungalowArchitechturalItems {
     'Gutter'
   ];
 
-  static const flooring = DrawerItem(title: 'Flooring', icon: Icons.home);
-  static const plastering = DrawerItem(title: 'Plastering', icon: Icons.home);
+  static const flooring =
+      DrawerItem(title: 'Flooring', icon: CustomIcons.flooring);
+  static const plastering =
+      DrawerItem(title: 'Plastering', icon: CustomIcons.plastering);
   static const paintingWorks =
-      DrawerItem(title: 'Painting Works', icon: Icons.home);
+      DrawerItem(title: 'Painting Works', icon: CustomIcons.painting);
   static const doorsAndWindows =
-      DrawerItem(title: 'Doors and Windows', icon: Icons.home);
-  static const ceiling = DrawerItem(title: 'Ceiling', icon: Icons.home);
+      DrawerItem(title: 'Doors and Windows', icon: CustomIcons.doors);
+  static const ceiling =
+      DrawerItem(title: 'Ceiling', icon: CustomIcons.ceiling);
   static const roofingWorks =
-      DrawerItem(title: 'Roofing Works', icon: Icons.home);
+      DrawerItem(title: 'Roofing Works', icon: CustomIcons.roofing);
 
   static final List<DrawerItem> all = [
     flooring,

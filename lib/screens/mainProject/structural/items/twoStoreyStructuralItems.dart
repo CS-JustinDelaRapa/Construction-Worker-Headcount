@@ -3,6 +3,8 @@
 import 'package:engineering/model/itemModel.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../custom_icons_icons.dart';
+
 class TwoStoreyStructuralItems {
   static const List<String> listEarthWorks = ['Excavation', 'Backfilling'];
   static const List<String> listFormWorks = [
@@ -46,14 +48,16 @@ class TwoStoreyStructuralItems {
     'Walls SF',
   ];
 
-  static const earthWorks = DrawerItem(title: 'Earthworks', icon: Icons.landscape);
-  static const formWorks = DrawerItem(title: 'Formworks', icon: Icons.house_siding_outlined);
+  static const earthWorks =
+      DrawerItem(title: 'Earthworks', icon: Icons.landscape);
+  static const formWorks =
+      DrawerItem(title: 'Formworks', icon: Icons.house_siding_outlined);
   static const masonryWorks =
       DrawerItem(title: 'Masonry Works', icon: Icons.construction_rounded);
-  static const reiforecedCementConcrete =
-      DrawerItem(title: 'Reinforced Cement Works', icon: Icons.home);
-  static const steelReinforcedmentWork =
-      DrawerItem(title: 'Steel Reinforcement Works', icon: Icons.precision_manufacturing);
+  static const reiforecedCementConcrete = DrawerItem(
+      title: 'Reinforced Cement Works', icon: CustomIcons.cement_works);
+  static const steelReinforcedmentWork = DrawerItem(
+      title: 'Steel Reinforcement Works', icon: Icons.precision_manufacturing);
 
   static final List<DrawerItem> all = [
     earthWorks,
