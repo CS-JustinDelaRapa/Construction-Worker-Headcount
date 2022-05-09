@@ -5,6 +5,8 @@ import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../model/workerModel.dart';
+
 // ignore: must_be_immutable
 class TwoWorkersForm extends StatefulWidget {
   String workType;
@@ -47,6 +49,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     }
   }
 
+  List<WorkerType>? rateOfWorkers;
   String? preferedTime;
   String? volume;
   TextEditingController productivityRateController = TextEditingController();
@@ -54,12 +57,16 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   //database
   FormData? formData;
-  bool isLoading = false, isUpdating = false;
+  bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
   int? numberOfDays, numberOfWorkers, worker1, worker2;
   DateTime? dateEnd;
-  double? costOfLabor;
+  double? costOfLabor,
+      initialWorkers,
+      initialNumberofDays,
+      workerCost,
+      workerCost2;
 
   @override
   void initState() {
@@ -128,6 +135,15 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     setState(() => isLoading = true);
     formData = await DatabaseHelper.instance
         .readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
+    for (int i = 0; i < rateOfWorkers!.length; i++) {
+      if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
+        workerCost = rateOfWorkers![i].rate;
+      } else if (rateOfWorkers![i].workerType.toUpperCase() ==
+          secondWorker!.toUpperCase()) {
+        workerCost2 = rateOfWorkers![i].rate;
+      }
+    }
     if (formData != null) {
       dateStartControler.text =
           DateFormat('MM/dd/yyyy').format(formData!.date_start);
@@ -138,7 +154,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       dateEnd = formData!.date_end;
       worker1 = formData!.worker_1;
       worker2 = formData!.worker_2!;
-      costOfLabor = formData!.cost_of_labor;
+      costOfLabor = (formData!.worker_1 * workerCost!) +
+          (formData!.worker_2! * workerCost2!);
+      //costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
 
       _selectedType = formData!.col_1;
@@ -854,6 +872,30 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   Widget saveButton() => ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
+          initialWorkers = (double.parse(volume!) /
+                  double.parse(productivityRateController.text))
+              .roundToDouble();
+          if (initialWorkers! <= 3) {
+            initialNumberofDays = 1;
+          } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+            initialNumberofDays = 2;
+          } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+            initialNumberofDays = 3;
+          } else if (initialWorkers! >= 10 && initialWorkers! <= 12) {
+            initialNumberofDays = 4;
+          } else if (initialWorkers! >= 13 && initialWorkers! <= 15) {
+            initialNumberofDays = 5;
+          } else {
+            isExceeded = true;
+          }
+
+          if (double.parse(preferedTime!) < initialNumberofDays!) {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          numberOfDays = initialNumberofDays!.round();
+          numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
+          costOfLabor = numberOfWorkers! * workerCost!;
+
           if (isUpdating) {
             final formDataUpdate = FormData(
                 date_start: selectedDate,
@@ -878,14 +920,14 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               date_start: selectedDate,
               col_1: _selectedType ?? 'DEFAULT',
               col_1_val: defaultValue!,
-              col_2: 80,
-              pref_time: 82,
-              num_days: 12,
-              date_end: DateTime.now(),
-              num_workers: 12,
-              worker_1: 2,
-              worker_2: 3,
-              cost_of_labor: 81,
+              col_2: double.parse(volume!),
+              pref_time: int.parse(preferedTime!),
+              num_days: numberOfDays!,
+              date_end: selectedDate.add(Duration(days: numberOfDays!)),
+              num_workers: numberOfWorkers!,
+              worker_1: numberOfWorkers!,
+              worker_2: numberOfWorkers!,
+              cost_of_labor: costOfLabor!,
               type: widget.structuralType,
               work: widget.workType,
               fk: widget.projectFk,
