@@ -813,7 +813,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
           }
 
           if (isExceeded) {
-            print('Exceeded' + initialWorkers.toString());
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -821,7 +820,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       title: const Text(
                           'Initial numbers of workers should not exceed 15 count.'),
                       actions: <Widget>[
-                        FlatButton(
+                        ElevatedButton(
                           child: Text("OK"),
                           onPressed: () {
                             // print(projectName[index]);

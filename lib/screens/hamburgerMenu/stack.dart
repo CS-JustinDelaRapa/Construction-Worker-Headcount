@@ -160,11 +160,10 @@ class _StackWidgetState extends State<StackWidget> {
         );
       case DrawerItems.rateOfWorkers:
         return RateOfWorkers(
-          openDrawer: openDrawer,
-          projectFk: widget.project.id!
-        );
+            openDrawer: openDrawer, projectFk: widget.project.id!);
       case DrawerItems.productivityRate:
         return ProductivityRate(
+          project: widget.project,
           openDrawer: openDrawer,
         );
       case DrawerItems.manPowerDistribution:

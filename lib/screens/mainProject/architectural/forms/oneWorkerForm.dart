@@ -148,7 +148,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }
     }
     if (formData != null) {
-      dateStartControler.text = DateFormat('MM/dd/yyyy').format(DateTime.parse(formData!.date_start!));
+      dateStartControler.text = DateFormat('MM/dd/yyyy')
+          .format(DateTime.parse(formData!.date_start!));
       defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
@@ -915,52 +916,72 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             isExceeded = true;
           }
 
-          if (double.parse(preferedTime!) < initialNumberofDays!) {
-            initialNumberofDays = double.parse(preferedTime!);
-          }
+          if (isExceeded) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: const Text(
+                          'Initial numbers of workers should not exceed 15 count.'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          child: Text("OK"),
+                          onPressed: () {
+                            // print(projectName[index]);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                });
+          } else {
+            if (double.parse(preferedTime!) < initialNumberofDays!) {
+              initialNumberofDays = double.parse(preferedTime!);
+            }
 
-          numberOfDays = initialNumberofDays!.round();
-          numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-          costOfLabor = numberOfWorkers! * workerCost!;
+            numberOfDays = initialNumberofDays!.round();
+            numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
+            costOfLabor = numberOfWorkers! * workerCost!;
 
-          if (isUpdating) {
-            final formDataUpdate = FormData(
+            if (isUpdating) {
+              final formDataUpdate = FormData(
+                  date_start: selectedDate.toString(),
+                  col_1: _selectedType ?? 'DEFAULT',
+                  col_1_val: defaultValue!,
+                  col_2: double.parse(volume!),
+                  pref_time: int.parse(preferedTime!),
+                  num_days: numberOfDays!,
+                  date_end: dateEnd!.toString(),
+                  num_workers: numberOfWorkers!,
+                  worker_1: numberOfWorkers!,
+                  // cost_of_labor: costOfLabor!,
+                  type: widget.architecturalType,
+                  work: widget.workType,
+                  fk: widget.projectFk,
+                  id: formData!.id!);
+
+              DatabaseHelper.instance.updateFormData(formDataUpdate);
+            } else {
+              final formDataCreate = FormData(
                 date_start: selectedDate.toString(),
                 col_1: _selectedType ?? 'DEFAULT',
                 col_1_val: defaultValue!,
                 col_2: double.parse(volume!),
                 pref_time: int.parse(preferedTime!),
                 num_days: numberOfDays!,
-                date_end: dateEnd!.toString(),
+                date_end:
+                    selectedDate.add(Duration(days: numberOfDays!)).toString(),
                 num_workers: numberOfWorkers!,
                 worker_1: numberOfWorkers!,
                 // cost_of_labor: costOfLabor!,
                 type: widget.architecturalType,
                 work: widget.workType,
                 fk: widget.projectFk,
-                id: formData!.id!);
+              );
 
-            DatabaseHelper.instance.updateFormData(formDataUpdate);
-          } else {
-            final formDataCreate = FormData(
-              date_start: selectedDate.toString(),
-              col_1: _selectedType ?? 'DEFAULT',
-              col_1_val: defaultValue!,
-              col_2: double.parse(volume!),
-              pref_time: int.parse(preferedTime!),
-              num_days: numberOfDays!,
-              date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
-              num_workers: numberOfWorkers!,
-              worker_1: numberOfWorkers!,
-              // cost_of_labor: costOfLabor!,
-              type: widget.architecturalType,
-              work: widget.workType,
-              fk: widget.projectFk,
-            );
-
-            DatabaseHelper.instance.createFormData(formDataCreate);
+              DatabaseHelper.instance.createFormData(formDataCreate);
+            }
+            refreshState();
           }
-          refreshState();
         }
       },
       child: const Text('Save'));
