@@ -1,3 +1,6 @@
+import 'package:engineering/screens/mainProject/architectural/items/bungalowArchitecturalItem.dart';
+import 'package:engineering/screens/mainProject/electricalAndPlumbing/items/electricalAndPlumbingItem.dart';
+import 'package:engineering/screens/mainProject/structural/items/bungalowStructuralItem.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../model/ProjectModel.dart';
@@ -49,17 +52,16 @@ class DatabaseHelper {
   CREATE TABLE $tableAllData(
     ${TblFormDataField.id} INTEGER PRIMARY KEY AUTOINCREMENT,
     ${TblFormDataField.fk} INTEGER NOT NUll,
-    ${TblFormDataField.date_start} TEXT NOT NULL,
-    ${TblFormDataField.date_end} TEXT NOT NULL,
-    ${TblFormDataField.col_1} TEXT,
+    ${TblFormDataField.date_start} TEXT,
+    ${TblFormDataField.date_end} TEXT,
+    ${TblFormDataField.col_1} TEXT NOT NUll,
     ${TblFormDataField.col_1_val} REAL NOT NUll,
-    ${TblFormDataField.col_2} REAL NOT NUll,
-    ${TblFormDataField.pref_time} INTEGER NOT NUll,
-    ${TblFormDataField.num_days} INTEGER NOT NUll,
-    ${TblFormDataField.num_workers} INTEGER NOT NUll,
-    ${TblFormDataField.worker_1} INTEGER NOT NUll,
+    ${TblFormDataField.col_2} REAL,
+    ${TblFormDataField.pref_time} INTEGER,
+    ${TblFormDataField.num_days} INTEGER,
+    ${TblFormDataField.num_workers} INTEGER,
+    ${TblFormDataField.worker_1} INTEGER,
     ${TblFormDataField.worker_2} INTEGER,    
-    ${TblFormDataField.cost_of_labor} REAL NOT NUll,
     ${TblFormDataField.type} TEXT NOT NUll,
     ${TblFormDataField.work} TEXT NOT NUll
     )
@@ -74,6 +76,11 @@ class DatabaseHelper {
     final id = await reference.insert(tableProject, projectItem.toJson());
 
     createDefaultWorkers(id);
+    if(projectItem.type == 'Bungalow'){
+      createDefaultProductivityRateBunagalow(id);
+    }else{
+      // createDefaultProductivityRateStorey(id);      
+    }
 
     return id;
   }
@@ -121,7 +128,7 @@ class DatabaseHelper {
 //formData
   Future createFormData(FormData formTwo) async {
     final reference = await instance.database;
-    print('at create database helper');
+
     //irereturn nito ang Primary key ng table, which is ID
     await reference.insert(tableAllData, formTwo.toJson());
   }
@@ -159,37 +166,8 @@ class DatabaseHelper {
   Future createWorker(WorkerType workerType) async {
     final reference = await instance.database;
 
-    print('creating worker');
     //irereturn nito ang Primary key ng table, which is ID
     await reference.insert(tableWorker, workerType.toJson());
-  }
-
-  Future createDefaultWorkers(int fk) async {
-    List<WorkerType> defaultWorker = [
-      WorkerType(workerType: 'CARPENTER', rate: 600, fk: fk),
-      WorkerType(workerType: 'LABORER', rate: 400, fk: fk),
-      WorkerType(workerType: 'MASON', rate: 550, fk: fk),
-      WorkerType(workerType: 'STEEL MAN', rate: 550, fk: fk),
-      WorkerType(workerType: 'PAINTER', rate: 600, fk: fk),
-      WorkerType(workerType: 'TILE MAN', rate: 600, fk: fk),
-      WorkerType(workerType: 'DOOR INSTALLER', rate: 500, fk: fk),
-      WorkerType(workerType: 'WINDOW INSTALLER', rate: 500, fk: fk),
-      WorkerType(workerType: 'ELECTRICIAN', rate: 600, fk: fk),
-      WorkerType(workerType: 'PLUMBER', rate: 550, fk: fk),
-      WorkerType(workerType: 'WELDER', rate: 600, fk: fk),
-      WorkerType(workerType: 'TINSMITH', rate: 600, fk: fk),
-    ];
-
-    print('at created default workers');
-
-    for (int x = 0; x < defaultWorker.length; x++) {
-      await createWorker(defaultWorker[x]);
-    }
-
-    // defaultWorker.map((e){
-    //   print(e);
-    //   // createWorker(e);
-    // });
   }
 
   Future<List<WorkerType>> readAllWorkerType() async {
@@ -217,5 +195,164 @@ class DatabaseHelper {
 
     return reference.update(tableWorker, workerInstance.toJson(),
         where: '${TblWorkerField.id} = ?', whereArgs: [workerInstance.id]);
+  }
+
+    Future createDefaultWorkers(int fk) async {
+    List<WorkerType> defaultWorker = [
+      WorkerType(workerType: 'CARPENTER', rate: 600, fk: fk),
+      WorkerType(workerType: 'LABORER', rate: 400, fk: fk),
+      WorkerType(workerType: 'MASON', rate: 550, fk: fk),
+      WorkerType(workerType: 'STEEL MAN', rate: 550, fk: fk),
+      WorkerType(workerType: 'PAINTER', rate: 600, fk: fk),
+      WorkerType(workerType: 'TILE MAN', rate: 600, fk: fk),
+      WorkerType(workerType: 'DOOR INSTALLER', rate: 500, fk: fk),
+      WorkerType(workerType: 'WINDOW INSTALLER', rate: 500, fk: fk),
+      WorkerType(workerType: 'ELECTRICIAN', rate: 600, fk: fk),
+      WorkerType(workerType: 'PLUMBER', rate: 550, fk: fk),
+      WorkerType(workerType: 'WELDER', rate: 600, fk: fk),
+      WorkerType(workerType: 'TINSMITH', rate: 600, fk: fk),
+    ];
+
+    for (int x = 0; x < defaultWorker.length; x++) {
+      await createWorker(defaultWorker[x]);
+    }
+  }
+
+//Bungalow
+    Future createDefaultProductivityRateBunagalow(int fk) async {
+    List<FormData> defaultFormData = [];
+
+//**
+//structural works
+// */
+//earthworks
+    for(int x = 0; x < BungalowStructuralItems.listEarthWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowStructuralItems.defValEarthworks[x].col_1,
+              col_1_val: BungalowStructuralItems.defValEarthworks[x].col_1_val,
+              type: BungalowStructuralItems.listEarthWorks[x],
+              work: BungalowStructuralItems.earthWorks.title));
+    }
+
+//formworks
+    for(int x = 0; x < BungalowStructuralItems.listFormWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowStructuralItems.defValFormworks[x].col_1,
+              col_1_val: BungalowStructuralItems.defValFormworks[x].col_1_val,
+              type: BungalowStructuralItems.listFormWorks[x],
+              work: BungalowStructuralItems.formWorks.title));
+    }
+
+//masonry works
+    for(int x = 0; x < BungalowStructuralItems.listMasonryWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowStructuralItems.defValMasonry[x].col_1,
+              col_1_val: BungalowStructuralItems.defValMasonry[x].col_1_val,
+              type: BungalowStructuralItems.listMasonryWorks[x],
+              work: BungalowStructuralItems.masonryWorks.title));
+    }
+
+//reinforecedWorks
+    for(int x = 0; x < BungalowStructuralItems.listReinforecedWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowStructuralItems.defValRCC[x].col_1,
+              col_1_val: BungalowStructuralItems.defValRCC[x].col_1_val,
+              type: BungalowStructuralItems.listReinforecedWorks[x],
+              work: BungalowStructuralItems.reiforecedCementConcrete.title));
+    }
+
+//reinforecedWorks
+    for(int x = 0; x < BungalowStructuralItems.listSteelReinforecedWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowStructuralItems.defValSRW[x].col_1,
+              col_1_val: BungalowStructuralItems.defValSRW[x].col_1_val,
+              type: BungalowStructuralItems.listSteelReinforecedWorks[x],
+              work: BungalowStructuralItems.steelReinforcedmentWork.title));
+    }
+
+//**
+//Architectural works
+// */
+
+//flooring
+    for(int x = 0; x < BungalowArchitechturalItems.listFlooringWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowArchitechturalItems.defValFlooringWorks[x].col_1,
+              col_1_val: BungalowArchitechturalItems.defValFlooringWorks[x].col_1_val,
+              type: BungalowArchitechturalItems.listFlooringWorks[x],
+              work: BungalowArchitechturalItems.flooring.title));
+    }
+
+//plastering
+    for(int x = 0; x < BungalowArchitechturalItems.listPlasteringWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowArchitechturalItems.defValPlasteringWorks[x].col_1,
+              col_1_val: BungalowArchitechturalItems.defValPlasteringWorks[x].col_1_val,
+              type: BungalowArchitechturalItems.listPlasteringWorks[x],
+              work: BungalowArchitechturalItems.plastering.title));
+    }
+
+//painting
+    for(int x = 0; x < BungalowArchitechturalItems.listPaintingWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowArchitechturalItems.defValPaintingWorks[x].col_1,
+              col_1_val: BungalowArchitechturalItems.defValPaintingWorks[x].col_1_val,
+              type: BungalowArchitechturalItems.listPaintingWorks[x],
+              work: BungalowArchitechturalItems.paintingWorks.title));
+    }
+
+//doors and window
+    for(int x = 0; x < BungalowArchitechturalItems.listDoornWindowsWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1,
+              col_1_val: BungalowArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1_val,
+              type: BungalowArchitechturalItems.listDoornWindowsWorks[x],
+              work: BungalowArchitechturalItems.doorsAndWindows.title));
+    }
+
+//ceiling
+    for(int x = 0; x < BungalowArchitechturalItems.listCeilingWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowArchitechturalItems.defValCeilingWorks[x].col_1,
+              col_1_val: BungalowArchitechturalItems.defValCeilingWorks[x].col_1_val,
+              type: BungalowArchitechturalItems.listCeilingWorks[x],
+              work: BungalowArchitechturalItems.ceiling.title));
+    }
+
+//roof
+    for(int x = 0; x < BungalowArchitechturalItems.listRoofingWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: BungalowArchitechturalItems.defValRoofingngWorks[x].col_1,
+              col_1_val: BungalowArchitechturalItems.defValRoofingngWorks[x].col_1_val,
+              type: BungalowArchitechturalItems.listRoofingWorks[x],
+              work: BungalowArchitechturalItems.roofingWorks.title));
+    }
+
+//**
+//Electrical works
+// */
+
+//roof
+    for(int x = 0; x < ElectricalAndPlumbingItems.listPlumbingWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1,
+              col_1_val: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1_val,
+              type: ElectricalAndPlumbingItems.listPlumbingWorks[x],
+              work: ElectricalAndPlumbingItems.plumbingWorks.title));
+    }
+
+//electrical
+    for(int x = 0; x < ElectricalAndPlumbingItems.listElectricalWorks.length; x++ ){
+      defaultFormData.add(FormData(fk: fk, 
+              col_1: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1,
+              col_1_val: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1_val,
+              type: ElectricalAndPlumbingItems.listElectricalWorks[x],
+              work: ElectricalAndPlumbingItems.electricalWorks.title));
+    }
+
+//insert into formtable
+    for (int x = 0; x < defaultFormData.length; x++) {
+      await createFormData(defaultFormData[x]);
+    }
   }
 }

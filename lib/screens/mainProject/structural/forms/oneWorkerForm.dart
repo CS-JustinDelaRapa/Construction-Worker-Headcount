@@ -122,15 +122,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }
     }
     if (formData != null) {
-      dateStartControler.text =
-          DateFormat('MM/dd/yyyy').format(formData!.date_start);
+      dateStartControler.text = DateFormat('MM/dd/yyyy').format(DateTime.parse(formData!.date_start!));
       defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
-      dateEnd = formData!.date_end;
+      dateEnd = DateTime.parse(formData!.date_end!);
       worker_1 = formData!.worker_1;
-      costOfLabor = formData!.worker_1 * workerCost!;
+      costOfLabor = formData!.worker_1! * workerCost!;
       // costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
 
@@ -842,16 +841,16 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
             if (isUpdating) {
               final formDataUpdate = FormData(
-                  date_start: selectedDate,
+                  date_start: selectedDate.toString(),
                   col_1: _selectedType ?? 'DEFAULT',
                   col_1_val: defaultValue!,
                   col_2: double.parse(volume!),
                   pref_time: int.parse(preferedTime!),
                   num_days: numberOfDays!,
-                  date_end: dateEnd!,
+                  date_end: dateEnd!.toString(),
                   num_workers: numberOfWorkers!,
                   worker_1: numberOfWorkers!,
-                  cost_of_labor: costOfLabor!,
+                  // cost_of_labor: costOfLabor!,
                   type: widget.structuralType,
                   work: widget.workType,
                   fk: widget.projectFk,
@@ -860,16 +859,16 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               DatabaseHelper.instance.updateFormData(formDataUpdate);
             } else {
               final formDataCreate = FormData(
-                date_start: selectedDate,
+                date_start: selectedDate.toString(),
                 col_1: _selectedType ?? 'DEFAULT',
                 col_1_val: defaultValue!,
                 col_2: double.parse(volume!),
                 pref_time: int.parse(preferedTime!),
                 num_days: numberOfDays!,
-                date_end: selectedDate.add(Duration(days: numberOfDays!)),
+                date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
                 num_workers: numberOfWorkers!,
                 worker_1: numberOfWorkers!,
-                cost_of_labor: costOfLabor!,
+                // cost_of_labor: costOfLabor!,
                 type: widget.structuralType,
                 work: widget.workType,
                 fk: widget.projectFk,

@@ -141,16 +141,15 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     formData = await DatabaseHelper.instance.readFormData(
         widget.projectFk, widget.architecturalType, widget.workType);
     if (formData != null) {
-      dateStartControler.text =
-          DateFormat('MM/dd/yyyy').format(formData!.date_start);
+      dateStartControler.text = DateFormat('MM/dd/yyyy').format(DateTime.parse(formData!.date_start!));
       defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
-      dateEnd = formData!.date_end;
+      // dateEnd = formData!.date_end;
       worker1 = formData!.worker_1;
       worker2 = formData!.worker_2;
-      costOfLabor = formData!.cost_of_labor;
+      costOfLabor = 600;
       preferedTime = formData!.pref_time.toString();
 
       _selectedType = formData!.col_1;
@@ -873,17 +872,17 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         if (_formKey.currentState!.validate()) {
           if (isUpdating) {
             final formDataUpdate = FormData(
-                date_start: selectedDate,
+                date_start: selectedDate.toString(),
                 col_1: _selectedType ?? 'DEFAULT',
                 col_1_val: defaultValue!,
                 col_2: double.parse(volume!),
                 pref_time: int.parse(preferedTime!),
                 num_days: numberOfDays!,
-                date_end: dateEnd!,
+                date_end: dateEnd!.toString(),
                 num_workers: numberOfWorkers!,
                 worker_1: worker1!,
                 worker_2: worker2,
-                cost_of_labor: costOfLabor!,
+                // cost_of_labor: costOfLabor!,
                 type: widget.architecturalType,
                 work: widget.workType,
                 fk: widget.projectFk,
@@ -892,17 +891,17 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             DatabaseHelper.instance.updateFormData(formDataUpdate);
           } else {
             final formDataCreate = FormData(
-              date_start: selectedDate,
+              date_start: selectedDate.toString(),
               col_1: _selectedType ?? 'DEFAULT',
               col_1_val: defaultValue!,
               col_2: 80,
               pref_time: 82,
               num_days: 12,
-              date_end: DateTime.now(),
+              date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
               num_workers: 12,
               worker_1: 2,
               worker_2: 3,
-              cost_of_labor: 81,
+              // cost_of_labor: 81,
               type: widget.architecturalType,
               work: widget.workType,
               fk: widget.projectFk,
