@@ -843,26 +843,27 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
             costOfLabor = numberOfWorkers! * workerCost!;
 
-            if (isUpdating) {
-              final formDataUpdate = FormData(
-                  date_start: selectedDate.toString(),
-                  col_1: _selectedType ?? 'DEFAULT',
-                  col_1_val: defaultValue!,
-                  col_2: double.parse(volume!),
-                  pref_time: int.parse(preferedTime!),
-                  num_days: numberOfDays!,
-                  date_end: dateEnd!.toString(),
-                  num_workers: numberOfWorkers!,
-                  worker_1: numberOfWorkers!,
-                  // cost_of_labor: costOfLabor!,
-                  type: widget.structuralType,
-                  work: widget.workType,
-                  fk: widget.projectFk,
-                  id: formData!.id!);
+            // if (isUpdating) {
+            //   final formDataUpdate = FormData(
+            //       date_start: selectedDate.toString(),
+            //       col_1: _selectedType ?? 'DEFAULT',
+            //       col_1_val: defaultValue!,
+            //       col_2: double.parse(volume!),
+            //       pref_time: int.parse(preferedTime!),
+            //       num_days: numberOfDays!,
+            //       date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
+            //       num_workers: numberOfWorkers!,
+            //       worker_1: numberOfWorkers!,
+            //       // cost_of_labor: costOfLabor!,
+            //       type: widget.structuralType,
+            //       work: widget.workType,
+            //       fk: widget.projectFk,
+            //       id: formData!.id!);
 
-              DatabaseHelper.instance.updateFormData(formDataUpdate);
-            } else {
+            //   DatabaseHelper.instance.updateFormData(formDataUpdate);
+            // } else {
               final formDataCreate = FormData(
+                id: formData!.id,
                 date_start: selectedDate.toString(),
                 col_1: _selectedType ?? 'DEFAULT',
                 col_1_val: defaultValue!,
@@ -873,13 +874,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                 num_workers: numberOfWorkers!,
                 worker_1: numberOfWorkers!,
                 // cost_of_labor: costOfLabor!,
-                type: widget.structuralType,
-                work: widget.workType,
+                work: widget.structuralType,
+                type: widget.workType,
                 fk: widget.projectFk,
               );
 
-              DatabaseHelper.instance.createFormData(formDataCreate);
-            }
+              DatabaseHelper.instance.updateFormData(formDataCreate);
+            // }
             refreshState();
           }
         }
