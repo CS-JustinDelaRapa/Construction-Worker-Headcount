@@ -153,4 +153,9 @@ class FormData {
       type: fromSQL[TblFormDataField.type] as String,
       work: fromSQL[TblFormDataField.work] as String
   );
+
+   @override
+  String toString() {
+    return 'fk: $fk, col_1: $col_1, Col_1_val: $col_1_val, Type: $type, Work: $work';
+  }
 }

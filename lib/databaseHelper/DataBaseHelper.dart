@@ -12,6 +12,8 @@ class DatabaseHelper {
 
   static Database? _database;
 
+  int count=0;
+
   Future<Database> get database async {
     if (_database != null) return _database!;
 
@@ -76,10 +78,10 @@ class DatabaseHelper {
     final id = await reference.insert(tableProject, projectItem.toJson());
 
     createDefaultWorkers(id);
-    if(projectItem.type == 'Bungalow'){
-      createDefaultProductivityRateBunagalow(id);
+    if(projectItem.type == "Bungalow"){
+    createDefaultProductivityRateBunagalow(id);
     }else{
-      // createDefaultProductivityRateStorey(id);      
+      //create two storey
     }
 
     return id;
@@ -129,6 +131,9 @@ class DatabaseHelper {
   Future createFormData(FormData formTwo) async {
     final reference = await instance.database;
 
+    print(count);
+    count++;
+
     //irereturn nito ang Primary key ng table, which is ID
     await reference.insert(tableAllData, formTwo.toJson());
   }
@@ -139,8 +144,24 @@ class DatabaseHelper {
     final specificID = await reference.query(tableAllData,
         columns: TblFormDataField.formTwoFieldNames,
         where:
-            '${TblFormDataField.fk} = ? and ${TblFormDataField.type} = ? and ${TblFormDataField.work} = ?',
+            '${TblFormDataField.fk} = ? and ${TblFormDataField.work} = ? and ${TblFormDataField.type} = ?',
         whereArgs: [fk, type, work]);
+
+    if (specificID.isNotEmpty) {
+      return FormData.fromJson(specificID.first);
+    } else {
+      return null;
+    }
+  }
+
+  Future<FormData?> readAllFormData(int fk) async {
+    final reference = await instance.database;
+
+    final specificID = await reference.query(tableAllData,
+        columns: TblFormDataField.formTwoFieldNames,
+        where:
+            '${TblFormDataField.fk} = ?',
+        whereArgs: [fk]);
 
     if (specificID.isNotEmpty) {
       return FormData.fromJson(specificID.first);
@@ -245,6 +266,7 @@ class DatabaseHelper {
 
 //masonry works
     for(int x = 0; x < BungalowStructuralItems.listMasonryWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowStructuralItems.defValMasonry[x].col_1,
               col_1_val: BungalowStructuralItems.defValMasonry[x].col_1_val,
@@ -254,6 +276,7 @@ class DatabaseHelper {
 
 //reinforecedWorks
     for(int x = 0; x < BungalowStructuralItems.listReinforecedWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowStructuralItems.defValRCC[x].col_1,
               col_1_val: BungalowStructuralItems.defValRCC[x].col_1_val,
@@ -263,6 +286,7 @@ class DatabaseHelper {
 
 //reinforecedWorks
     for(int x = 0; x < BungalowStructuralItems.listSteelReinforecedWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowStructuralItems.defValSRW[x].col_1,
               col_1_val: BungalowStructuralItems.defValSRW[x].col_1_val,
@@ -276,6 +300,7 @@ class DatabaseHelper {
 
 //flooring
     for(int x = 0; x < BungalowArchitechturalItems.listFlooringWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowArchitechturalItems.defValFlooringWorks[x].col_1,
               col_1_val: BungalowArchitechturalItems.defValFlooringWorks[x].col_1_val,
@@ -285,6 +310,7 @@ class DatabaseHelper {
 
 //plastering
     for(int x = 0; x < BungalowArchitechturalItems.listPlasteringWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowArchitechturalItems.defValPlasteringWorks[x].col_1,
               col_1_val: BungalowArchitechturalItems.defValPlasteringWorks[x].col_1_val,
@@ -294,6 +320,7 @@ class DatabaseHelper {
 
 //painting
     for(int x = 0; x < BungalowArchitechturalItems.listPaintingWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowArchitechturalItems.defValPaintingWorks[x].col_1,
               col_1_val: BungalowArchitechturalItems.defValPaintingWorks[x].col_1_val,
@@ -303,6 +330,7 @@ class DatabaseHelper {
 
 //doors and window
     for(int x = 0; x < BungalowArchitechturalItems.listDoornWindowsWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1,
               col_1_val: BungalowArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1_val,
@@ -312,6 +340,7 @@ class DatabaseHelper {
 
 //ceiling
     for(int x = 0; x < BungalowArchitechturalItems.listCeilingWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowArchitechturalItems.defValCeilingWorks[x].col_1,
               col_1_val: BungalowArchitechturalItems.defValCeilingWorks[x].col_1_val,
@@ -321,6 +350,7 @@ class DatabaseHelper {
 
 //roof
     for(int x = 0; x < BungalowArchitechturalItems.listRoofingWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: BungalowArchitechturalItems.defValRoofingngWorks[x].col_1,
               col_1_val: BungalowArchitechturalItems.defValRoofingngWorks[x].col_1_val,
@@ -334,6 +364,7 @@ class DatabaseHelper {
 
 //roof
     for(int x = 0; x < ElectricalAndPlumbingItems.listPlumbingWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1,
               col_1_val: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1_val,
@@ -343,6 +374,7 @@ class DatabaseHelper {
 
 //electrical
     for(int x = 0; x < ElectricalAndPlumbingItems.listElectricalWorks.length; x++ ){
+      
       defaultFormData.add(FormData(fk: fk, 
               col_1: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1,
               col_1_val: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1_val,
@@ -354,5 +386,6 @@ class DatabaseHelper {
     for (int x = 0; x < defaultFormData.length; x++) {
       await createFormData(defaultFormData[x]);
     }
+    
   }
 }

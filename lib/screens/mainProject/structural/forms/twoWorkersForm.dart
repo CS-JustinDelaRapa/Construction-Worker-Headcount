@@ -27,7 +27,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   late String? units, label, worker, secondWorker, surface;
   late double? defaultValue;
 
-  List<String> soilType = ['8"', '6"'];
+  List<String> soilType = ['8', '6'];
   // String? _selectedSoilType;
 
   String? _selectedType;
@@ -56,7 +56,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   TextEditingController dateStartControler = TextEditingController();
 
   //database
-  FormData? formData;
+  FormData? formData, allFormData;
   bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
@@ -133,8 +133,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
-    formData = await DatabaseHelper.instance
-.readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    allFormData = await DatabaseHelper.instance.readAllFormData(widget.projectFk);
+
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -145,15 +146,15 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       }
     }
     if (formData != null) {
-      dateStartControler.text = DateFormat('MM/dd/yyyy').format(DateTime.parse(formData!.date_start!));
+      dateStartControler.text = formData!.date_start == null? outputFormat.format(DateTime.now()) : outputFormat.format(DateTime.parse(formData!.date_start!));
       defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
-      dateEnd = DateTime.parse(formData!.date_end!);
-      worker1 = formData!.worker_1;
-      worker2 = formData!.worker_2!;
-      costOfLabor = (formData!.worker_1! * workerCost!) +
+      dateEnd = formData!.date_end == null? null : DateTime.parse(formData!.date_end!);
+      worker1 = formData!.worker_1 == null? null : formData!.worker_1!;
+      worker2 = formData!.worker_2 == null? null : formData!.worker_2!;
+      costOfLabor = formData!.worker_1 == null? null : (formData!.worker_1! * workerCost!) +
           (formData!.worker_2! * workerCost2!);
       //costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
@@ -163,6 +164,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       isUpdating = true;
     }
     setState(() => isLoading = false);
+    print(allFormData);
+    print(formData);
   }
 
   @override
@@ -406,7 +409,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                                     _selectedType =
                                                         value.toString();
                                                     if (_selectedType ==
-                                                        "8\"") {
+                                                        "8") {
                                                       defaultValue = 8.5;
                                                       productivityRateController
                                                               .text =
@@ -423,7 +426,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                                 },
                                                 items: soilType.map((soilType) {
                                                   return DropdownMenuItem(
-                                                    child: Text(soilType),
+                                                    child: Text(soilType+"\""),
                                                     value: soilType,
                                                   );
                                                 }).toList()),

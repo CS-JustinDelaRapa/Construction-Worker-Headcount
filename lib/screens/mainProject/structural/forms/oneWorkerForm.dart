@@ -42,7 +42,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   TextEditingController productivityRateController = TextEditingController();
 
   //database
-  FormData? formData;
+  FormData? formData, allFormData;
   bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
@@ -113,8 +113,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
-    formData = await DatabaseHelper.instance
-        .readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    allFormData = await DatabaseHelper.instance.readAllFormData(widget.projectFk);
+
+
+
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -122,14 +125,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }
     }
     if (formData != null) {
-      dateStartControler.text = DateFormat('MM/dd/yyyy').format(DateTime.parse(formData!.date_start!));
+      dateStartControler.text = formData!.date_start == null? outputFormat.format(DateTime.now()) : outputFormat.format(DateTime.parse(formData!.date_start!));
       defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
-      dateEnd = DateTime.parse(formData!.date_end!);
+      dateEnd = formData!.date_end == null? null: DateTime.parse(formData!.date_end!);
       worker_1 = formData!.worker_1;
-      costOfLabor = formData!.worker_1! * workerCost!;
+      costOfLabor = formData!.worker_1 == null? null:formData!.worker_1! * workerCost!;
       // costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
 
@@ -138,6 +141,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       isUpdating = true;
     }
     setState(() => isLoading = false);
+    print(allFormData);
+    print(formData);
   }
 
   @override
