@@ -1,6 +1,8 @@
 import 'package:engineering/screens/mainProject/architectural/items/bungalowArchitecturalItem.dart';
+import 'package:engineering/screens/mainProject/architectural/items/twoStoreyArchitecturalItem.dart';
 import 'package:engineering/screens/mainProject/electricalAndPlumbing/items/electricalAndPlumbingItem.dart';
 import 'package:engineering/screens/mainProject/structural/items/bungalowStructuralItem.dart';
+import 'package:engineering/screens/mainProject/structural/items/twoStoreyStructuralItems.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../model/ProjectModel.dart';
@@ -12,7 +14,7 @@ class DatabaseHelper {
 
   static Database? _database;
 
-  int count=0;
+  int count = 0;
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -78,10 +80,10 @@ class DatabaseHelper {
     final id = await reference.insert(tableProject, projectItem.toJson());
 
     createDefaultWorkers(id);
-    if(projectItem.type == "Bungalow"){
-    createDefaultProductivityRateBunagalow(id);
-    }else{
-      //create two storey
+    if (projectItem.type == "Bungalow") {
+      createDefaultProductivityRateBunagalow(id);
+    } else {
+      createDefaultProdRateTwoStorey(id);
     }
 
     return id;
@@ -131,9 +133,6 @@ class DatabaseHelper {
   Future createFormData(FormData formTwo) async {
     final reference = await instance.database;
 
-    print(count);
-    count++;
-
     //irereturn nito ang Primary key ng table, which is ID
     await reference.insert(tableAllData, formTwo.toJson());
   }
@@ -159,8 +158,7 @@ class DatabaseHelper {
 
     final specificID = await reference.query(tableAllData,
         columns: TblFormDataField.formTwoFieldNames,
-        where:
-            '${TblFormDataField.fk} = ?',
+        where: '${TblFormDataField.fk} = ?',
         whereArgs: [fk]);
 
     if (specificID.isNotEmpty) {
@@ -218,7 +216,7 @@ class DatabaseHelper {
         where: '${TblWorkerField.id} = ?', whereArgs: [workerInstance.id]);
   }
 
-    Future createDefaultWorkers(int fk) async {
+  Future createDefaultWorkers(int fk) async {
     List<WorkerType> defaultWorker = [
       WorkerType(workerType: 'CARPENTER', rate: 600, fk: fk),
       WorkerType(workerType: 'LABORER', rate: 400, fk: fk),
@@ -240,58 +238,64 @@ class DatabaseHelper {
   }
 
 //Bungalow
-    Future createDefaultProductivityRateBunagalow(int fk) async {
+  Future createDefaultProductivityRateBunagalow(int fk) async {
     List<FormData> defaultFormData = [];
 
 //**
 //structural works
 // */
 //earthworks
-    for(int x = 0; x < BungalowStructuralItems.listEarthWorks.length; x++ ){
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowStructuralItems.defValEarthworks[x].col_1,
-              col_1_val: BungalowStructuralItems.defValEarthworks[x].col_1_val,
-              type: BungalowStructuralItems.listEarthWorks[x],
-              work: BungalowStructuralItems.earthWorks.title));
+    for (int x = 0; x < BungalowStructuralItems.listEarthWorks.length; x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowStructuralItems.defValEarthworks[x].col_1,
+          col_1_val: BungalowStructuralItems.defValEarthworks[x].col_1_val,
+          type: BungalowStructuralItems.listEarthWorks[x],
+          work: BungalowStructuralItems.earthWorks.title));
     }
 
 //formworks
-    for(int x = 0; x < BungalowStructuralItems.listFormWorks.length; x++ ){
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowStructuralItems.defValFormworks[x].col_1,
-              col_1_val: BungalowStructuralItems.defValFormworks[x].col_1_val,
-              type: BungalowStructuralItems.listFormWorks[x],
-              work: BungalowStructuralItems.formWorks.title));
+    for (int x = 0; x < BungalowStructuralItems.listFormWorks.length; x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowStructuralItems.defValFormworks[x].col_1,
+          col_1_val: BungalowStructuralItems.defValFormworks[x].col_1_val,
+          type: BungalowStructuralItems.listFormWorks[x],
+          work: BungalowStructuralItems.formWorks.title));
     }
 
 //masonry works
-    for(int x = 0; x < BungalowStructuralItems.listMasonryWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowStructuralItems.defValMasonry[x].col_1,
-              col_1_val: BungalowStructuralItems.defValMasonry[x].col_1_val,
-              type: BungalowStructuralItems.listMasonryWorks[x],
-              work: BungalowStructuralItems.masonryWorks.title));
+    for (int x = 0; x < BungalowStructuralItems.listMasonryWorks.length; x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowStructuralItems.defValMasonry[x].col_1,
+          col_1_val: BungalowStructuralItems.defValMasonry[x].col_1_val,
+          type: BungalowStructuralItems.listMasonryWorks[x],
+          work: BungalowStructuralItems.masonryWorks.title));
     }
 
 //reinforecedWorks
-    for(int x = 0; x < BungalowStructuralItems.listReinforecedWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowStructuralItems.defValRCC[x].col_1,
-              col_1_val: BungalowStructuralItems.defValRCC[x].col_1_val,
-              type: BungalowStructuralItems.listReinforecedWorks[x],
-              work: BungalowStructuralItems.reiforecedCementConcrete.title));
+    for (int x = 0;
+        x < BungalowStructuralItems.listReinforecedWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowStructuralItems.defValRCC[x].col_1,
+          col_1_val: BungalowStructuralItems.defValRCC[x].col_1_val,
+          type: BungalowStructuralItems.listReinforecedWorks[x],
+          work: BungalowStructuralItems.reiforecedCementConcrete.title));
     }
 
 //reinforecedWorks
-    for(int x = 0; x < BungalowStructuralItems.listSteelReinforecedWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowStructuralItems.defValSRW[x].col_1,
-              col_1_val: BungalowStructuralItems.defValSRW[x].col_1_val,
-              type: BungalowStructuralItems.listSteelReinforecedWorks[x],
-              work: BungalowStructuralItems.steelReinforcedmentWork.title));
+    for (int x = 0;
+        x < BungalowStructuralItems.listSteelReinforecedWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowStructuralItems.defValSRW[x].col_1,
+          col_1_val: BungalowStructuralItems.defValSRW[x].col_1_val,
+          type: BungalowStructuralItems.listSteelReinforecedWorks[x],
+          work: BungalowStructuralItems.steelReinforcedmentWork.title));
     }
 
 //**
@@ -299,63 +303,82 @@ class DatabaseHelper {
 // */
 
 //flooring
-    for(int x = 0; x < BungalowArchitechturalItems.listFlooringWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowArchitechturalItems.defValFlooringWorks[x].col_1,
-              col_1_val: BungalowArchitechturalItems.defValFlooringWorks[x].col_1_val,
-              type: BungalowArchitechturalItems.listFlooringWorks[x],
-              work: BungalowArchitechturalItems.flooring.title));
+    for (int x = 0;
+        x < BungalowArchitechturalItems.listFlooringWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowArchitechturalItems.defValFlooringWorks[x].col_1,
+          col_1_val:
+              BungalowArchitechturalItems.defValFlooringWorks[x].col_1_val,
+          type: BungalowArchitechturalItems.listFlooringWorks[x],
+          work: BungalowArchitechturalItems.flooring.title));
     }
 
 //plastering
-    for(int x = 0; x < BungalowArchitechturalItems.listPlasteringWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowArchitechturalItems.defValPlasteringWorks[x].col_1,
-              col_1_val: BungalowArchitechturalItems.defValPlasteringWorks[x].col_1_val,
-              type: BungalowArchitechturalItems.listPlasteringWorks[x],
-              work: BungalowArchitechturalItems.plastering.title));
+    for (int x = 0;
+        x < BungalowArchitechturalItems.listPlasteringWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowArchitechturalItems.defValPlasteringWorks[x].col_1,
+          col_1_val:
+              BungalowArchitechturalItems.defValPlasteringWorks[x].col_1_val,
+          type: BungalowArchitechturalItems.listPlasteringWorks[x],
+          work: BungalowArchitechturalItems.plastering.title));
     }
 
 //painting
-    for(int x = 0; x < BungalowArchitechturalItems.listPaintingWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowArchitechturalItems.defValPaintingWorks[x].col_1,
-              col_1_val: BungalowArchitechturalItems.defValPaintingWorks[x].col_1_val,
-              type: BungalowArchitechturalItems.listPaintingWorks[x],
-              work: BungalowArchitechturalItems.paintingWorks.title));
+    for (int x = 0;
+        x < BungalowArchitechturalItems.listPaintingWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowArchitechturalItems.defValPaintingWorks[x].col_1,
+          col_1_val:
+              BungalowArchitechturalItems.defValPaintingWorks[x].col_1_val,
+          type: BungalowArchitechturalItems.listPaintingWorks[x],
+          work: BungalowArchitechturalItems.paintingWorks.title));
     }
 
 //doors and window
-    for(int x = 0; x < BungalowArchitechturalItems.listDoornWindowsWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1,
-              col_1_val: BungalowArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1_val,
-              type: BungalowArchitechturalItems.listDoornWindowsWorks[x],
-              work: BungalowArchitechturalItems.doorsAndWindows.title));
+    for (int x = 0;
+        x < BungalowArchitechturalItems.listDoornWindowsWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1:
+              BungalowArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1,
+          col_1_val: BungalowArchitechturalItems
+              .defValDoorsAndWindowsWorks[x].col_1_val,
+          type: BungalowArchitechturalItems.listDoornWindowsWorks[x],
+          work: BungalowArchitechturalItems.doorsAndWindows.title));
     }
 
 //ceiling
-    for(int x = 0; x < BungalowArchitechturalItems.listCeilingWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowArchitechturalItems.defValCeilingWorks[x].col_1,
-              col_1_val: BungalowArchitechturalItems.defValCeilingWorks[x].col_1_val,
-              type: BungalowArchitechturalItems.listCeilingWorks[x],
-              work: BungalowArchitechturalItems.ceiling.title));
+    for (int x = 0;
+        x < BungalowArchitechturalItems.listCeilingWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowArchitechturalItems.defValCeilingWorks[x].col_1,
+          col_1_val:
+              BungalowArchitechturalItems.defValCeilingWorks[x].col_1_val,
+          type: BungalowArchitechturalItems.listCeilingWorks[x],
+          work: BungalowArchitechturalItems.ceiling.title));
     }
 
 //roof
-    for(int x = 0; x < BungalowArchitechturalItems.listRoofingWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: BungalowArchitechturalItems.defValRoofingngWorks[x].col_1,
-              col_1_val: BungalowArchitechturalItems.defValRoofingngWorks[x].col_1_val,
-              type: BungalowArchitechturalItems.listRoofingWorks[x],
-              work: BungalowArchitechturalItems.roofingWorks.title));
+    for (int x = 0;
+        x < BungalowArchitechturalItems.listRoofingWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: BungalowArchitechturalItems.defValRoofingngWorks[x].col_1,
+          col_1_val:
+              BungalowArchitechturalItems.defValRoofingngWorks[x].col_1_val,
+          type: BungalowArchitechturalItems.listRoofingWorks[x],
+          work: BungalowArchitechturalItems.roofingWorks.title));
     }
 
 //**
@@ -363,29 +386,227 @@ class DatabaseHelper {
 // */
 
 //roof
-    for(int x = 0; x < ElectricalAndPlumbingItems.listPlumbingWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1,
-              col_1_val: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1_val,
-              type: ElectricalAndPlumbingItems.listPlumbingWorks[x],
-              work: ElectricalAndPlumbingItems.plumbingWorks.title));
+    for (int x = 0;
+        x < ElectricalAndPlumbingItems.listPlumbingWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1,
+          col_1_val:
+              ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1_val,
+          type: ElectricalAndPlumbingItems.listPlumbingWorks[x],
+          work: ElectricalAndPlumbingItems.plumbingWorks.title));
     }
 
 //electrical
-    for(int x = 0; x < ElectricalAndPlumbingItems.listElectricalWorks.length; x++ ){
-      
-      defaultFormData.add(FormData(fk: fk, 
-              col_1: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1,
-              col_1_val: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1_val,
-              type: ElectricalAndPlumbingItems.listElectricalWorks[x],
-              work: ElectricalAndPlumbingItems.electricalWorks.title));
+    for (int x = 0;
+        x < ElectricalAndPlumbingItems.listElectricalWorks.length;
+        x++) {
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1,
+          col_1_val:
+              ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1_val,
+          type: ElectricalAndPlumbingItems.listElectricalWorks[x],
+          work: ElectricalAndPlumbingItems.electricalWorks.title));
     }
 
 //insert into formtable
     for (int x = 0; x < defaultFormData.length; x++) {
       await createFormData(defaultFormData[x]);
     }
-    
+  }
+
+  //Two-Storey
+  Future createDefaultProdRateTwoStorey(int fk) async {
+    List<FormData> defaultFormData = [];
+
+//**
+//structural works
+// */
+//earthworks
+    for (int x = 0; x < TwoStoreyStructuralItems.listEarthWorks.length; x++) {
+      print('1');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyStructuralItems.defValEarthworks[x].col_1,
+          col_1_val: TwoStoreyStructuralItems.defValEarthworks[x].col_1_val,
+          type: TwoStoreyStructuralItems.listEarthWorks[x],
+          work: TwoStoreyStructuralItems.earthWorks.title));
+    }
+
+//formworks
+    for (int x = 0; x < TwoStoreyStructuralItems.listFormWorks.length; x++) {
+      print('2');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyStructuralItems.defValFormworks[x].col_1,
+          col_1_val: TwoStoreyStructuralItems.defValFormworks[x].col_1_val,
+          type: TwoStoreyStructuralItems.listFormWorks[x],
+          work: TwoStoreyStructuralItems.formWorks.title));
+    }
+
+//masonry works
+    for (int x = 0; x < TwoStoreyStructuralItems.listMasonryWorks.length; x++) {
+      print('3');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyStructuralItems.defValMasonry[x].col_1,
+          col_1_val: TwoStoreyStructuralItems.defValMasonry[x].col_1_val,
+          type: TwoStoreyStructuralItems.listMasonryWorks[x],
+          work: TwoStoreyStructuralItems.masonryWorks.title));
+    }
+
+//reinforecedWorks
+    for (int x = 0;
+        x < TwoStoreyStructuralItems.listReinforecedWorks.length;
+        x++) {
+      print('4');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyStructuralItems.defValRCC[x].col_1,
+          col_1_val: TwoStoreyStructuralItems.defValRCC[x].col_1_val,
+          type: TwoStoreyStructuralItems.listReinforecedWorks[x],
+          work: TwoStoreyStructuralItems.reiforecedCementConcrete.title));
+    }
+
+//reinforecedWorks
+    for (int x = 0;
+        x < TwoStoreyStructuralItems.listSteelReinforecedWorks.length;
+        x++) {
+      print('5');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyStructuralItems.defValSRW[x].col_1,
+          col_1_val: TwoStoreyStructuralItems.defValSRW[x].col_1_val,
+          type: TwoStoreyStructuralItems.listSteelReinforecedWorks[x],
+          work: TwoStoreyStructuralItems.steelReinforcedmentWork.title));
+    }
+
+//**
+//Architectural works
+// */
+
+//flooring
+    for (int x = 0;
+        x < TwoStoreyArchitechturalItems.listFlooringWorks.length;
+        x++) {
+      print('6');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyArchitechturalItems.defValFlooringWorks[x].col_1,
+          col_1_val:
+              TwoStoreyArchitechturalItems.defValFlooringWorks[x].col_1_val,
+          type: TwoStoreyArchitechturalItems.listFlooringWorks[x],
+          work: TwoStoreyArchitechturalItems.flooring.title));
+    }
+
+//plastering
+    for (int x = 0;
+        x < TwoStoreyArchitechturalItems.listPlasteringWorks.length;
+        x++) {
+      print('7');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyArchitechturalItems.defValPlasteringWorks[x].col_1,
+          col_1_val:
+              TwoStoreyArchitechturalItems.defValPlasteringWorks[x].col_1_val,
+          type: TwoStoreyArchitechturalItems.listPlasteringWorks[x],
+          work: TwoStoreyArchitechturalItems.plastering.title));
+    }
+
+//painting
+    for (int x = 0;
+        x < TwoStoreyArchitechturalItems.listPaintingWorks.length;
+        x++) {
+      print('8');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyArchitechturalItems.defValPaintingWorks[x].col_1,
+          col_1_val:
+              TwoStoreyArchitechturalItems.defValPaintingWorks[x].col_1_val,
+          type: TwoStoreyArchitechturalItems.listPaintingWorks[x],
+          work: TwoStoreyArchitechturalItems.paintingWorks.title));
+    }
+
+//doors and window
+    for (int x = 0;
+        x < TwoStoreyArchitechturalItems.listDoornWindowsWorks.length;
+        x++) {
+      print('9');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1:
+              TwoStoreyArchitechturalItems.defValDoorsAndWindowsWorks[x].col_1,
+          col_1_val: TwoStoreyArchitechturalItems
+              .defValDoorsAndWindowsWorks[x].col_1_val,
+          type: TwoStoreyArchitechturalItems.listDoornWindowsWorks[x],
+          work: TwoStoreyArchitechturalItems.doorsAndWindows.title));
+    }
+
+//ceiling
+    for (int x = 0;
+        x < TwoStoreyArchitechturalItems.listCeilingWorks.length;
+        x++) {
+      print('10');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyArchitechturalItems.defValCeilingWorks[x].col_1,
+          col_1_val:
+              TwoStoreyArchitechturalItems.defValCeilingWorks[x].col_1_val,
+          type: TwoStoreyArchitechturalItems.listCeilingWorks[x],
+          work: TwoStoreyArchitechturalItems.ceiling.title));
+    }
+
+//roof
+    for (int x = 0;
+        x < TwoStoreyArchitechturalItems.listRoofingWorks.length;
+        x++) {
+      print('11');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: TwoStoreyArchitechturalItems.defValRoofingngWorks[x].col_1,
+          col_1_val:
+              TwoStoreyArchitechturalItems.defValRoofingngWorks[x].col_1_val,
+          type: TwoStoreyArchitechturalItems.listRoofingWorks[x],
+          work: TwoStoreyArchitechturalItems.roofingWorks.title));
+    }
+
+//**
+//Electrical works
+// */
+
+//roof
+    for (int x = 0;
+        x < ElectricalAndPlumbingItems.listPlumbingWorks.length;
+        x++) {
+      print('12');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1,
+          col_1_val:
+              ElectricalAndPlumbingItems.defValPlumbingWorks[x].col_1_val,
+          type: ElectricalAndPlumbingItems.listPlumbingWorks[x],
+          work: ElectricalAndPlumbingItems.plumbingWorks.title));
+    }
+
+//electrical
+    for (int x = 0;
+        x < ElectricalAndPlumbingItems.listElectricalWorks.length;
+        x++) {
+      print('13');
+      defaultFormData.add(FormData(
+          fk: fk,
+          col_1: ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1,
+          col_1_val:
+              ElectricalAndPlumbingItems.defValElectricalWorks[x].col_1_val,
+          type: ElectricalAndPlumbingItems.listElectricalWorks[x],
+          work: ElectricalAndPlumbingItems.electricalWorks.title));
+    }
+
+//insert into formtable
+    for (int x = 0; x < defaultFormData.length; x++) {
+      await createFormData(defaultFormData[x]);
+    }
   }
 }

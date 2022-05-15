@@ -73,19 +73,14 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     if (widget.structuralType == 'Formworks') {
       if (widget.workType == 'Footings') {
         label = 'Footings';
-        defaultValue = 7.7;
       } else if (widget.workType.contains('Column')) {
         label = 'Column';
-        defaultValue = 4;
       } else if (widget.workType.contains('Beam')) {
         label = 'Beam';
-        defaultValue = 3.3;
       } else if (widget.workType.contains('Slab')) {
         label = 'Slab';
-        defaultValue = 4.3;
       } else if (widget.workType.contains('Staircase')) {
         label = 'Staircase';
-        defaultValue = 3.3;
       }
       units = 'sqm';
       surface = 'Area';
@@ -95,11 +90,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       if (widget.workType.contains('Interior')) {
         surface = 'Area';
         label = 'Concrete Block';
-        defaultValue = 4;
       } else if (widget.workType.contains('Exterior')) {
         surface = 'Surface Area';
         label = 'CHB Walls';
-        defaultValue = 0;
       }
       units = 'sqm';
       worker = 'Tile man';
@@ -107,34 +100,28 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     } else {
       if (widget.workType == 'Footings') {
         label = 'Footings';
-        defaultValue = 1.5;
       } else if (widget.workType.contains('Column')) {
         label = 'Column';
-        defaultValue = 1;
       } else if (widget.workType.contains('Beam')) {
         label = 'Beam';
-        defaultValue = 1;
       } else if (widget.workType.contains('Slab')) {
         label = 'Slab';
-        defaultValue = 2;
       } else if (widget.workType.contains('Staircase')) {
         label = 'Staircase';
-        defaultValue = 1;
       }
       units = 'cum';
       surface = 'Volume';
       worker = 'Mason';
       secondWorker = 'Laborer';
     }
-    productivityRateController.text = defaultValue.toString();
     refreshState();
     super.initState();
   }
 
   Future refreshState() async {
     setState(() => isLoading = true);
-    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.structuralType, widget.workType);
-    allFormData = await DatabaseHelper.instance.readAllFormData(widget.projectFk);
+    formData = await DatabaseHelper.instance
+        .readFormData(widget.projectFk, widget.structuralType, widget.workType);
 
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
@@ -146,17 +133,22 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       }
     }
     if (formData != null) {
-      dateStartControler.text = formData!.date_start == null? outputFormat.format(DateTime.now()) : outputFormat.format(DateTime.parse(formData!.date_start!));
+      dateStartControler.text = formData!.date_start == null
+          ? outputFormat.format(DateTime.now())
+          : outputFormat.format(DateTime.parse(formData!.date_start!));
       defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
-      dateEnd = formData!.date_end == null? null : DateTime.parse(formData!.date_end!);
-      worker1 = formData!.worker_1 == null? null : formData!.worker_1!;
-      worker2 = formData!.worker_2 == null? null : formData!.worker_2!;
-      costOfLabor = formData!.worker_1 == null? null : (formData!.worker_1! * workerCost!) +
-          (formData!.worker_2! * workerCost2!);
-      //costOfLabor = formData!.cost_of_labor;
+      dateEnd = formData!.date_end == null
+          ? null
+          : DateTime.parse(formData!.date_end!);
+      worker1 = formData!.worker_1 == null ? null : formData!.worker_1!;
+      worker2 = formData!.worker_2 == null ? null : formData!.worker_2!;
+      costOfLabor = formData!.worker_1 == null
+          ? null
+          : (formData!.worker_1! * workerCost!) +
+              (formData!.worker_2! * workerCost2!);
       preferedTime = formData!.pref_time.toString();
 
       _selectedType = formData!.col_1;
@@ -164,8 +156,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       isUpdating = true;
     }
     setState(() => isLoading = false);
-    print(allFormData);
-    print(formData);
+    productivityRateController.text = defaultValue.toString();
   }
 
   @override
@@ -408,8 +399,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                                   setState(() {
                                                     _selectedType =
                                                         value.toString();
-                                                    if (_selectedType ==
-                                                        "8") {
+                                                    if (_selectedType == "8") {
                                                       defaultValue = 8.5;
                                                       productivityRateController
                                                               .text =
@@ -426,7 +416,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                                 },
                                                 items: soilType.map((soilType) {
                                                   return DropdownMenuItem(
-                                                    child: Text(soilType+"\""),
+                                                    child:
+                                                        Text(soilType + "\""),
                                                     value: soilType,
                                                   );
                                                 }).toList()),
@@ -504,7 +495,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: TextFormField(
-                                          initialValue: volume ?? '',
+                                          initialValue:
+                                              volume == 'null' ? '' : volume,
                                           decoration: const InputDecoration(
                                             helperText: ' ', // this is new
                                           ),
@@ -539,7 +531,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: TextFormField(
-                                          initialValue: preferedTime ?? '',
+                                          initialValue: preferedTime == 'null'
+                                              ? ''
+                                              : preferedTime,
                                           decoration: const InputDecoration(
                                             helperText: ' ', // this is new
                                           ),
@@ -891,53 +885,53 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             isExceeded = true;
           }
 
-          if (double.parse(preferedTime!) < initialNumberofDays!) {
-            initialNumberofDays = double.parse(preferedTime!);
-          }
-          numberOfDays = initialNumberofDays!.round();
-          numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-          costOfLabor = numberOfWorkers! * workerCost!;
-
-          if (isUpdating) {
-            final formDataUpdate = FormData(
-                date_start: selectedDate.toString(),
-                col_1: _selectedType ?? 'DEFAULT',
-                col_1_val: defaultValue!,
-                col_2: double.parse(volume!),
-                pref_time: int.parse(preferedTime!),
-                num_days: numberOfDays!,
-                date_end: dateEnd!.toString(),
-                num_workers: numberOfWorkers!,
-                worker_1: worker1!,
-                worker_2: worker2!,
-                // cost_of_labor: costOfLabor!,
-                type: widget.structuralType,
-                work: widget.workType,
-                fk: widget.projectFk,
-                id: formData!.id!);
-
-            DatabaseHelper.instance.updateFormData(formDataUpdate);
+          if (isExceeded) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: const Text(
+                          'Initial numbers of workers should not exceed 15 count.'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          child: Text("OK"),
+                          onPressed: () {
+                            // print(projectName[index]);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                });
           } else {
+            if (double.parse(preferedTime!) < initialNumberofDays!) {
+              initialNumberofDays = double.parse(preferedTime!);
+            }
+
+            numberOfDays = initialNumberofDays!.round();
+            numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
+            costOfLabor = numberOfWorkers! * workerCost!;
+
             final formDataCreate = FormData(
+              id: formData!.id,
               date_start: selectedDate.toString(),
               col_1: _selectedType ?? 'DEFAULT',
-              col_1_val: defaultValue!,
+              col_1_val: double.parse(productivityRateController.text),
               col_2: double.parse(volume!),
               pref_time: int.parse(preferedTime!),
               num_days: numberOfDays!,
-              date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
+              date_end:
+                  selectedDate.add(Duration(days: numberOfDays!)).toString(),
               num_workers: numberOfWorkers!,
-              worker_1: numberOfWorkers!,
-              worker_2: numberOfWorkers!,
-              // cost_of_labor: costOfLabor!,
-              type: widget.structuralType,
-              work: widget.workType,
+              worker_1: worker1,
+              worker_2: worker1,
+              work: widget.structuralType,
+              type: widget.workType,
               fk: widget.projectFk,
             );
 
-            DatabaseHelper.instance.createFormData(formDataCreate);
+            DatabaseHelper.instance.updateFormData(formDataCreate);
+            refreshState();
           }
-          refreshState();
         }
       },
       child: const Text('Save'));

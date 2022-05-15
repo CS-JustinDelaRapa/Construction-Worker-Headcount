@@ -4,6 +4,7 @@ import 'package:engineering/model/itemModel.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../custom_icons_icons.dart';
+import '../../../../model/defaulValueModel.dart';
 
 class TwoStoreyStructuralItems {
   static const List<String> listEarthWorks = ['Excavation', 'Backfilling'];
@@ -58,6 +59,55 @@ class TwoStoreyStructuralItems {
       title: 'Reinforced Cement Works', icon: CustomIcons.cement_works);
   static const steelReinforcedmentWork = DrawerItem(
       title: 'Steel Reinforcement Works', icon: Icons.precision_manufacturing);
+
+  static const List<DefaultValue> defValEarthworks = [
+    DefaultValue(col_1: "Soft Soil", col_1_val: 3.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
+  ];
+
+  static const List<DefaultValue> defValFormworks = [
+    DefaultValue(col_1: "DEFAULT", col_1_val: 7.7),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.3),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.3),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
+  ];
+
+  static const List<DefaultValue> defValMasonry = [
+    DefaultValue(col_1: "8", col_1_val: 8.5),
+    DefaultValue(col_1: "8", col_1_val: 8.5),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4),
+  ];
+
+  static const List<DefaultValue> defValRCC = [
+    DefaultValue(col_1: "DEFAULT", col_1_val: 1.5),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 1.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 1.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 1.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 1.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 2.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 2.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 1.0),
+  ];
+
+  static const List<DefaultValue> defValSRW = [
+    DefaultValue(col_1: "DEFAULT", col_1_val: 190),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 200),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 200),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 175),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 175),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 173),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 173),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 100),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 150),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 173),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 200),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 200),
+  ];
 
   static final List<DrawerItem> all = [
     earthWorks,

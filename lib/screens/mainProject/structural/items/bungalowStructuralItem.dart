@@ -13,7 +13,7 @@ class BungalowStructuralItems {
     'Beam',
     'Slab',
   ];
-  static const List<String> listMasonryWorks = ['Interior','Exterior'];
+  static const List<String> listMasonryWorks = ['Interior', 'Exterior'];
   static const List<String> listReinforecedWorks = [
     'Footings',
     'Columns',
@@ -33,16 +33,15 @@ class BungalowStructuralItems {
 
   static const List<DefaultValue> defValEarthworks = [
     DefaultValue(col_1: "Soft Soil", col_1_val: 3.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 2.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
   ];
 
   static const List<DefaultValue> defValFormworks = [
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 7.7),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 7.0),
     DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
     DefaultValue(col_1: "DEFAULT", col_1_val: 4.3),
-  ];  
+  ];
 
   static const List<DefaultValue> defValMasonry = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 0.0),
@@ -64,7 +63,7 @@ class BungalowStructuralItems {
     DefaultValue(col_1: "DEFAULT", col_1_val: 150),
     DefaultValue(col_1: "DEFAULT", col_1_val: 100),
     DefaultValue(col_1: "DEFAULT", col_1_val: 200),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 0),    
+    DefaultValue(col_1: "DEFAULT", col_1_val: 0),
   ];
 
   static const earthWorks =
