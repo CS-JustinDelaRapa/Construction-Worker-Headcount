@@ -49,13 +49,13 @@ class _ElectricalState extends State<ElectricalAndPlumbing> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '''Dela Cruz' long long long Apartment''',
+              widget.project.project_name,
               style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.caption!.color,
                   fontSize: 18),
             ),
             Text(
-              '''Bungalow''',
+              widget.project.type,
               style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.caption!.color,
                   fontSize: 16,

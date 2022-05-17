@@ -51,13 +51,13 @@ class _ArchitecturalState extends State<Architectural> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '''Dela Cruz' long long long Apartment''',
+              widget.project.project_name,
               style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.caption!.color,
                   fontSize: 18),
             ),
             Text(
-              '''Bungalow''',
+              widget.project.type,
               style: TextStyle(
                   color: Theme.of(context).primaryTextTheme.caption!.color,
                   fontSize: 16,
@@ -221,9 +221,10 @@ class _ArchitecturalState extends State<Architectural> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => OneWorkerForm(
-                          workType: columnList[x],
-                          architecturalType: architecturalType,
-                          projectFk: widget.project.id!,)));
+                            workType: columnList[x],
+                            architecturalType: architecturalType,
+                            projectFk: widget.project.id!,
+                          )));
             } else {
               Navigator.push(
                   context,

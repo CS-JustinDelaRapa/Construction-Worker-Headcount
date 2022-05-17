@@ -57,113 +57,128 @@ class _CreateProjectState extends State<CreateProject> {
       appBar: AppBar(
         title: CustomWidgets().text_title('New Project', 20),
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: CustomWidgets().text_title(
-                'Enter the name of the new project and select style.', 20),
-          ),
-          Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: TextFormField(
-                initialValue: projectName.text,
-                decoration: const InputDecoration(hintText: ("Project Name")),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: CustomWidgets().text_title(
+                  'Enter the name of the new project and select style.', 20),
+            ),
+            Form(
+              key: _formKey,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: TextFormField(
+                  initialValue: projectName.text,
+                  decoration: const InputDecoration(hintText: ("Project Name")),
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'This Field is Required';
+                    }
+                    return null;
+                  },
+
+                  // controller: projectName.text,
+                  onChanged: (value) {
+                    setState(() {
+                      projectName.text = value;
+                    });
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: TextFormField(
+                readOnly: true,
+                controller: dateStartControler,
+                onTap: () async {
+                  _selectDateStart(context);
+                  print(startSelectedDate);
+                },
+                decoration: InputDecoration(
+                    hintText:
+                        outputFormat.format(startSelectedDate).toString()),
+              )),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                  child: TextFormField(
+                readOnly: true,
+                controller: dateStartControler,
+                onTap: () async {
+                  _selectDateEnd(context);
+                  print(endSelectedDate);
+                },
+                decoration: InputDecoration(
+                    hintText: outputFormat
+                        .format(endSelectedDate.add(const Duration(days: 1)))
+                        .toString()),
                 validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      !regex.hasMatch(value)) {
-                    return 'This Field is Required';
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter some text';
                   }
                   return null;
                 },
-
-                // controller: projectName.text,
-                onChanged: (value) {
-                  setState(() {
-                    projectName.text = value;
-                  });
-                },
+              )),
+            ),
+            Container(
+              alignment: AlignmentDirectional.centerStart,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                child: CustomWidgets().text_title('Style:', 20),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-                child: TextFormField(
-              readOnly: true,
-              controller: dateStartControler,
-              onTap: () async {
-                _selectDateStart(context);
-                print(startSelectedDate);
-              },
-              decoration: InputDecoration(
-                  hintText: outputFormat.format(startSelectedDate).toString()),
-            )),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-                child: TextFormField(
-              readOnly: true,
-              controller: dateStartControler,
-              onTap: () async {
-                _selectDateEnd(context);
-                print(endSelectedDate);
-              },
-              decoration: InputDecoration(
-                  hintText: outputFormat
-                      .format(endSelectedDate.add(const Duration(days: 1)))
-                      .toString()),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            )),
-          ),
-          Container(
-            alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: CustomWidgets().text_title('Style:', 20),
+            ListTile(
+              title: const Text("Bungalow"),
+              leading: Radio(
+                value: "Bungalow",
+                groupValue: val,
+                onChanged: (value) {
+                  setState(() {
+                    val = value.toString();
+                  });
+                },
+                activeColor: Colors.green,
+              ),
             ),
-          ),
-          ListTile(
-            title: const Text("Bungalow"),
-            leading: Radio(
-              value: "Bungalow",
-              groupValue: val,
-              onChanged: (value) {
-                setState(() {
-                  val = value.toString();
-                });
-              },
-              activeColor: Colors.green,
+            ListTile(
+              title: const Text("Two-Storey"),
+              leading: Radio(
+                value: "Two-Storey",
+                groupValue: val,
+                onChanged: (value) {
+                  setState(() {
+                    val = value.toString();
+                  });
+                },
+                activeColor: Colors.green,
+              ),
             ),
-          ),
-          ListTile(
-            title: const Text("Two-Storey"),
-            leading: Radio(
-              value: "Two-Storey",
-              groupValue: val,
-              onChanged: (value) {
-                setState(() {
-                  val = value.toString();
-                });
-              },
-              activeColor: Colors.green,
-            ),
-          ),
-          const SizedBox(height: 30),
-          CustomWidgets().funtion_Button('Save', const Icon(Icons.menu_open),
-              0.6, 0.07, context, saveProject)
-        ],
+            // const SizedBox(
+            //   height: 30,
+            // ),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: CustomWidgets().funtion_Button(
+                      'Save',
+                      const Icon(Icons.menu_open),
+                      0.6,
+                      0.07,
+                      context,
+                      saveProject),
+                ))
+          ],
+        ),
       ),
     );
   }
