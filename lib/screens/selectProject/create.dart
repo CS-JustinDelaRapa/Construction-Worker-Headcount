@@ -162,18 +162,21 @@ class _CreateProjectState extends State<CreateProject> {
                 activeColor: Colors.green,
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            // const SizedBox(
+            //   height: 30,
+            // ),
             Align(
                 alignment: Alignment.bottomCenter,
-                child: CustomWidgets().funtion_Button(
-                    'Save',
-                    const Icon(Icons.menu_open),
-                    0.6,
-                    0.07,
-                    context,
-                    saveProject))
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: CustomWidgets().funtion_Button(
+                      'Save',
+                      const Icon(Icons.menu_open),
+                      0.6,
+                      0.07,
+                      context,
+                      saveProject),
+                ))
           ],
         ),
       ),
