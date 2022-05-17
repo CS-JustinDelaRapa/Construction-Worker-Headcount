@@ -23,6 +23,7 @@ class _EarthworksFormState extends State<EarthworksForm> {
   String? _selectedType;
   bool isLoading = true;
   double? defaultValue;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -51,10 +52,12 @@ class _EarthworksFormState extends State<EarthworksForm> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Earthworks'),
+          actions: [saveButton()],
         ),
         body: isLoading
             ? const Center(child: CircularProgressIndicator())
             : Form(
+                key: _formKey,
                 child: Column(
                   children: formData
                       .map((e) => Row(
@@ -184,8 +187,11 @@ class _EarthworksFormState extends State<EarthworksForm> {
                                                   }
                                                   return null;
                                                 },
-                                                controller:
-                                                    productivityRateController,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    //comment gawa ka keni
+                                                  });
+                                                },
                                                 keyboardType:
                                                     TextInputType.number,
                                               ))),
@@ -196,4 +202,10 @@ class _EarthworksFormState extends State<EarthworksForm> {
                 ),
               ));
   }
+
+  Widget saveButton() => ElevatedButton(
+      onPressed: () {
+        if (_formKey.currentState!.validate()) {}
+      },
+      child: const Text('Save'));
 }
