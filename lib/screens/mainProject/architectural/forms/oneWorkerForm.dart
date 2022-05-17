@@ -71,7 +71,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   TextEditingController productivityRateController = TextEditingController();
 
   //database
-  FormData? formData, allFormData;
+  FormData? formData;
   bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
@@ -134,8 +134,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     setState(() => isLoading = true);
     formData = await DatabaseHelper.instance.readFormData(
         widget.projectFk, widget.architecturalType, widget.workType);
-    allFormData =
-        await DatabaseHelper.instance.readAllFormData(widget.projectFk);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -168,9 +166,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   @override
   Widget build(BuildContext context) {
-    print(allFormData);
-    print(formData);
-    print(defaultValue);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.workType),

@@ -57,7 +57,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                     0.92,
                     0.05,
                     context,
-                    (() => EarthworksForm(projectType: widget.project.type))),
+                    (() => EarthworksForm(projectType: widget.project))),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
