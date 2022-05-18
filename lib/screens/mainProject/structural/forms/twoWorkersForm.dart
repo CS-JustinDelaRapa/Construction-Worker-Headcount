@@ -57,7 +57,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   //database
   FormData? formData, allFormData;
-  bool isLoading = false, isUpdating = false, isExceeded = false;
+  bool isLoading = false, isUpdating = false, isComputed = false;
 
   //auto populated
   int? numberOfDays, numberOfWorkers, worker1, worker2;
@@ -164,7 +164,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.workType),
-        actions: [saveButton()],
+        actions: [isComputed ? saveButton() : Container()],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -857,7 +857,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                               ]),
                         )
                       ],
-                    )
+                    ),
+                    computeButton(),
                   ],
                 ),
               ),
@@ -865,74 +866,216 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     );
   }
 
+  void formWorksComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! == 1) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! == 2 || initialWorkers! == 4) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! == 3 || initialWorkers! == 6) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! == 7 || initialWorkers! == 8) {
+        initialNumberofDays = 4;
+      } else if (initialWorkers! == 5 ||
+          initialWorkers! == 9 ||
+          initialWorkers! == 10) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        if (workernumbers <= 2) {
+          worker1 = workernumbers;
+          worker2 = 1;
+        } else {
+          worker1 = 2;
+          worker2 = workernumbers;
+        }
+        numberOfDays = initialNumberofDays!.round();
+        numberOfWorkers = worker1! + worker2!;
+        costOfLabor = (worker1!.toDouble() * workerCost!) +
+            (worker2!.toDouble() * workerCost2!);
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
+  void masonryWorksComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! >= 1 && initialWorkers! <= 3) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! < 10) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        if (workernumbers == 1 || workernumbers == 2) {
+          worker1 = workernumbers;
+          worker2 = 1;
+        } else if (workernumbers == 3) {
+          worker1 = 3;
+          worker2 = 2;
+        } else {
+          worker1 = 3;
+          worker2 = workernumbers;
+        }
+        numberOfDays = initialNumberofDays!.round();
+        numberOfWorkers = worker1! + worker2!;
+        costOfLabor = (worker1!.toDouble() * workerCost!) +
+            (worker2!.toDouble() * workerCost2!);
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
+  void rcwComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! == 1 || initialWorkers! == 3) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! == 4 || initialWorkers! == 6) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! == 7 ||
+          initialWorkers! == 8 ||
+          initialWorkers! == 9) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! == 10) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        if (workernumbers == 1 || workernumbers == 2) {
+          worker1 = 1;
+          worker2 = 1;
+        } else if (workernumbers == 3) {
+          worker1 = 2;
+          worker2 = 1;
+        } else if (workernumbers == 4) {
+          worker1 = 2;
+          worker2 = 2;
+        } else {
+          worker1 = 2;
+          worker2 = workernumbers - 2;
+        }
+        numberOfDays = initialNumberofDays!.round();
+        numberOfWorkers = worker1! + worker2!;
+        costOfLabor = (worker1!.toDouble() * workerCost!) +
+            (worker2!.toDouble() * workerCost2!);
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
+  void srwComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! == 1) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! == 2 || initialWorkers! == 4) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! == 3 ||
+          initialWorkers! == 5 ||
+          initialWorkers! == 6) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! == 7 ||
+          initialWorkers! == 8 ||
+          initialWorkers! == 11 ||
+          initialWorkers! == 12) {
+        initialNumberofDays = 4;
+      } else if (initialWorkers! == 9 ||
+          initialWorkers! == 10 ||
+          initialWorkers! == 13 ||
+          initialWorkers! == 14 ||
+          initialWorkers! == 15) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        if (workernumbers <= 2) {
+          worker1 = workernumbers;
+          worker2 = 1;
+        } else {
+          worker1 = 2;
+          worker2 = workernumbers;
+        }
+        numberOfDays = initialNumberofDays!.round();
+        numberOfWorkers = worker1! + worker2!;
+        costOfLabor = (worker1!.toDouble() * workerCost!) +
+            (worker2!.toDouble() * workerCost2!);
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
+  Widget computeButton() => ElevatedButton(
+      onPressed: () {
+        if (widget.structuralType.toLowerCase() == 'formworks') {
+          formWorksComputer();
+        } else if (widget.structuralType.toLowerCase() == 'masonry works') {
+          masonryWorksComputer();
+        } else if (widget.structuralType.toLowerCase() ==
+            'reinforced cement works') {
+          rcwComputer();
+        }
+      },
+      child: const Text('Compute'));
+
   Widget saveButton() => ElevatedButton(
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          initialWorkers = (double.parse(volume!) /
-                  double.parse(productivityRateController.text))
-              .roundToDouble();
-          if (initialWorkers! <= 3) {
-            initialNumberofDays = 1;
-          } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
-            initialNumberofDays = 2;
-          } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
-            initialNumberofDays = 3;
-          } else if (initialWorkers! >= 10 && initialWorkers! <= 12) {
-            initialNumberofDays = 4;
-          } else if (initialWorkers! >= 13 && initialWorkers! <= 15) {
-            initialNumberofDays = 5;
-          } else {
-            isExceeded = true;
-          }
-
-          if (isExceeded) {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                      title: const Text(
-                          'Initial numbers of workers should not exceed 15 count.'),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          child: Text("OK"),
-                          onPressed: () {
-                            // print(projectName[index]);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ]);
-                });
-          } else {
-            if (double.parse(preferedTime!) < initialNumberofDays!) {
-              initialNumberofDays = double.parse(preferedTime!);
-            }
-
-            numberOfDays = initialNumberofDays!.round();
-            numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-            costOfLabor = numberOfWorkers! * workerCost!;
-
-            final formDataCreate = FormData(
-              id: formData!.id,
-              date_start: selectedDate.toString(),
-              col_1: _selectedType ?? 'DEFAULT',
-              col_1_val: double.parse(productivityRateController.text),
-              col_2: double.parse(volume!),
-              pref_time: int.parse(preferedTime!),
-              num_days: numberOfDays!,
-              date_end:
-                  selectedDate.add(Duration(days: numberOfDays!)).toString(),
-              num_workers: numberOfWorkers!,
-              worker_1: worker1,
-              worker_2: worker1,
-              work: widget.structuralType,
-              type: widget.workType,
-              fk: widget.projectFk,
-            );
-
-            DatabaseHelper.instance.updateFormData(formDataCreate);
-            refreshState();
-          }
-        }
+        final formDataCreate = FormData(
+          id: formData!.id,
+          date_start: selectedDate.toString(),
+          col_1: _selectedType ?? 'DEFAULT',
+          col_1_val: double.parse(productivityRateController.text),
+          col_2: double.parse(volume!),
+          pref_time: int.parse(preferedTime!),
+          num_days: numberOfDays!,
+          date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
+          num_workers: numberOfWorkers!,
+          worker_1: numberOfWorkers!,
+          work: widget.structuralType,
+          type: widget.workType,
+          fk: widget.projectFk,
+        );
+        DatabaseHelper.instance.updateFormData(formDataCreate);
+        refreshState();
       },
       child: const Text('Save'));
 }

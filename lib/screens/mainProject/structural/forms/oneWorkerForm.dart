@@ -28,7 +28,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
   final _formKey = GlobalKey<FormState>();
-  RegExp regex = new RegExp(r'(?!^ +$)^.+$');
+  RegExp regex = RegExp(r'(?!^ +$)^.+$');
   List<String> soilType = ['Soft Soil', 'Hard Soil'];
   List<WorkerType>? rateOfWorkers;
 
@@ -43,7 +43,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   //database
   FormData? formData;
-  bool isLoading = false, isUpdating = false, isExceeded = false;
+  bool isLoading = false, isUpdating = false, isComputed = false;
 
   //auto populated
   int? numberOfDays, numberOfWorkers, worker_1;
@@ -100,8 +100,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     super.initState();
   }
 
-  Future setValues() async {}
-
   Future refreshState() async {
     setState(() => isLoading = true);
     formData = await DatabaseHelper.instance
@@ -143,7 +141,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.workType),
-        actions: [saveButton()],
+        actions: [isComputed ? saveButton() : Container()],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -784,7 +782,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                               ]),
                         )
                       ],
-                    )
+                    ),
+                    computeButton()
                   ],
                 ),
               ),
@@ -792,76 +791,109 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     );
   }
 
-  Widget saveButton() => ElevatedButton(
-      onPressed: () {
-        isExceeded = false;
-        if (_formKey.currentState!.validate()) {
-          initialWorkers = (double.parse(volume!) /
-                  double.parse(productivityRateController.text))
-              .roundToDouble();
-          if (initialWorkers! <= 3) {
-            initialNumberofDays = 1;
-          } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
-            initialNumberofDays = 2;
-          } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
-            initialNumberofDays = 3;
-          } else if (initialWorkers! >= 10 && initialWorkers! <= 12) {
-            initialNumberofDays = 4;
-          } else if (initialWorkers! >= 13 && initialWorkers! <= 15) {
-            initialNumberofDays = 5;
-          } else {
-            isExceeded = true;
-          }
-
-          if (isExceeded) {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                      title: const Text(
-                          'Initial numbers of workers should not exceed 15 count.'),
-                      actions: <Widget>[
-                        ElevatedButton(
-                          child: Text("OK"),
-                          onPressed: () {
-                            // print(projectName[index]);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ]);
-                });
-          } else {
-            if (double.parse(preferedTime!) < initialNumberofDays!) {
-              initialNumberofDays = double.parse(preferedTime!);
-            }
-
-            numberOfDays = initialNumberofDays!.round();
-            numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-            costOfLabor = numberOfWorkers! * workerCost!;
-
-            final formDataCreate = FormData(
-              id: formData!.id,
-              date_start: selectedDate.toString(),
-              col_1: _selectedType ?? 'DEFAULT',
-              col_1_val: double.parse(productivityRateController.text),
-              col_2: double.parse(volume!),
-              pref_time: int.parse(preferedTime!),
-              num_days: numberOfDays!,
-              date_end:
-                  selectedDate.add(Duration(days: numberOfDays!)).toString(),
-              num_workers: numberOfWorkers!,
-              worker_1: numberOfWorkers!,
-              work: widget.structuralType,
-              type: widget.workType,
-              fk: widget.projectFk,
-            );
-
-            DatabaseHelper.instance.updateFormData(formDataCreate);
-            refreshState();
-          }
+  void earthworksComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! <= 3) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! >= 10 && initialWorkers! <= 12) {
+        initialNumberofDays = 4;
+      } else if (initialWorkers! >= 13 && initialWorkers! <= 15) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
         }
+        numberOfDays = initialNumberofDays!.round();
+        numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
+        costOfLabor = numberOfWorkers! * workerCost!;
+        worker_1 = numberOfWorkers;
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
+  void srwComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! == 1) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! == 2 || initialWorkers! == 4) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! == 3 ||
+          initialWorkers! == 5 ||
+          initialWorkers! == 6) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! == 7 ||
+          initialWorkers! == 8 ||
+          initialWorkers! == 11 ||
+          initialWorkers! == 12) {
+        initialNumberofDays = 4;
+      } else if (initialWorkers! == 9 ||
+          initialWorkers! == 10 ||
+          initialWorkers! == 13 ||
+          initialWorkers! == 14 ||
+          initialWorkers! == 15) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        numberOfDays = initialNumberofDays!.round();
+        worker_1 = workernumbers;
+        numberOfWorkers = workernumbers;
+        costOfLabor = workerCost! * workernumbers;
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
+  Widget computeButton() => ElevatedButton(
+      onPressed: () {
+        widget.structuralType.toLowerCase() == 'earthworks'
+            ? earthworksComputer()
+            : srwComputer();
       },
       child: const Text('Compute'));
+
+  Widget saveButton() => ElevatedButton(
+      onPressed: () {
+        final formDataCreate = FormData(
+          id: formData!.id,
+          date_start: selectedDate.toString(),
+          col_1: _selectedType ?? 'DEFAULT',
+          col_1_val: double.parse(productivityRateController.text),
+          col_2: double.parse(volume!),
+          pref_time: int.parse(preferedTime!),
+          num_days: numberOfDays!,
+          date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
+          num_workers: numberOfWorkers!,
+          worker_1: numberOfWorkers!,
+          work: widget.structuralType,
+          type: widget.workType,
+          fk: widget.projectFk,
+        );
+        DatabaseHelper.instance.updateFormData(formDataCreate);
+        refreshState();
+      },
+      child: const Text('Save'));
 }
 
 
@@ -884,7 +916,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   //               work: widget.workType,
   //               fk: widget.projectFk,
   //               id: formData!.id!);
-
   //           DatabaseHelper.instance.updateFormData(formDataUpdate);
   //         } else {
   //           final formDataCreate = FormData(
@@ -902,7 +933,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   //             work: widget.workType,
   //             fk: widget.projectFk,
   //           );
-
   //           DatabaseHelper.instance.createFormData(formDataCreate);
   //         }
   //         refreshState();
