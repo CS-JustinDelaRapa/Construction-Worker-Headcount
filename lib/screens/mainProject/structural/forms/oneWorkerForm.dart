@@ -1441,9 +1441,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
+        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
         numberOfDays = initialNumberofDays!.round();
         numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-        costOfLabor = numberOfWorkers! * workerCost!;
+        costOfLabor = (workerCost! * workernumbers) * numberOfDays!;
         worker_1 = numberOfWorkers;
         dateEnd = selectedDate.add(Duration(days: numberOfDays!));
         isComputed = true;
@@ -1478,15 +1479,15 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       } else {
         initialNumberofDays = double.parse(preferedTime!);
       }
-      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
       setState(() {
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
+        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
         numberOfDays = initialNumberofDays!.round();
         worker_1 = workernumbers;
         numberOfWorkers = workernumbers;
-        costOfLabor = workerCost! * workernumbers;
+        costOfLabor = (workerCost! * workernumbers) * numberOfDays!;
         dateEnd = selectedDate.add(Duration(days: numberOfDays!));
         isComputed = true;
       });

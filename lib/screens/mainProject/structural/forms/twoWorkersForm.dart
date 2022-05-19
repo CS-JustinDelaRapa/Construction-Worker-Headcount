@@ -1525,8 +1525,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         }
         numberOfDays = initialNumberofDays!.round();
         numberOfWorkers = worker1! + worker2!;
-        costOfLabor = (worker1!.toDouble() * workerCost!) +
-            (worker2!.toDouble() * workerCost2!);
+        costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                (worker2!.toDouble() * workerCost2!)) *
+            numberOfDays!;
         dateEnd = selectedDate.add(Duration(days: numberOfDays!));
         isComputed = true;
       });
@@ -1566,8 +1567,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         }
         numberOfDays = initialNumberofDays!.round();
         numberOfWorkers = worker1! + worker2!;
-        costOfLabor = (worker1!.toDouble() * workerCost!) +
-            (worker2!.toDouble() * workerCost2!);
+        costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                (worker2!.toDouble() * workerCost2!)) *
+            numberOfDays!;
         dateEnd = selectedDate.add(Duration(days: numberOfDays!));
         isComputed = true;
       });
@@ -1579,13 +1581,11 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       initialWorkers = (double.parse(volume!) /
               double.parse(productivityRateController.text))
           .roundToDouble();
-      if (initialWorkers! == 1 || initialWorkers! == 3) {
+      if (initialWorkers! >= 1 && initialWorkers! <= 3) {
         initialNumberofDays = 1;
-      } else if (initialWorkers! == 4 || initialWorkers! == 6) {
+      } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
         initialNumberofDays = 2;
-      } else if (initialWorkers! == 7 ||
-          initialWorkers! == 8 ||
-          initialWorkers! == 9) {
+      } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
         initialNumberofDays = 3;
       } else if (initialWorkers! == 10) {
         initialNumberofDays = 5;
@@ -1612,57 +1612,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         }
         numberOfDays = initialNumberofDays!.round();
         numberOfWorkers = worker1! + worker2!;
-        costOfLabor = (worker1!.toDouble() * workerCost!) +
-            (worker2!.toDouble() * workerCost2!);
-        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
-        isComputed = true;
-      });
-    }
-  }
-
-  void srwComputer() {
-    if (_formKey.currentState!.validate()) {
-      initialWorkers = (double.parse(volume!) /
-              double.parse(productivityRateController.text))
-          .roundToDouble();
-      if (initialWorkers! == 1) {
-        initialNumberofDays = 1;
-      } else if (initialWorkers! == 2 || initialWorkers! == 4) {
-        initialNumberofDays = 2;
-      } else if (initialWorkers! == 3 ||
-          initialWorkers! == 5 ||
-          initialWorkers! == 6) {
-        initialNumberofDays = 3;
-      } else if (initialWorkers! == 7 ||
-          initialWorkers! == 8 ||
-          initialWorkers! == 11 ||
-          initialWorkers! == 12) {
-        initialNumberofDays = 4;
-      } else if (initialWorkers! == 9 ||
-          initialWorkers! == 10 ||
-          initialWorkers! == 13 ||
-          initialWorkers! == 14 ||
-          initialWorkers! == 15) {
-        initialNumberofDays = 5;
-      } else {
-        initialNumberofDays = double.parse(preferedTime!);
-      }
-      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
-      setState(() {
-        if (double.parse(preferedTime!) < initialNumberofDays!) {
-          initialNumberofDays = double.parse(preferedTime!);
-        }
-        if (workernumbers <= 2) {
-          worker1 = workernumbers;
-          worker2 = 1;
-        } else {
-          worker1 = 2;
-          worker2 = workernumbers;
-        }
-        numberOfDays = initialNumberofDays!.round();
-        numberOfWorkers = worker1! + worker2!;
-        costOfLabor = (worker1!.toDouble() * workerCost!) +
-            (worker2!.toDouble() * workerCost2!);
+        costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                (worker2!.toDouble() * workerCost2!)) *
+            numberOfDays!;
         dateEnd = selectedDate.add(Duration(days: numberOfDays!));
         isComputed = true;
       });
