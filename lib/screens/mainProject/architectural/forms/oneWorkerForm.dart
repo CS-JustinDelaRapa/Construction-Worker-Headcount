@@ -1617,45 +1617,95 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     );
   }
 
+  paintingworksComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! == 1) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! == 2 ||
+          initialWorkers! == 4 ||
+          initialWorkers! == 5) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! == 3 || initialWorkers! == 6) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! == 7 ||
+          initialWorkers! == 8 ||
+          initialWorkers! == 11 ||
+          initialWorkers! == 12) {
+        initialNumberofDays = 4;
+      } else if (initialWorkers! == 9 ||
+          initialWorkers! == 10 ||
+          initialWorkers! == 13 ||
+          initialWorkers! == 14 ||
+          initialWorkers! == 15) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        numberOfDays = initialNumberofDays!.round();
+        numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
+        costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
+        worker_1 = numberOfWorkers;
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
+  doorsandwindowsComputer() {
+    if (_formKey.currentState!.validate()) {
+      initialWorkers = (double.parse(volume!) /
+              double.parse(productivityRateController.text))
+          .roundToDouble();
+      if (initialWorkers! == 1) {
+        initialNumberofDays = 1;
+      } else if (initialWorkers! == 2 || initialWorkers! == 4) {
+        initialNumberofDays = 2;
+      } else if (initialWorkers! == 3 ||
+          initialWorkers! == 5 ||
+          initialWorkers! == 6) {
+        initialNumberofDays = 3;
+      } else if (initialWorkers! == 7 ||
+          initialWorkers! == 8 ||
+          initialWorkers! == 11 ||
+          initialWorkers! == 12) {
+        initialNumberofDays = 4;
+      } else if (initialWorkers! == 9 ||
+          initialWorkers! == 10 ||
+          initialWorkers! == 13 ||
+          initialWorkers! == 14 ||
+          initialWorkers! == 15) {
+        initialNumberofDays = 5;
+      } else {
+        initialNumberofDays = double.parse(preferedTime!);
+      }
+      setState(() {
+        if (double.parse(preferedTime!) < initialNumberofDays!) {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        numberOfDays = initialNumberofDays!.round();
+        numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
+        costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
+        worker_1 = numberOfWorkers;
+        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+        isComputed = true;
+      });
+    }
+  }
+
   Widget computeButton() => ElevatedButton(
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          initialWorkers = (double.parse(volume!) /
-                  double.parse(productivityRateController.text))
-              .roundToDouble();
-          if (initialWorkers! == 1) {
-            initialNumberofDays = 1;
-          } else if (initialWorkers! == 2 || initialWorkers! == 4) {
-            initialNumberofDays = 2;
-          } else if (initialWorkers! == 3 ||
-              initialWorkers! == 5 ||
-              initialWorkers! == 6) {
-            initialNumberofDays = 3;
-          } else if (initialWorkers! == 7 ||
-              initialWorkers! == 8 ||
-              initialWorkers! == 11 ||
-              initialWorkers! == 12) {
-            initialNumberofDays = 4;
-          } else if (initialWorkers! == 9 ||
-              initialWorkers! == 10 ||
-              initialWorkers! == 13 ||
-              initialWorkers! == 14 ||
-              initialWorkers! == 15) {
-            initialNumberofDays = 5;
-          } else {
-            initialNumberofDays = double.parse(preferedTime!);
-          }
-          setState(() {
-            if (double.parse(preferedTime!) < initialNumberofDays!) {
-              initialNumberofDays = double.parse(preferedTime!);
-            }
-            numberOfDays = initialNumberofDays!.round();
-            numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-            costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
-            worker_1 = numberOfWorkers;
-            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
-            isComputed = true;
-          });
+        if (widget.architecturalType.toLowerCase() == 'painting works') {
+          paintingworksComputer();
+        } else if (widget.architecturalType.toLowerCase() ==
+            'doors and windows') {
+          doorsandwindowsComputer();
         }
       },
       child: const Text('Compute'));

@@ -217,7 +217,6 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      // Computation
                       Row(
                         children: [
                           //first column
@@ -1635,17 +1634,11 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       initialWorkers = (double.parse(volume!) /
               double.parse(productivityRateController.text))
           .roundToDouble();
-      if (initialWorkers! == 1 ||
-          initialWorkers! == 2 ||
-          initialWorkers! == 3) {
+      if (initialWorkers! >= 1 && initialWorkers! <= 3) {
         initialNumberofDays = 1;
-      } else if (initialWorkers! == 4 ||
-          initialWorkers! == 5 ||
-          initialWorkers! == 6) {
+      } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
         initialNumberofDays = 2;
-      } else if (initialWorkers! == 7 ||
-          initialWorkers! == 8 ||
-          initialWorkers! == 9) {
+      } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
         initialNumberofDays = 3;
       } else if (initialWorkers! == 10) {
         initialNumberofDays = 5;
@@ -1683,9 +1676,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       initialWorkers = (double.parse(volume!) /
               double.parse(productivityRateController.text))
           .roundToDouble();
-      if (initialWorkers! == 1 || initialWorkers! == 2) {
+      if (initialWorkers! >= 1 && initialWorkers! <= 3) {
         initialNumberofDays = 1;
-      } else if (initialWorkers! >= 3 && initialWorkers! <= 6) {
+      } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
         initialNumberofDays = 2;
       } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
         initialNumberofDays = 3;
@@ -1706,7 +1699,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
           worker1 = 2;
           worker2 = 2;
         } else {
-          worker1 = 3;
+          worker1 = 2;
           worker2 = workernumbers;
         }
         numberOfDays = initialNumberofDays!.round();
