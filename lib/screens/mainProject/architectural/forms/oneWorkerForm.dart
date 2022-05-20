@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:engineering/model/AdditionalManpowerModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../databaseHelper/DataBaseHelper.dart';
@@ -93,6 +94,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   //database
   FormData? formData;
+  AdditionalManpower? manpower;
   bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
@@ -155,6 +157,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     setState(() => isLoading = true);
     formData = await DatabaseHelper.instance.readFormData(
         widget.projectFk, widget.architecturalType, widget.workType);
+    manpower = await DatabaseHelper.instance.readAllManpower(widget.projectFk, widget.workType, widget.architecturalType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -181,6 +184,19 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
+
+    if(manpower != null){
+      isChecked = manpower!.cbOne;
+      isChecked2 = manpower!.cbTwo;      
+      isChecked3 = manpower!.cbThree;
+      isChecked4 = manpower!.cbFour;
+      isChecked5 = manpower!.cbFive;
+      isChecked6 = manpower!.cbSix;
+      isChecked7 = manpower!.cbSeven;
+      isChecked8 = manpower!.cbEight;
+      isChecked9 = manpower!.cbNine;
+      isChecked10 = manpower!.cbTen;
+    }    
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
   }
@@ -828,6 +844,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbOne = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -872,6 +889,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbTwo = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -917,6 +935,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbThree = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -961,6 +980,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbFour = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1006,6 +1026,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbFive = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1050,6 +1071,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbSix = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1094,6 +1116,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbSeven = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1138,6 +1161,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbEight = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1182,6 +1206,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbNine = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1227,6 +1252,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     cbTen = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1296,6 +1322,27 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               ),
             ),
     );
+  }
+
+ Future updateManpower () async {
+   manpower = AdditionalManpower(
+      id: manpower!.id!,
+      fk: manpower!.fk,
+      work: manpower!.work,
+      type: manpower!.type,
+      cbOne: isChecked,
+      cbTwo: isChecked2,
+      cbThree: isChecked3,
+      cbFour: isChecked4,
+      cbFive: isChecked5,
+      cbSix: isChecked6,
+      cbSeven: isChecked7,
+      cbEight: isChecked8,
+      cbNine: isChecked9,
+      cbTen: isChecked10,
+    );
+
+    await DatabaseHelper.instance.updateManpower(manpower!);
   }
 
   paintingworksComputer() {

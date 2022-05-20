@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/AdditionalManpowerModel.dart';
 import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -89,7 +90,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       cbNine,
       cbTen;
   //database
-  FormData? formData, allFormData;
+  FormData? formData;
+  AdditionalManpower? manpower;
   bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
@@ -164,9 +166,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
-    formData = await DatabaseHelper.instance.readFormData(
-        widget.projectFk, widget.architecturalType, widget.workType);
-
+    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.architecturalType, widget.workType);
+    manpower = await DatabaseHelper.instance.readAllManpower(widget.projectFk, widget.workType, widget.architecturalType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -199,6 +200,19 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
+
+    if(manpower != null){
+      isChecked = manpower!.cbOne;
+      isChecked2 = manpower!.cbTwo;      
+      isChecked3 = manpower!.cbThree;
+      isChecked4 = manpower!.cbFour;
+      isChecked5 = manpower!.cbFive;
+      isChecked6 = manpower!.cbSix;
+      isChecked7 = manpower!.cbSeven;
+      isChecked8 = manpower!.cbEight;
+      isChecked9 = manpower!.cbNine;
+      isChecked10 = manpower!.cbTen;
+    }    
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
   }
@@ -865,6 +879,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbTwo = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -910,6 +925,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbThree = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -954,6 +970,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbFour = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -999,6 +1016,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbFive = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1043,6 +1061,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbSix = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1087,6 +1106,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbSeven = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1131,6 +1151,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbEight = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1175,6 +1196,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbNine = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1220,6 +1242,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     cbTen = 0;
                                   }
                                 });
+                                updateManpower();
                               },
                             ),
                           ),
@@ -1294,6 +1317,27 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                   ]),
                 ),
               ));
+  }
+
+  Future updateManpower () async {
+   manpower = AdditionalManpower(
+      id: manpower!.id!,
+      fk: manpower!.fk,
+      work: manpower!.work,
+      type: manpower!.type,
+      cbOne: isChecked,
+      cbTwo: isChecked2,
+      cbThree: isChecked3,
+      cbFour: isChecked4,
+      cbFive: isChecked5,
+      cbSix: isChecked6,
+      cbSeven: isChecked7,
+      cbEight: isChecked8,
+      cbNine: isChecked9,
+      cbTen: isChecked10,
+    );
+
+    await DatabaseHelper.instance.updateManpower(manpower!);
   }
 
   Widget extDropdown() => DropdownButtonFormField(
