@@ -44,6 +44,7 @@ dependencies:
   syncfusion_flutter_pdf: ^20.1.52-beta
   path_provider: ^2.0.1
   open_file: ^3.1.0
+  data_table_2: ^2.1.1
   # horizontal_data_table: ^3.6.3
 dev_dependencies:
   flutter_test:
