@@ -166,8 +166,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
-    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.architecturalType, widget.workType);
-    manpower = await DatabaseHelper.instance.readAllManpower(widget.projectFk, widget.workType, widget.architecturalType);
+    formData = await DatabaseHelper.instance.readFormData(
+        widget.projectFk, widget.architecturalType, widget.workType);
+    manpower = await DatabaseHelper.instance.readAllManpower(
+        widget.projectFk, widget.workType, widget.architecturalType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -192,8 +194,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       worker2 = formData!.worker_2 == null ? null : formData!.worker_2!;
       costOfLabor = formData!.worker_1 == null
           ? null
-          : (formData!.worker_1! * workerCost!) +
-              (formData!.worker_2! * workerCost2!);
+          : ((formData!.worker_1!.toDouble() * workerCost!) +
+                  (formData!.worker_2!.toDouble() * workerCost2!)) *
+              numberOfDays!;
       preferedTime = formData!.pref_time.toString();
 
       _selectedType = formData!.col_1;
@@ -201,9 +204,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       isUpdating = true;
     }
 
-    if(manpower != null){
+    if (manpower != null) {
       isChecked = manpower!.cbOne;
-      isChecked2 = manpower!.cbTwo;      
+      isChecked2 = manpower!.cbTwo;
       isChecked3 = manpower!.cbThree;
       isChecked4 = manpower!.cbFour;
       isChecked5 = manpower!.cbFive;
@@ -212,7 +215,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       isChecked8 = manpower!.cbEight;
       isChecked9 = manpower!.cbNine;
       isChecked10 = manpower!.cbTen;
-    }    
+    }
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
   }
@@ -1319,8 +1322,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               ));
   }
 
-  Future updateManpower () async {
-   manpower = AdditionalManpower(
+  Future updateManpower() async {
+    manpower = AdditionalManpower(
       id: manpower!.id!,
       fk: manpower!.fk,
       work: manpower!.work,
@@ -1335,6 +1338,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       cbEight: isChecked8,
       cbNine: isChecked9,
       cbTen: isChecked10,
+      totalPercentage: 2,
     );
 
     await DatabaseHelper.instance.updateManpower(manpower!);
@@ -1616,7 +1620,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             date_end:
                 selectedDate.add(Duration(days: numberOfDays!)).toString(),
             num_workers: numberOfWorkers!,
-            worker_1: numberOfWorkers!,
+            worker_1: worker1!,
+            worker_2: worker2!,
             work: widget.architecturalType,
             type: widget.workType,
             fk: widget.projectFk,

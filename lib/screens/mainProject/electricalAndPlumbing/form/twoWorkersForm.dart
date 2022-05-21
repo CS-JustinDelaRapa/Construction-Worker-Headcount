@@ -72,6 +72,8 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       cbEight,
       cbNine,
       cbTen;
+  double? totalPercentage;
+
   //database
   AdditionalManpower? manpower;
   FormData? formData;
@@ -122,7 +124,8 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
     setState(() => isLoading = true);
     formData = await DatabaseHelper.instance.readFormData(
         widget.projectFk, widget.elecAndPlumbType, widget.workType);
-    manpower = await DatabaseHelper.instance.readAllManpower(widget.projectFk, widget.workType, widget.elecAndPlumbType);
+    manpower = await DatabaseHelper.instance.readAllManpower(
+        widget.projectFk, widget.workType, widget.elecAndPlumbType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -147,18 +150,20 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       worker2 = formData!.worker_2 == null ? null : formData!.worker_2!;
       costOfLabor = formData!.worker_1 == null
           ? null
-          : (formData!.worker_1! * workerCost!) +
-              (formData!.worker_2! * workerCost2!);
+          : ((formData!.worker_1!.toDouble() * workerCost!) +
+                  (formData!.worker_2!.toDouble() * workerCost2!)) *
+              numberOfDays!;
+      // costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
-
+      totalPercentage = manpower!.totalPercentage;
       _selectedType = formData!.col_1;
       defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
 
-    if(manpower != null){
+    if (manpower != null) {
       isChecked = manpower!.cbOne;
-      isChecked2 = manpower!.cbTwo;      
+      isChecked2 = manpower!.cbTwo;
       isChecked3 = manpower!.cbThree;
       isChecked4 = manpower!.cbFour;
       isChecked5 = manpower!.cbFive;
@@ -174,6 +179,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
 
   @override
   Widget build(BuildContext context) {
+    print(totalPercentage);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.workType),
@@ -687,14 +693,6 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         )
                       ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Additional Manpower',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
                     Row(
                       children: [
                         Flexible(
@@ -1116,8 +1114,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked10 = value!;
                                   if (isChecked10 == true) {
                                     cbTen = 0.1;
+                                    // totalPercentage += cbTen!;
                                   } else {
                                     cbTen = 0;
+                                    // totalPercentage -= cbTen!;
                                   }
                                 });
                                 updateManpower();
@@ -1151,44 +1151,98 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                       padding: EdgeInsets.all(8.0),
                       child: Text(
                         'Additional Manpower',
+                        textAlign: TextAlign.left,
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
                     Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.22,
-                              height: MediaQuery.of(context).size.height * 0.07,
-                              child: const Text(
-                                'Percent %',
-                                style: TextStyle(fontSize: 15),
-                              )),
+                        const Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Percent %',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 15),
+                                )),
+                          ),
                         ),
-                        // Flexible(
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.fromLTRB(0, 8, 0, 25),
-                        //     child: SizedBox(
-                        //         width: MediaQuery.of(context).size.width * 0.5,
-                        //         height:
-                        //             MediaQuery.of(context).size.height * 0.07,
-                        //         child: TextFormField(
-                        //           decoration: const InputDecoration(
-                        //             helperText: ' ', // this is new
-                        //           ),
-                        //           validator: (value) {
-                        //             if (value == null ||
-                        //                 value.isEmpty ||
-                        //                 !regex.hasMatch(value)) {
-                        //               return 'This Field is Required';
-                        //             }
-                        //             return null;
-                        //           },
-                        //           keyboardType: TextInputType.number,
-                        //         )),
-                        //   ),
-                        // ),
+                        Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  totalPercentage.toString(),
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  worker!.toUpperCase(),
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  worker2 != null ? worker2.toString() : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  secondWorker!.toUpperCase(),
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          ),
+                        ),
+                        Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  worker2 != null ? worker2.toString() : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          ),
+                        ),
                       ],
                     ),
                     computeButton()
@@ -1197,23 +1251,23 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
               ));
   }
 
-  Future updateManpower () async {
-   manpower = AdditionalManpower(
-      id: manpower!.id!,
-      fk: manpower!.fk,
-      work: manpower!.work,
-      type: manpower!.type,
-      cbOne: isChecked,
-      cbTwo: isChecked2,
-      cbThree: isChecked3,
-      cbFour: isChecked4,
-      cbFive: isChecked5,
-      cbSix: isChecked6,
-      cbSeven: isChecked7,
-      cbEight: isChecked8,
-      cbNine: isChecked9,
-      cbTen: isChecked10,
-    );
+  Future updateManpower() async {
+    manpower = AdditionalManpower(
+        id: manpower!.id!,
+        fk: manpower!.fk,
+        work: manpower!.work,
+        type: manpower!.type,
+        cbOne: isChecked,
+        cbTwo: isChecked2,
+        cbThree: isChecked3,
+        cbFour: isChecked4,
+        cbFive: isChecked5,
+        cbSix: isChecked6,
+        cbSeven: isChecked7,
+        cbEight: isChecked8,
+        cbNine: isChecked9,
+        cbTen: isChecked10,
+        totalPercentage: 2);
 
     await DatabaseHelper.instance.updateManpower(manpower!);
   }
@@ -1261,6 +1315,52 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
             dateEnd = selectedDate.add(Duration(days: numberOfDays!));
             isComputed = true;
           });
+
+          //additional manpower computation
+          // if (isChecked) {
+          //   setState(() {
+          //     totalPercentage += cbOne;
+          //   });
+          // } else if (isChecked2) {
+          //   setState(() {
+          //     totalPercentage += cbTwo;
+          //   });
+          // } else if (isChecked3) {
+          //   setState(() {
+          //     totalPercentage += cbThree;
+          //   });
+          // } else if (isChecked4) {
+          //   setState(() {
+          //     totalPercentage += cbFour;
+          //   });
+          // } else if (isChecked5) {
+          //   setState(() {
+          //     totalPercentage += cbFive;
+          //   });
+          // } else if (isChecked6) {
+          //   setState(() {
+          //     totalPercentage += cbSix;
+          //   });
+          // } else if (isChecked7) {
+          //   setState(() {
+          //     totalPercentage += cbSeven;
+          //   });
+          // } else if (isChecked8) {
+          //   setState(() {
+          //     totalPercentage += cbEight;
+          //   });
+          // } else if (isChecked9) {
+          //   setState(() {
+          //     totalPercentage += cbNine;
+          //   });
+          // } else if (isChecked10) {
+          //   setState(() {
+          //     totalPercentage += cbTen;
+          //   });
+          // }
+          // setState(() {
+          //   percentage = totalPercentage;
+          // });
         }
       },
       child: const Text('Compute'));
@@ -1272,12 +1372,13 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
           date_start: selectedDate.toString(),
           col_1: _selectedType ?? 'DEFAULT',
           col_1_val: double.parse(productivityRateController.text),
-          col_2: double.parse(surface!),
+          col_2: double.parse(surfaceController!),
           pref_time: int.parse(preferedTime!),
           num_days: numberOfDays!,
           date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
           num_workers: numberOfWorkers!,
-          worker_1: numberOfWorkers!,
+          worker_1: worker1!,
+          worker_2: worker2!,
           work: widget.elecAndPlumbType,
           type: widget.workType,
           fk: widget.projectFk,

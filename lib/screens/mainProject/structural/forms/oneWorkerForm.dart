@@ -126,8 +126,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
-    formData = await DatabaseHelper.instance.readFormData(widget.projectFk, widget.structuralType, widget.workType);
-    manpower = await DatabaseHelper.instance.readAllManpower(widget.projectFk, widget.workType, widget.structuralType);
+    formData = await DatabaseHelper.instance
+        .readFormData(widget.projectFk, widget.structuralType, widget.workType);
+    manpower = await DatabaseHelper.instance.readAllManpower(
+        widget.projectFk, widget.workType, widget.structuralType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -145,9 +147,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       dateEnd = formData!.date_end == null
           ? null
           : DateTime.parse(formData!.date_end!);
-      worker_1 = formData!.worker_1;
-      costOfLabor =
-          formData!.worker_1 == null ? null : formData!.worker_1! * workerCost!;
+      worker_1 = formData!.worker_1 == null ? null : formData!.worker_1!;
+      costOfLabor = formData!.worker_1 == null
+          ? null
+          : (formData!.worker_1! * workerCost!) * numberOfDays!;
       // costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
 
@@ -155,9 +158,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
-    if(manpower != null){
+    if (manpower != null) {
       isChecked = manpower!.cbOne;
-      isChecked2 = manpower!.cbTwo;      
+      isChecked2 = manpower!.cbTwo;
       isChecked3 = manpower!.cbThree;
       isChecked4 = manpower!.cbFour;
       isChecked5 = manpower!.cbFive;
@@ -169,7 +172,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     }
     setState(() => isLoading = false);
     // print('refreshhhh '+allManpower![10].toString());
-    print('work: '+widget.workType+'||'+'type: '+widget.structuralType);
+    print('work: ' + widget.workType + '||' + 'type: ' + widget.structuralType);
     productivityRateController.text = defaultValue.toString();
   }
 
@@ -1478,23 +1481,23 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     }
   }
 
-  Future updateManpower () async {
-   manpower = AdditionalManpower(
-      id: manpower!.id!,
-      fk: manpower!.fk,
-      work: manpower!.work,
-      type: manpower!.type,
-      cbOne: isChecked,
-      cbTwo: isChecked2,
-      cbThree: isChecked3,
-      cbFour: isChecked4,
-      cbFive: isChecked5,
-      cbSix: isChecked6,
-      cbSeven: isChecked7,
-      cbEight: isChecked8,
-      cbNine: isChecked9,
-      cbTen: isChecked10,
-    );
+  Future updateManpower() async {
+    manpower = AdditionalManpower(
+        id: manpower!.id!,
+        fk: manpower!.fk,
+        work: manpower!.work,
+        type: manpower!.type,
+        cbOne: isChecked,
+        cbTwo: isChecked2,
+        cbThree: isChecked3,
+        cbFour: isChecked4,
+        cbFive: isChecked5,
+        cbSix: isChecked6,
+        cbSeven: isChecked7,
+        cbEight: isChecked8,
+        cbNine: isChecked9,
+        cbTen: isChecked10,
+        totalPercentage: 2);
 
     await DatabaseHelper.instance.updateManpower(manpower!);
   }

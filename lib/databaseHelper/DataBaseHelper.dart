@@ -71,7 +71,7 @@ class DatabaseHelper {
     ${TblFormDataField.work} TEXT NOT NUll
     )
   ''');
-      await query.execute('''
+    await query.execute('''
   CREATE TABLE $tableManPower(
     ${TblManpowerField.id} INTEGER PRIMARY KEY AUTOINCREMENT,
     ${TblManpowerField.fk} INTEGER NOT NUll,
@@ -86,7 +86,8 @@ class DatabaseHelper {
     ${TblManpowerField.cbSeven} BOOLEAN NOT NULL,
     ${TblManpowerField.cbEight} BOOLEAN NOT NULL,
     ${TblManpowerField.cbNine} BOOLEAN NOT NULL,
-    ${TblManpowerField.cbTen} BOOLEAN NOT NULL    
+    ${TblManpowerField.cbTen} BOOLEAN NOT NULL,
+    ${TblManpowerField.totalPercentage} REAL NOT NULL  
     )
   ''');
   }
@@ -179,11 +180,21 @@ class DatabaseHelper {
 
     final specificID = await reference.query(tableAllData,
         columns: TblFormDataField.formTwoFieldNames,
-        where:
-            '${TblFormDataField.fk} = ? and ${TblFormDataField.work} = ?',
+        where: '${TblFormDataField.fk} = ? and ${TblFormDataField.work} = ?',
         whereArgs: [fk, work]);
 
-   return specificID.map((fromSQL) => FormData.fromJson(fromSQL)).toList();
+    return specificID.map((fromSQL) => FormData.fromJson(fromSQL)).toList();
+  }
+
+  Future<List<FormData>> readForm(int fk) async {
+    final reference = await instance.database;
+
+    final specificID = await reference.query(tableAllData,
+        columns: TblFormDataField.formTwoFieldNames,
+        where: '${TblFormDataField.fk} = ? ',
+        whereArgs: [fk]);
+
+    return specificID.map((fromSQL) => FormData.fromJson(fromSQL)).toList();
   }
 
   Future<int> updateFormData(FormData formTwoInstance) async {
@@ -631,7 +642,8 @@ class DatabaseHelper {
         where: '${TblManpowerField.id} = ?', whereArgs: [manpower.id]);
   }
 
-  Future<AdditionalManpower> readAllManpower(int fk, String type, String work) async {
+  Future<AdditionalManpower> readAllManpower(
+      int fk, String type, String work) async {
     // print('at read all manpower');
     final reference = await instance.database;
 
@@ -666,8 +678,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //formworks
@@ -685,8 +697,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //masonry works
@@ -704,8 +716,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //reinforecedWorks
@@ -725,8 +737,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //reinforecedWorks
@@ -746,8 +758,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //**
@@ -771,8 +783,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //plastering
@@ -792,8 +804,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //painting
@@ -813,8 +825,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //doors and window
@@ -834,8 +846,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //ceiling
@@ -855,8 +867,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //roof
@@ -876,8 +888,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //**
@@ -901,15 +913,15 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //electrical
     for (int x = 0;
         x < ElectricalAndPlumbingItems.listElectricalWorks.length;
         x++) {
-        defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: ElectricalAndPlumbingItems.listElectricalWorks[x],
           work: ElectricalAndPlumbingItems.electricalWorks.title,
@@ -922,8 +934,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //insert into formtable
@@ -942,7 +954,7 @@ class DatabaseHelper {
 //earthworks
     for (int x = 0; x < TwoStoreyStructuralItems.listEarthWorks.length; x++) {
       print('1');
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listEarthWorks[x],
           work: TwoStoreyStructuralItems.earthWorks.title,
@@ -955,13 +967,13 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //formworks
     for (int x = 0; x < TwoStoreyStructuralItems.listFormWorks.length; x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listFormWorks[x],
           work: TwoStoreyStructuralItems.formWorks.title,
@@ -974,13 +986,13 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //masonry works
     for (int x = 0; x < TwoStoreyStructuralItems.listMasonryWorks.length; x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listMasonryWorks[x],
           work: TwoStoreyStructuralItems.masonryWorks.title,
@@ -993,8 +1005,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //reinforecedWorks
@@ -1002,7 +1014,7 @@ class DatabaseHelper {
         x < TwoStoreyStructuralItems.listReinforecedWorks.length;
         x++) {
       print('4');
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listReinforecedWorks[x],
           work: TwoStoreyStructuralItems.reiforecedCementConcrete.title,
@@ -1015,8 +1027,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //reinforecedWorks
@@ -1024,7 +1036,7 @@ class DatabaseHelper {
         x < TwoStoreyStructuralItems.listSteelReinforecedWorks.length;
         x++) {
       print('5');
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listSteelReinforecedWorks[x],
           work: TwoStoreyStructuralItems.steelReinforcedmentWork.title,
@@ -1037,8 +1049,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //**
@@ -1050,7 +1062,7 @@ class DatabaseHelper {
         x < TwoStoreyArchitechturalItems.listFlooringWorks.length;
         x++) {
       print('6');
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyArchitechturalItems.listFlooringWorks[x],
           work: TwoStoreyArchitechturalItems.flooring.title,
@@ -1063,15 +1075,15 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //plastering
     for (int x = 0;
         x < TwoStoreyArchitechturalItems.listPlasteringWorks.length;
         x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyArchitechturalItems.listPlasteringWorks[x],
           work: TwoStoreyArchitechturalItems.plastering.title,
@@ -1084,15 +1096,15 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //painting
     for (int x = 0;
         x < TwoStoreyArchitechturalItems.listPaintingWorks.length;
         x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyArchitechturalItems.listPaintingWorks[x],
           work: TwoStoreyArchitechturalItems.paintingWorks.title,
@@ -1105,15 +1117,15 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //doors and window
     for (int x = 0;
         x < TwoStoreyArchitechturalItems.listDoornWindowsWorks.length;
         x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyArchitechturalItems.listDoornWindowsWorks[x],
           work: TwoStoreyArchitechturalItems.doorsAndWindows.title,
@@ -1126,15 +1138,15 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //ceiling
     for (int x = 0;
         x < TwoStoreyArchitechturalItems.listCeilingWorks.length;
         x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyArchitechturalItems.listCeilingWorks[x],
           work: TwoStoreyArchitechturalItems.ceiling.title,
@@ -1147,15 +1159,15 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //roof
     for (int x = 0;
         x < TwoStoreyArchitechturalItems.listRoofingWorks.length;
         x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyArchitechturalItems.listRoofingWorks[x],
           work: TwoStoreyArchitechturalItems.roofingWorks.title,
@@ -1168,8 +1180,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //**
@@ -1180,7 +1192,7 @@ class DatabaseHelper {
     for (int x = 0;
         x < ElectricalAndPlumbingItems.listPlumbingWorks.length;
         x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: ElectricalAndPlumbingItems.listPlumbingWorks[x],
           work: ElectricalAndPlumbingItems.plumbingWorks.title,
@@ -1193,15 +1205,15 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false          
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //electrical
     for (int x = 0;
         x < ElectricalAndPlumbingItems.listElectricalWorks.length;
         x++) {
-    defaultManpower.add(AdditionalManpower(
+      defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: ElectricalAndPlumbingItems.listElectricalWorks[x],
           work: ElectricalAndPlumbingItems.electricalWorks.title,
@@ -1214,8 +1226,8 @@ class DatabaseHelper {
           cbSeven: false,
           cbEight: false,
           cbNine: false,
-          cbTen: false
-          ));
+          cbTen: false,
+          totalPercentage: 0));
     }
 
 //insert into formtable
@@ -1223,5 +1235,4 @@ class DatabaseHelper {
       await createManpower(defaultManpower[x]);
     }
   }
-
 }
