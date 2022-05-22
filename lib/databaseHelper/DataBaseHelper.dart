@@ -175,6 +175,23 @@ class DatabaseHelper {
     }
   }
 
+  Future<List<FormData>?> readAllFormData(int fk) async {
+    final reference = await instance.database;
+
+    final fromTable = await reference.query(tableAllData,
+        columns: TblFormDataField.formTwoFieldNames,
+        where:
+            '${TblFormDataField.fk} = ?',
+        whereArgs: [fk]);
+
+    return fromTable.map((fromSQL) => FormData.fromJson(fromSQL)).toList();
+    // if (specificID.isNotEmpty) {
+    //   return FormData.fromJson(specificID.first);
+    // } else {
+    //   return null;
+    // }
+  }
+
   Future<List<FormData>> readProductivityForm(int fk, String work) async {
     final reference = await instance.database;
 

@@ -169,6 +169,7 @@ class _StackWidgetState extends State<StackWidget> {
       case DrawerItems.manPowerDistribution:
         return ManpowerDistribution(
           openDrawer: openDrawer,
+          project: widget.project,
         );
       case DrawerItems.additionalManpower:
         return AdditionalManpower(

@@ -1,9 +1,14 @@
 // ignore_for_file: file_names
 // import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:data_table_2/data_table_2.dart';
+import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/ProjectModel.dart';
+import 'package:engineering/model/formModel.dart';
+import 'package:engineering/model/workerModel.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
 import 'package:engineering/screens/mainProject/manpowerDistribution/scrollable-column-widget.dart';
 import 'package:engineering/widget/customWidgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -12,8 +17,9 @@ import 'mobile.dart';
 
 class ManpowerDistribution extends StatefulWidget {
   final VoidCallback openDrawer;
+  final ProjectItem project;
 
-  const ManpowerDistribution({Key? key, required this.openDrawer})
+  const ManpowerDistribution({Key? key, required this.openDrawer, required this.project})
       : super(key: key);
 
   @override
@@ -21,6 +27,239 @@ class ManpowerDistribution extends StatefulWidget {
 }
 
 class _ManpowerDistributionState extends State<ManpowerDistribution> {
+
+  
+  //database
+  List<FormData>? allForms;
+  List<WorkerType>? allWorkers;
+  bool isLoading = false;
+
+  
+//tile data defaults
+//structural
+  List<String> earthWorks = ['Laborer'];
+  List<int> earthworksNumber = [0];
+  List<int> tempEarthworksNumber = [0];
+  List<double> earthworksRate = [0];
+  double earthworksCost = 0;
+
+  List<String> formworks = ['Carpenter', 'Laborer'];
+  List<int> formworksNumber = [0,0];
+  List<int> tempFormworksNumber = [0,0];
+  List<double> formworksRate = [0,0];
+  double formworksCost = 0;
+  
+  List<String> masonry = ['Tile Man', 'Laborer'];
+  List<int> masonryNumber = [0,0];
+  List<int> tempMasonryNumber = [0,0];
+  List<double> masonryRate = [0,0];
+  double masonryCost = 0;
+
+  List<String> reinforcedCementWorks = ['Mason', 'Laborer'];
+  List<int> reinforcedCementWorksNumber = [0,0];
+  List<int> tempReinforcedCementWorksNumber = [0,0];
+  List<double> reinforcedCementWorksRate = [0,0];
+  double reinforcedCementWorksCost = 0;
+
+  List<String> steelReinforcementWorks = ['Steel Man'];
+  List<int> steelReinforcementWorksNumber = [0];
+  List<int> tempSteelReinforcementWorksNumber = [0];
+  List<double> steelReinforcementWorksRate = [0];
+  double steelReinforcementWorksCost = 0;
+
+//architectural
+  List<String> flooring = ['Tileman', 'Laborer'];
+  List<int> flooringNumber = [0,0];
+  List<int> tempeFlooringNumber = [0,0];
+  List<double> flooringRate = [0,0];
+  double flooringCost = 0;
+
+  List<String> plastering = ['Mason', 'Laborer'];
+  List<int> plasteringNumber = [0,0];
+  List<int> tempPlasteringNumber = [0,0];
+  List<double> plasteringRate = [0,0];
+  double plasteringCost = 0;
+
+  List<String> paintingWorks = ['Painter'];
+  List<int> paintingWorksNumber = [0];
+  List<int> tempPaintingWorksNumber = [0];
+  List<double> paintingWorksRate = [0];
+  double paintingWorksCost = 0;
+
+  List<String> doorsAndWindows = ['Door Installer', 'Window Installer'];
+  List<int> doorAndWindowsNumber = [0,0];
+  List<int> tempDoorAndWindowsNumber = [0,0];
+  List<double> doorAndWindowsRate = [0,0];
+  double doorsAndWindowsCost = 0;
+
+  List<String> ceiling = ['Carpenter', 'Laborer'];
+  List<int> ceilingNumber = [0,0];
+  List<int> tempCeilingNumber = [0,0];
+  List<double> ceilingRate = [0,0];
+  double ceilingCost = 0;
+
+  List<String> roofing = ['Tinsmith','Welder', 'Laborer'];
+  List<int> roofingNumber = [0,0,0];
+  List<int> tempRoofingNumber = [0,0,0];
+  List<double> roofingRate = [0,0,0];
+  double roofingCost = 0;
+
+
+//electrical and plumbing
+  List<String> electricalWorks = ['Electrician', 'Laborer'];
+  List<int> electricalWorksNumber = [0,0];
+  List<int> tempElectricalWorksNumber = [0,0];
+  List<double> electricalWorksRate = [0,0];
+  double electricalWorksCost = 0;
+
+  List<String> plumbing = ['Plumber', 'Laborer'];
+  List<int> plumbingNumber = [0,0];
+  List<int> tempPlumbingNumber = [0,0];
+  List<double> plumbingRate = [0,0];
+  double plumbingCost = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    refreshState();
+  }
+
+  Future refreshState() async {
+    print('at refresh state');
+    setState(() {isLoading = true;});
+    allForms = await DatabaseHelper.instance.readAllFormData(widget.project.id!);
+    allWorkers = await DatabaseHelper.instance.readWorkers(widget.project.id!);
+
+    //update default data
+    if(allForms != null){
+      for(int x = 0; x < allForms!.length; x++){
+          if(allForms![x].work == 'Earthworks' && allForms![x].date_end != null){
+          setState(() {
+            earthworksNumber[0] += allForms![x].worker_1!;
+            tempEarthworksNumber[0] = allForms![x].worker_1!;
+          });
+          earthworksCost += generateWorkerRate(allForms![x], earthWorks, earthworksRate, tempEarthworksNumber);
+          tempEarthworksNumber = [0];
+        }else if(allForms![x].work == 'Formworks' && allForms![x].date_end != null){
+          setState(() {
+            formworksNumber[0] += allForms![x].worker_1!;
+            formworksNumber[1] += allForms![x].worker_2!;            
+            tempFormworksNumber[0] = allForms![x].worker_1!;
+            tempFormworksNumber[1] = allForms![x].worker_2!;            
+          });
+          formworksCost += generateWorkerRate(allForms![x], formworks, formworksRate, tempFormworksNumber);
+          tempFormworksNumber = [0,0];
+        }else if(allForms![x].work == 'Masonry Works' && allForms![x].date_end != null){
+          setState(() {
+            masonryNumber[0] += allForms![x].worker_1!;
+            masonryNumber[1] += allForms![x].worker_2!;            
+            tempMasonryNumber[0] = allForms![x].worker_1!;
+            tempMasonryNumber[1] = allForms![x].worker_2!;                        
+          });
+          masonryCost += generateWorkerRate(allForms![x], masonry, masonryRate, tempMasonryNumber);
+          tempMasonryNumber = [0,0];          
+        }else if(allForms![x].work == 'Reinforced Cement Works' && allForms![x].date_end != null){
+          setState(() {
+            reinforcedCementWorksNumber[0] += allForms![x].worker_1!;
+            reinforcedCementWorksNumber[1] += allForms![x].worker_2!;            
+            tempReinforcedCementWorksNumber[0] = allForms![x].worker_1!;
+            tempReinforcedCementWorksNumber[1] = allForms![x].worker_2!;                        
+          });
+          reinforcedCementWorksCost += generateWorkerRate(allForms![x], reinforcedCementWorks, reinforcedCementWorksRate, tempReinforcedCementWorksNumber);
+          tempReinforcedCementWorksNumber = [0,0];
+        }else if(allForms![x].work == 'Steel Reinforcement Works' && allForms![x].date_end != null){
+          setState(() {
+            steelReinforcementWorksNumber[0] += allForms![x].worker_1!;
+            tempSteelReinforcementWorksNumber[0] = allForms![x].worker_1!;     
+          });
+          steelReinforcementWorksCost += generateWorkerRate(allForms![x], steelReinforcementWorks,steelReinforcementWorksRate,tempSteelReinforcementWorksNumber);
+          tempSteelReinforcementWorksNumber = [0,0];
+        }else if(allForms![x].work == 'Flooring' && allForms![x].date_end != null){
+          setState(() {
+            flooringNumber[0] += allForms![x].worker_1!;
+            flooringNumber[1] += allForms![x].worker_2!;                 
+            tempeFlooringNumber [0] = allForms![x].worker_1!;
+            tempeFlooringNumber[1] = allForms![x].worker_2!;                             
+          });
+          flooringCost += generateWorkerRate(allForms![x], flooring, flooringRate, tempeFlooringNumber);
+          tempeFlooringNumber = [0,0];
+        }else if(allForms![x].work == 'Plastering' && allForms![x].date_end != null){
+          setState(() {
+            plasteringNumber[0] += allForms![x].worker_1!;
+            plasteringNumber[1] += allForms![x].worker_2!;                 
+            tempPlasteringNumber[0] = allForms![x].worker_1!;
+            tempPlasteringNumber[1] = allForms![x].worker_2!;                             
+          });
+          plasteringCost += generateWorkerRate(allForms![x], plastering, plasteringRate, tempPlasteringNumber);
+          tempPlasteringNumber = [0,0];
+        }else if(allForms![x].work == 'Painting Works' && allForms![x].date_end != null){
+          setState(() {
+            paintingWorksNumber[0] += allForms![x].worker_1!;               
+            tempPaintingWorksNumber[0] = allForms![x].worker_1!;                           
+          });
+          paintingWorksCost += generateWorkerRate(allForms![x], paintingWorks, paintingWorksRate, tempPaintingWorksNumber);
+          tempPaintingWorksNumber = [0];
+        }else if(allForms![x].work == 'Doors and Windows' && allForms![x].date_end != null){
+          if(allForms![x].type == 'Windows'){
+          setState(() {
+            doorAndWindowsNumber[1] += allForms![x].worker_1!;    
+            tempDoorAndWindowsNumber[1] = allForms![x].worker_1!;                             
+          });
+          }else{
+            doorAndWindowsNumber[0] += allForms![x].worker_1!;
+            tempDoorAndWindowsNumber[0] = allForms![x].worker_1!;            
+          }
+          doorsAndWindowsCost += generateWorkerRate(allForms![x], doorsAndWindows, doorAndWindowsRate , tempDoorAndWindowsNumber);
+          tempDoorAndWindowsNumber = [0,0];
+        }else if(allForms![x].work == 'Ceiling' && allForms![x].date_end != null){
+          setState(() {
+            ceilingNumber[0] += allForms![x].worker_1!;
+            ceilingNumber[1] += allForms![x].worker_2!;                 
+            tempCeilingNumber[0] = allForms![x].worker_1!;
+            tempCeilingNumber[1] = allForms![x].worker_2!;                             
+          });
+          ceilingCost += generateWorkerRate(allForms![x], ceiling, ceilingRate, tempCeilingNumber);
+          tempCeilingNumber = [0,0];
+        }else if(allForms![x].work == 'Roofing Works' && allForms![x].date_end != null){
+          if(allForms![x].type == 'Trusses'){
+          setState(() {
+            roofingNumber[1] += allForms![x].worker_1!;
+            roofingNumber[2] += allForms![x].worker_2!;  
+            tempRoofingNumber[1] = allForms![x].worker_1!;
+            tempRoofingNumber[2] = allForms![x].worker_2!;                                       
+          });          
+          }else{
+            roofingNumber[0] += allForms![x].worker_1!;
+            roofingNumber[2] += allForms![x].worker_2!;            
+            tempRoofingNumber[0] = allForms![x].worker_1!;
+            tempRoofingNumber[2] = allForms![x].worker_2!;
+          }
+          roofingCost += generateWorkerRate(allForms![x], roofing, roofingRate, tempRoofingNumber);
+          tempRoofingNumber = [0,0,0];
+        }else if(allForms![x].work == 'Electrical Works' && allForms![x].date_end != null){
+          setState(() {
+            electricalWorksNumber[0] += allForms![x].worker_1!;
+            electricalWorksNumber[1] += allForms![x].worker_2!;                 
+            tempElectricalWorksNumber[0] = allForms![x].worker_1!;
+            tempElectricalWorksNumber[1] = allForms![x].worker_2!;                             
+          });
+          electricalWorksCost += generateWorkerRate(allForms![x], electricalWorks, electricalWorksRate, tempElectricalWorksNumber);
+          tempElectricalWorksNumber = [0,0];
+        }else if(allForms![x].work == 'Plumbing Works' && allForms![x].date_end != null){
+          setState(() {
+            plumbingNumber[0] += allForms![x].worker_1!;
+            plumbingNumber[1] += allForms![x].worker_2!;                 
+            tempPlumbingNumber[0] = allForms![x].worker_1!;
+            tempPlumbingNumber[1] = allForms![x].worker_2!;                             
+          });
+          plumbingCost += generateWorkerRate(allForms![x], plumbing, plumbingRate, plumbingNumber);
+          tempPlumbingNumber = [0,0];
+        }
+      }
+    }
+    setState(() {isLoading = false;});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,18 +271,120 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
         ),
         title: const Text('Manpower Distribution'),
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-        child: Row(
+      body: isLoading? const Center(child: CircularProgressIndicator(),):
+      SingleChildScrollView(
+        child: Column(
           children: [
-            FixedColumnWidget(),
-            ScrollableColumnWidget(),
-          ],
+            //Structural
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Structural', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
+            ),            
+            tile('Earthworks', earthWorks, earthworksNumber, earthworksCost, Colors.grey.shade100, this.context),
+            tile('Formworks', formworks, formworksNumber, formworksCost, Colors.white, this.context),
+            tile('Masonry', masonry, masonryNumber, masonryCost, Colors.grey.shade100, this.context),
+            tile('Reinforced Cement Works', reinforcedCementWorks, reinforcedCementWorksNumber, reinforcedCementWorksCost, Colors.white, this.context),
+            tile('Steel Reinforcement Works', steelReinforcementWorks, steelReinforcementWorksNumber, steelReinforcementWorksCost, Colors.grey.shade100, this.context),
+
+            //architectural
+           Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Text('Architectural', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
+           ),            
+            tile('Flooring', flooring, flooringNumber, flooringCost, Colors.white, this.context),
+            tile('Plastering', plastering, plasteringNumber, plasteringCost, Colors.grey.shade100, this.context),
+            tile('Painting Works', paintingWorks, paintingWorksNumber, paintingWorksCost, Colors.white, this.context),
+            tile('Doors and Windows', doorsAndWindows, doorAndWindowsNumber, doorsAndWindowsCost, Colors.grey.shade100, this.context),
+            tile('Ceiling', ceiling, ceilingNumber, ceilingCost, Colors.white, this.context),            
+            tile('Roofing', roofing, roofingNumber, roofingCost, Colors.grey.shade100, this.context),
+
+          //architectural
+           Padding(
+             padding: const EdgeInsets.all(8.0),
+             child: Text('Electrical and Plumbing', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
+           ),            
+            tile('Electrical Works', electricalWorks, electricalWorksNumber, electricalWorksCost, Colors.white, this.context),
+            tile('Plumbing', plumbing, plumbingNumber, plumbingCost, Colors.grey.shade100, this.context),
+          ]             
         ),
-      )),
+      )
+      
+      //********************************************************* */
+      //code below for backup don't delete
+      //********************************************************* */
+
+      // SafeArea(
+      //     child: SingleChildScrollView(
+      //   child: Row(
+      //     children: [
+      //       FixedColumnWidget(),
+      //       ScrollableColumnWidget(),
+      //     ],
+      //   ),
+      // )),
     );
   }
+
+double generateWorkerRate(FormData form, List<String> workerLabel, List<double> rate, List<int> number){
+  double totalCost = 0;
+  for(int x = 0; x < workerLabel.length; x++){
+    for(int y = 0; y < allWorkers!.length; y++){
+      if(allWorkers![y].workerType == workerLabel[x].toUpperCase()){
+        setState(() {
+          rate[x] = (allWorkers![y].rate * form.num_days!) * number[x];
+          totalCost += rate[x];
+        });
+      }
+    }
+  }
+
+  return totalCost;
 }
+
+}
+
+Widget tile( String title, List<String> workers, List<int> numbers, double cost, Color color, BuildContext context) => Container(
+  color: color,
+  child:   Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(title+': ', style: const TextStyle(fontWeight: FontWeight.bold),),
+                          RichText(
+                                  text: TextSpan(
+                                      text: 'Total Cost of Labors: ',
+                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+                                      children: <TextSpan>[
+                                        TextSpan(text: cost.toString(),
+                                            style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
+                                        )
+                                      ]
+                                  ),
+                                ),                          
+                        ],
+                      ),
+                    ),
+                    Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: workers.map((e) => 
+                    Text(e)
+                    ).toList()),
+                    Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: numbers.map((e) => 
+                    Text(e.toString())
+                    ).toList()),
+                  ],
+    
+                ),
+  ),
+);
 
 Future<void> _createPDF() async {
   //Creates a new PDF document
