@@ -318,9 +318,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     child: Row(
                                       children: [
                                         Flexible(
-                                            flex: 5, child: windowDropdown()),
+                                            flex: 4, child: windowDropdown()),
                                         Flexible(
-                                          flex: 3,
+                                          flex: 2,
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Align(
