@@ -73,6 +73,8 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       cbNine,
       cbTen;
   double? totalPercentage;
+  double percentage = 0;
+  double? additionalWorker1, additionalWorker2;
 
   //database
   AdditionalManpower? manpower;
@@ -156,6 +158,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       // costOfLabor = formData!.cost_of_labor;
       preferedTime = formData!.pref_time.toString();
       totalPercentage = manpower!.totalPercentage;
+      percentage = manpower!.totalPercentage;
       _selectedType = formData!.col_1;
       defaultValue = formData!.col_1_val;
       isUpdating = true;
@@ -172,6 +175,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       isChecked8 = manpower!.cbEight;
       isChecked9 = manpower!.cbNine;
       isChecked10 = manpower!.cbTen;
+      updateManpower();
     }
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
@@ -179,7 +183,6 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
 
   @override
   Widget build(BuildContext context) {
-    print(totalPercentage);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.workType),
@@ -693,6 +696,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         )
                       ],
                     ),
+                    //cbone
                     Row(
                       children: [
                         Flexible(
@@ -707,9 +711,16 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked = value!;
                                   if (isChecked == true) {
                                     cbOne = 0.4;
+                                    percentage = double.parse(
+                                        (percentage + cbOne!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbOne = 0;
+                                    cbOne = 0.4;
+                                    percentage = double.parse(
+                                        (percentage - cbOne!)
+                                            .toStringAsFixed(2));
                                   }
+                                  updateManpower();
                                 });
                               },
                             ),
@@ -737,6 +748,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbtwo
                     Row(
                       children: [
                         Flexible(
@@ -751,8 +763,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked2 = value!;
                                   if (isChecked2 == true) {
                                     cbTwo = 0.1;
+                                    percentage = double.parse(
+                                        (percentage + cbTwo!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbTwo = 0;
+                                    cbTwo = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbTwo!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -783,6 +801,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbthree
                     Row(
                       children: [
                         Flexible(
@@ -797,8 +816,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked3 = value!;
                                   if (isChecked3 == true) {
                                     cbThree = 0.1;
+                                    percentage = double.parse(
+                                        (percentage + cbThree!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbThree = 0;
+                                    cbThree = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbThree!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -828,6 +853,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbfour
                     Row(
                       children: [
                         Flexible(
@@ -842,8 +868,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked4 = value!;
                                   if (isChecked4 == true) {
                                     cbFour = 0.1;
+                                    percentage = double.parse(
+                                        (percentage + cbFour!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbFour = 0;
+                                    cbFour = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbFour!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -874,6 +906,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbfive
                     Row(
                       children: [
                         Flexible(
@@ -888,8 +921,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked5 = value!;
                                   if (isChecked5 == true) {
                                     cbFive = 0.1;
+                                    percentage = double.parse(
+                                        (percentage + cbFive!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbFive = 0;
+                                    cbFive = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbFive!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -919,6 +958,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbsix
                     Row(
                       children: [
                         Flexible(
@@ -933,8 +973,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked6 = value!;
                                   if (isChecked6 == true) {
                                     cbSix = 0.1;
+                                    percentage = double.parse(
+                                        (percentage + cbSix!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbSix = 0;
+                                    cbSix = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbSix!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -964,6 +1010,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbseven
                     Row(
                       children: [
                         Flexible(
@@ -978,8 +1025,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked7 = value!;
                                   if (isChecked7 == true) {
                                     cbSeven = 0.1;
+                                    percentage = double.parse(
+                                        (percentage + cbSeven!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbSeven = 0;
+                                    cbSeven = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbSeven!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -1009,6 +1062,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbeight
                     Row(
                       children: [
                         Flexible(
@@ -1023,8 +1077,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked8 = value!;
                                   if (isChecked8 == true) {
                                     cbEight = 0.1;
+                                    percentage = double.parse(
+                                        (percentage + cbEight!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbEight = 0;
+                                    cbEight = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbEight!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -1054,6 +1114,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbnine
                     Row(
                       children: [
                         Flexible(
@@ -1068,8 +1129,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked9 = value!;
                                   if (isChecked9 == true) {
                                     cbNine = 0.3;
+                                    percentage = double.parse(
+                                        (percentage + cbNine!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbNine = 0;
+                                    cbNine = 0.3;
+                                    percentage = double.parse(
+                                        (percentage - cbNine!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -1099,6 +1166,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                         ),
                       ],
                     ),
+                    //cbten
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -1114,10 +1182,14 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                   isChecked10 = value!;
                                   if (isChecked10 == true) {
                                     cbTen = 0.1;
-                                    // totalPercentage += cbTen!;
+                                    percentage = double.parse(
+                                        (percentage + cbTen!)
+                                            .toStringAsFixed(2));
                                   } else {
-                                    cbTen = 0;
-                                    // totalPercentage -= cbTen!;
+                                    cbTen = 0.1;
+                                    percentage = double.parse(
+                                        (percentage - cbTen!)
+                                            .toStringAsFixed(2));
                                   }
                                 });
                                 updateManpower();
@@ -1177,7 +1249,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  totalPercentage.toString(),
+                                  (totalPercentage! * 100).toStringAsFixed(0),
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(fontSize: 15),
                                 )),
@@ -1207,7 +1279,9 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  worker2 != null ? worker2.toString() : '',
+                                  formData!.worker_1 != null
+                                      ? additionalWorker1!.toStringAsFixed(0)
+                                      : '',
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(fontSize: 15),
                                 )),
@@ -1237,7 +1311,9 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  worker2 != null ? worker2.toString() : '',
+                                  formData!.worker_2 != null
+                                      ? additionalWorker2!.toStringAsFixed(0)
+                                      : '',
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(fontSize: 15),
                                 )),
@@ -1252,6 +1328,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
   }
 
   Future updateManpower() async {
+    totalPercentage = percentage;
     manpower = AdditionalManpower(
         id: manpower!.id!,
         fk: manpower!.fk,
@@ -1267,8 +1344,32 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         cbEight: isChecked8,
         cbNine: isChecked9,
         cbTen: isChecked10,
-        totalPercentage: 2);
-
+        totalPercentage: totalPercentage!);
+    if (formData!.worker_1 != null) {
+      additionalWorker1 = totalPercentage! / worker1!;
+      additionalWorker2 = totalPercentage! / worker2!;
+      double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
+      double secondDecimalValue =
+          additionalWorker1! - additionalWorker1!.toInt();
+      if (decimalValue <= 0.09) {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.floor()).toDouble();
+        });
+      } else {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.ceil()).toDouble();
+        });
+      }
+      if (secondDecimalValue <= 0.09) {
+        setState(() {
+          additionalWorker2 = (additionalWorker2!.floor()).toDouble();
+        });
+      } else {
+        setState(() {
+          additionalWorker2 = (additionalWorker2!.ceil()).toDouble();
+        });
+      }
+    }
     await DatabaseHelper.instance.updateManpower(manpower!);
   }
 
@@ -1384,6 +1485,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
           fk: widget.projectFk,
         );
         DatabaseHelper.instance.updateFormData(formDataCreate);
+        updateManpower();
         refreshState();
       },
       child: const Text('Save'));

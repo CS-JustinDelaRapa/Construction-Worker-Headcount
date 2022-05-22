@@ -194,11 +194,29 @@ class _LoadProjectState extends State<LoadProject> {
   }
 
   loadProject() {
-    CustomWidgets().function_pushReplacement(
-        context,
-        () => StackWidget(
-              project: projects![selectedIndex!],
-            ));
+    if (selected == null && selectedIndex == null) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+                title: const Text('Please Select 1 Project'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text("OK"),
+                    onPressed: () {
+                      // print(projectName[index]);
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ]);
+          });
+    } else {
+      CustomWidgets().function_pushReplacement(
+          context,
+          () => StackWidget(
+                project: projects![selectedIndex!],
+              ));
+    }
   }
 
   deleteProject() {

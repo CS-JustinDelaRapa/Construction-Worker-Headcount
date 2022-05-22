@@ -67,8 +67,8 @@ class TwoStoreyStructuralItems {
 
   static const List<DefaultValue> defValFormworks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 7.7),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 6.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 6.0),
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
     DefaultValue(col_1: "DEFAULT", col_1_val: 4.3),
