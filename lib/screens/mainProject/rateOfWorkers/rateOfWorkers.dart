@@ -235,6 +235,21 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                           style: TextStyle(fontSize: 15),
                                         ))),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.090,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          workers[11].workerType,
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(fontSize: 15),
+                                        ))),
+                              ),
                             ],
                           ),
                         ),
@@ -569,6 +584,36 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                     initialValue: workers[10].rate.toString(),
                                     onChanged: (value) {
                                       rate[10] = value;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.090,
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      helperText: ' ',
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.white, width: 0),
+                                      ), // this is new
+                                    ),
+                                    validator: (value) {
+                                      if (value == null ||
+                                          value.isEmpty ||
+                                          !regex.hasMatch(value)) {
+                                        return '';
+                                      }
+                                      return null;
+                                    },
+                                    initialValue: workers[11].rate.toString(),
+                                    onChanged: (value) {
+                                      rate[11] = value;
                                     },
                                   ),
                                 ),
