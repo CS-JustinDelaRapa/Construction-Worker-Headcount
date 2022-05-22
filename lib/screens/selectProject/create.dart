@@ -92,42 +92,45 @@ class _CreateProjectState extends State<CreateProject> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                  child: TextFormField(
-                readOnly: true,
-                controller: dateStartControler,
-                onTap: () async {
-                  _selectDateStart(context);
-                  print(startSelectedDate);
-                },
-                decoration: InputDecoration(
-                    hintText:
-                        outputFormat.format(startSelectedDate).toString()),
-              )),
+            Row(
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.calendar_today),
+                            onPressed: () {
+                              _selectDateStart(context);
+                            }),
+                        Text(getStartDate(),
+                            style: const TextStyle(fontSize: 20)),
+                      ],
+                    )
+                  ],
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                  child: TextFormField(
-                readOnly: true,
-                controller: dateStartControler,
-                onTap: () async {
-                  _selectDateEnd(context);
-                  print(endSelectedDate);
-                },
-                decoration: InputDecoration(
-                    hintText: outputFormat
-                        .format(endSelectedDate.add(const Duration(days: 1)))
-                        .toString()),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-              )),
+            Row(
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.calendar_today),
+                            onPressed: () {
+                              _selectDateEnd(context);
+                            }),
+                        Text(getEndDate(),
+                            style: const TextStyle(fontSize: 20)),
+                      ],
+                    )
+                  ],
+                ),
+              ],
             ),
             Container(
               alignment: AlignmentDirectional.centerStart,
@@ -202,4 +205,23 @@ class _CreateProjectState extends State<CreateProject> {
           context, () => StackWidget(project: toStackProject));
     }
   }
+}
+
+String getStartDate() {
+  var date = DateTime.now().toString();
+
+  var dateParse = DateTime.parse(date);
+
+  var formattedDate = "${dateParse.month}-${dateParse.day}-${dateParse.year}";
+  return formattedDate.toString();
+}
+
+String getEndDate() {
+  var date = DateTime.now().toString();
+
+  var dateParse = DateTime.parse(date);
+
+  var formattedDate =
+      "${dateParse.month}-${dateParse.day + 1}-${dateParse.year}";
+  return formattedDate.toString();
 }
