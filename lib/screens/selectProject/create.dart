@@ -92,45 +92,44 @@ class _CreateProjectState extends State<CreateProject> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                            iconSize: 30,
-                            icon: const Icon(Icons.calendar_today),
-                            onPressed: () {
-                              _selectDateStart(context);
-                            }),
-                        Text(getStartDate(),
-                            style: const TextStyle(fontSize: 20)),
-                      ],
-                    )
-                  ],
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          CustomWidgets().text_subtitle('Start Date: ', 16),
+                          IconButton(
+                              iconSize: 30,
+                              icon: const Icon(Icons.calendar_today),
+                              onPressed: () {
+                                _selectDateStart(context);
+                              }),
+                          Text(getStartDate(),
+                              style: const TextStyle(fontSize: 20)),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                            iconSize: 30,
-                            icon: const Icon(Icons.calendar_today),
-                            onPressed: () {
-                              _selectDateEnd(context);
-                            }),
-                        Text(getEndDate(),
-                            style: const TextStyle(fontSize: 20)),
-                      ],
-                    )
-                  ],
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Row(
+                children: [
+                  CustomWidgets().text_subtitle('End Date: ', 16),
+                  IconButton(
+                      iconSize: 30,
+                      icon: const Icon(Icons.calendar_today),
+                      onPressed: () {
+                        _selectDateEnd(context);
+                      }),
+                  Text(getEndDate(), style: const TextStyle(fontSize: 20)),
+                ],
+              ),
             ),
             Container(
               alignment: AlignmentDirectional.centerStart,

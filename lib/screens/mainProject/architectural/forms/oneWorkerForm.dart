@@ -114,6 +114,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        isComputed = false;
       });
     }
   }
@@ -140,7 +141,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         units = 'set';
         worker = 'Door Installer';
       } else if (widget.workType.contains('Lockset')) {
-        label = 'Door lock set';
+        label = 'Door Lockset';
         surface = 'Set';
         units = 'set';
         worker = 'Door Installer';
@@ -225,6 +226,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    //date start
                     Row(
                       children: [
                         const Flexible(
@@ -240,7 +242,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   )),
                             )),
                         Flexible(
-                          flex: 5,
+                          flex: 4,
                           child: //date start
                               Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -272,6 +274,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ),
                       ],
                     ),
+                    //productivtyrate
                     Row(
                       children: [
                         Flexible(
@@ -281,7 +284,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  label!.toUpperCase(),
+                                  label!,
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(fontSize: 15),
                                 )),
@@ -292,9 +295,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 flex: 5,
                                 child: Row(
                                   children: [
-                                    Flexible(flex: 5, child: doorDropdown()),
+                                    Flexible(flex: 2, child: doorDropdown()),
                                     Flexible(
-                                      flex: 3,
+                                      flex: 1,
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Align(
@@ -310,6 +313,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                   return '';
                                                 }
                                                 return null;
+                                              },
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  isComputed = false;
+                                                });
                                               },
                                               controller:
                                                   productivityRateController,
@@ -327,9 +335,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     child: Row(
                                       children: [
                                         Flexible(
-                                            flex: 4, child: windowDropdown()),
+                                            flex: 2, child: windowDropdown()),
                                         Flexible(
-                                          flex: 2,
+                                          flex: 1,
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Align(
@@ -349,6 +357,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                     }
                                                     return null;
                                                   },
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      isComputed = false;
+                                                    });
+                                                  },
                                                   controller:
                                                       productivityRateController,
                                                   keyboardType:
@@ -366,10 +379,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                         child: Row(
                                           children: [
                                             Flexible(
-                                                flex: 3,
+                                                flex: 7,
                                                 child: finishDropdown()),
                                             Flexible(
-                                              flex: 2,
+                                              flex: 3,
                                               child: Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
@@ -391,6 +404,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                         }
                                                         return null;
                                                       },
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          isComputed = false;
+                                                        });
+                                                      },
                                                       controller:
                                                           productivityRateController,
                                                       keyboardType:
@@ -409,10 +427,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             child: Row(
                                               children: [
                                                 Flexible(
-                                                    flex: 4,
+                                                    flex: 7,
                                                     child: finishDropdown2()),
                                                 Flexible(
-                                                  flex: 2,
+                                                  flex: 3,
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.all(
@@ -435,6 +453,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                             }
                                                             return null;
                                                           },
+                                                          onChanged: (value) {
+                                                            setState(() {
+                                                              isComputed =
+                                                                  false;
+                                                            });
+                                                          },
                                                           controller:
                                                               productivityRateController,
                                                           keyboardType:
@@ -447,7 +471,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             ),
                                           )
                                         : Flexible(
-                                            flex: 5,
+                                            flex: 4,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
@@ -459,6 +483,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                                         productivityRateController,
                                                     keyboardType:
                                                         TextInputType.number,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        isComputed = false;
+                                                      });
+                                                    },
                                                   )),
                                             ),
                                           ),
@@ -477,6 +506,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ),
                       ],
                     ),
+                    //volume
                     Row(
                       children: [
                         Flexible(
@@ -486,14 +516,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  surface!.toUpperCase(),
+                                  surface!,
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(fontSize: 15),
                                 )),
                           ),
                         ),
                         Flexible(
-                          flex: 5,
+                          flex: 4,
                           child: Padding(
                             padding: const EdgeInsets.all(8),
                             child: Align(
@@ -516,6 +546,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 // controller: projectName.text,
                                 onChanged: (value) {
                                   setState(() {
+                                    isComputed = false;
                                     volume = value;
                                   });
                                 },
@@ -538,6 +569,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ),
                       ],
                     ),
+                    //Preferred Time
                     Row(
                       children: [
                         const Flexible(
@@ -547,14 +579,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'PREFERRED TIME',
+                                  'Prefered time',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(fontSize: 15),
                                 )),
                           ),
                         ),
                         Flexible(
-                          flex: 5,
+                          flex: 4,
                           child: //preffered time
                               Padding(
                             padding: const EdgeInsets.all(8),
@@ -579,6 +611,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 // controller: projectName.text,
                                 onChanged: (value) {
                                   setState(() {
+                                    isComputed = false;
                                     preferedTime = value;
                                   });
                                 },
@@ -593,7 +626,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Day/s',
+                                  'day/s',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(fontSize: 15),
                                 )),
@@ -601,9 +634,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    computeButton(),
+                    //number of days
                     Row(
                       children: [
                         const Flexible(
@@ -620,17 +652,21 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                           ),
                         ),
                         Flexible(
-                          flex: 5,
+                          flex: 4,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  numberOfDays != null
-                                      ? numberOfDays.toString()
-                                      : '',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
+                                child: Center(
+                                  child: Text(
+                                    numberOfDays != null
+                                        ? numberOfDays.toString()
+                                        : '',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 )),
                           ),
                         ),
@@ -641,7 +677,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Day/s',
+                                  'day/s',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(fontSize: 15),
                                 )),
@@ -649,6 +685,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         )
                       ],
                     ),
+                    //date end
                     Row(children: [
                       const Flexible(
                         flex: 3,
@@ -664,17 +701,20 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ),
                       ),
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                dateEnd != null
-                                    ? outputFormat.format(dateEnd!)
-                                    : '',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
+                              child: Center(
+                                child: Text(
+                                    dateEnd != null
+                                        ? outputFormat.format(dateEnd!)
+                                        : '',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold)),
                               )),
                         ),
                       ),
@@ -693,6 +733,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ),
                       )
                     ]),
+                    //number of workers
                     Row(
                       children: [
                         const Flexible(
@@ -708,17 +749,21 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   )),
                             )),
                         Flexible(
-                          flex: 5,
+                          flex: 4,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  numberOfWorkers != null
-                                      ? numberOfWorkers!.toString()
-                                      : '',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
+                                child: Center(
+                                  child: Text(
+                                    numberOfWorkers != null
+                                        ? numberOfWorkers!.toString()
+                                        : '',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 )),
                           ),
                         ),
@@ -740,6 +785,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                     const SizedBox(
                       height: 30,
                     ),
+                    //worker
                     Row(
                       children: [
                         Flexible(
@@ -749,22 +795,28 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  worker!.toUpperCase(),
+                                  worker!,
                                   textAlign: TextAlign.left,
                                   style: const TextStyle(fontSize: 15),
                                 )),
                           ),
                         ),
                         Flexible(
-                          flex: 5,
+                          flex: 4,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  worker_1 != null ? worker_1!.toString() : '',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
+                                child: Center(
+                                  child: Text(
+                                    worker_1 != null
+                                        ? worker_1!.toString()
+                                        : '',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 )),
                           ),
                         ),
@@ -783,6 +835,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         )
                       ],
                     ),
+                    //cost of labor
                     Row(
                       children: [
                         const Flexible(
@@ -792,24 +845,28 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Cost of Laborer',
+                                  'Cost of Labor',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(fontSize: 15),
                                 )),
                           ),
                         ),
                         Flexible(
-                          flex: 5,
+                          flex: 4,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  costOfLabor != null
-                                      ? costOfLabor.toString()
-                                      : '',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
+                                child: Center(
+                                  child: Text(
+                                    costOfLabor != null
+                                        ? costOfLabor.toString()
+                                        : '',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 )),
                           ),
                         ),
@@ -827,6 +884,13 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                           ),
                         )
                       ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Additional Manpower',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     ),
                     //cbone
                     Row(
@@ -1351,13 +1415,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ),
                       ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Additional Manpower',
-                        style: TextStyle(fontSize: 20),
-                      ),
+                    const SizedBox(
+                      height: 10,
                     ),
+                    //addtl percentage
                     Row(
                       children: [
                         const Flexible(
@@ -1382,45 +1443,52 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                 child: Text(
                                   (totalPercentage! * 100).toStringAsFixed(0),
                                   textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 )),
                           ),
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  worker!.toUpperCase(),
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
+                    //addtl worker
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    worker!,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                            ),
                           ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  formData!.worker_1 != null
-                                      ? additionalWorker1!.toStringAsFixed(0)
-                                      : '',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                      formData!.worker_1 != null
+                                          ? additionalWorker1!
+                                              .toStringAsFixed(0)
+                                          : '',
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold))),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    computeButton()
                   ],
                 ),
               ),
@@ -1464,83 +1532,166 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   paintingworksComputer() {
     if (_formKey.currentState!.validate()) {
-      initialWorkers = (double.parse(volume!) /
-              double.parse(productivityRateController.text))
-          .roundToDouble();
-      if (initialWorkers! == 1) {
-        initialNumberofDays = 1;
-      } else if (initialWorkers! == 2 ||
-          initialWorkers! == 4 ||
-          initialWorkers! == 5) {
-        initialNumberofDays = 2;
-      } else if (initialWorkers! == 3 || initialWorkers! == 6) {
-        initialNumberofDays = 3;
-      } else if (initialWorkers! == 7 ||
-          initialWorkers! == 8 ||
-          initialWorkers! == 11 ||
-          initialWorkers! == 12) {
-        initialNumberofDays = 4;
-      } else if (initialWorkers! == 9 ||
-          initialWorkers! == 10 ||
-          initialWorkers! == 13 ||
-          initialWorkers! == 14 ||
-          initialWorkers! == 15) {
-        initialNumberofDays = 5;
+      if (double.parse(productivityRateController.text) <= 0 ||
+          double.parse(volume!) <= 0 ||
+          double.parse(preferedTime!) <= 0) {
+        setState(() {
+          isComputed = false;
+        });
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: const Text('Invalid Input.'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ]);
+            });
       } else {
-        initialNumberofDays = double.parse(preferedTime!);
-      }
-      setState(() {
-        if (double.parse(preferedTime!) < initialNumberofDays!) {
+        initialWorkers = (double.parse(volume!) /
+                double.parse(productivityRateController.text))
+            .roundToDouble();
+        if (initialWorkers! == 1) {
+          initialNumberofDays = 1;
+        } else if (initialWorkers! == 2 ||
+            initialWorkers! == 4 ||
+            initialWorkers! == 5) {
+          initialNumberofDays = 2;
+        } else if (initialWorkers! == 3 || initialWorkers! == 6) {
+          initialNumberofDays = 3;
+        } else if (initialWorkers! == 7 ||
+            initialWorkers! == 8 ||
+            initialWorkers! == 11 ||
+            initialWorkers! == 12) {
+          initialNumberofDays = 4;
+        } else if (initialWorkers! == 9 ||
+            initialWorkers! == 10 ||
+            initialWorkers! == 13 ||
+            initialWorkers! == 14 ||
+            initialWorkers! == 15) {
+          initialNumberofDays = 5;
+        } else {
           initialNumberofDays = double.parse(preferedTime!);
         }
-        numberOfDays = initialNumberofDays!.round();
-        numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-        costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
-        worker_1 = numberOfWorkers;
-        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
-        isComputed = true;
-      });
+        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+        if (workernumbers <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          setState(() {
+            numberOfDays = initialNumberofDays!.round();
+            numberOfWorkers = workernumbers;
+            costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
+            worker_1 = numberOfWorkers;
+            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            isComputed = true;
+          });
+        }
+      }
     }
   }
 
   doorsandwindowsComputer() {
     if (_formKey.currentState!.validate()) {
-      initialWorkers = (double.parse(volume!) /
-              double.parse(productivityRateController.text))
-          .roundToDouble();
-      if (initialWorkers! == 1) {
-        initialNumberofDays = 1;
-      } else if (initialWorkers! == 2 || initialWorkers! == 4) {
-        initialNumberofDays = 2;
-      } else if (initialWorkers! == 3 ||
-          initialWorkers! == 5 ||
-          initialWorkers! == 6) {
-        initialNumberofDays = 3;
-      } else if (initialWorkers! == 7 ||
-          initialWorkers! == 8 ||
-          initialWorkers! == 11 ||
-          initialWorkers! == 12) {
-        initialNumberofDays = 4;
-      } else if (initialWorkers! == 9 ||
-          initialWorkers! == 10 ||
-          initialWorkers! == 13 ||
-          initialWorkers! == 14 ||
-          initialWorkers! == 15) {
-        initialNumberofDays = 5;
+      if (double.parse(productivityRateController.text) <= 0 ||
+          double.parse(volume!) <= 0 ||
+          double.parse(preferedTime!) <= 0) {
+        setState(() {
+          isComputed = false;
+        });
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: const Text('Invalid Input.'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ]);
+            });
       } else {
-        initialNumberofDays = double.parse(preferedTime!);
-      }
-      setState(() {
+        initialWorkers = (double.parse(volume!) /
+                double.parse(productivityRateController.text))
+            .roundToDouble();
+        if (initialWorkers! == 1) {
+          initialNumberofDays = 1;
+        } else if (initialWorkers! == 2 || initialWorkers! == 4) {
+          initialNumberofDays = 2;
+        } else if (initialWorkers! == 3 ||
+            initialWorkers! == 5 ||
+            initialWorkers! == 6) {
+          initialNumberofDays = 3;
+        } else if (initialWorkers! == 7 ||
+            initialWorkers! == 8 ||
+            initialWorkers! == 11 ||
+            initialWorkers! == 12) {
+          initialNumberofDays = 4;
+        } else if (initialWorkers! == 9 ||
+            initialWorkers! == 10 ||
+            initialWorkers! == 13 ||
+            initialWorkers! == 14 ||
+            initialWorkers! == 15) {
+          initialNumberofDays = 5;
+        } else {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
-        numberOfDays = initialNumberofDays!.round();
-        numberOfWorkers = (initialWorkers! / initialNumberofDays!).round();
-        costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
-        worker_1 = numberOfWorkers;
-        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
-        isComputed = true;
-      });
+        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+        if (workernumbers <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          setState(() {
+            numberOfDays = initialNumberofDays!.round();
+            numberOfWorkers = workernumbers;
+            costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
+            worker_1 = numberOfWorkers;
+            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            isComputed = true;
+          });
+        }
+      }
     }
   }
 
@@ -1577,6 +1728,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
           DatabaseHelper.instance.updateFormData(formDataCreate);
           refreshState();
           updateManpower();
+          setState(() {
+            isComputed = false;
+          });
         }
       },
       child: const Text('Save'));
@@ -1595,6 +1749,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       value: _selectedType,
       onChanged: (value) {
         setState(() {
+          isComputed = false;
           _selectedType = value.toString();
           if (_selectedType == "Wooden") {
             defaultValue = 3.38;
@@ -1629,6 +1784,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       value: _selectedType,
       onChanged: (value) {
         setState(() {
+          isComputed = false;
           _selectedType = value.toString();
           if (_selectedType == "Glass") {
             defaultValue = 2.48;
@@ -1662,8 +1818,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       hint: const Text('Finish Type'), // Not necessary for Option 1
       value: _selectedType,
       onChanged: (value) {
-        print(value);
         setState(() {
+          isComputed = false;
           _selectedType = value.toString();
           if (_selectedType == "OBD") {
             defaultValue = 12;
@@ -1701,6 +1857,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       value: _selectedType,
       onChanged: (value) {
         setState(() {
+          isComputed = false;
           _selectedType = value.toString();
           if (_selectedType == "Snowcem") {
             defaultValue = 20;

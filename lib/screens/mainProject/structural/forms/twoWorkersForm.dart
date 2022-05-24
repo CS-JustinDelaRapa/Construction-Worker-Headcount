@@ -46,6 +46,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        isComputed = false;
       });
     }
   }
@@ -214,6 +215,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               key: _formKey,
               child: SingleChildScrollView(
                 child: Column(children: [
+                  //date start
                   Row(
                     children: [
                       const Flexible(
@@ -230,7 +232,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                         ),
                       ),
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: //date start
                             Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -262,6 +264,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ],
                   ),
+                  //productivity rate
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -281,7 +284,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       widget.structuralType == 'Masonry Works' &&
                               widget.workType.contains('Exterior')
                           ? Flexible(
-                              flex: 5,
+                              flex: 4,
                               child: Row(
                                 children: [
                                   Flexible(
@@ -302,6 +305,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                         onChanged: (value) {
                                           setState(() {
                                             _selectedType = value.toString();
+                                            isComputed = false;
                                             if (_selectedType == "8") {
                                               defaultValue = 8.5;
                                               productivityRateController.text =
@@ -347,27 +351,36 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 ],
                               ),
                             )
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.07,
-                                  child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: TextFormField(
-                                        validator: (value) {
-                                          if (value == null ||
-                                              value.isEmpty ||
-                                              !regex.hasMatch(value)) {
-                                            return '';
-                                          }
-                                          return null;
-                                        },
-                                        controller: productivityRateController,
-                                        keyboardType: TextInputType.number,
-                                      ))),
+                          : Flexible(
+                              flex: 4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: TextFormField(
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty ||
+                                                !regex.hasMatch(value)) {
+                                              return '';
+                                            }
+                                            return null;
+                                          },
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isComputed = false;
+                                            });
+                                          },
+                                          controller:
+                                              productivityRateController,
+                                          keyboardType: TextInputType.number,
+                                        ))),
+                              ),
                             ),
                       Flexible(
                         flex: 2,
@@ -384,6 +397,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ],
                   ),
+                  //volume
                   Row(
                     children: [
                       Flexible(
@@ -401,7 +415,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                       //area
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8),
                           child: Align(
@@ -412,6 +426,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 helperText: ' ', // this is new
                               ),
                               keyboardType: TextInputType.number,
+
                               validator: (value) {
                                 if (value == null ||
                                     value.isEmpty ||
@@ -420,10 +435,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 }
                                 return null;
                               },
-
                               // controller: projectName.text,
                               onChanged: (value) {
                                 setState(() {
+                                  isComputed = false;
                                   volume = value;
                                 });
                               },
@@ -446,6 +461,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ],
                   ),
+                  //preferred time
                   Row(
                     children: [
                       const Flexible(
@@ -463,7 +479,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                       //area
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: //prefered time
                             Padding(
                           padding: const EdgeInsets.all(8),
@@ -488,6 +504,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                               // controller: projectName.text,
                               onChanged: (value) {
                                 setState(() {
+                                  isComputed = false;
                                   preferedTime = value;
                                 });
                               },
@@ -502,7 +519,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Day/s',
+                                'day/s',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(fontSize: 15),
                               )),
@@ -510,9 +527,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  computeButton(),
+                  //number of days
                   Row(
                     children: [
                       const Flexible(
@@ -529,17 +545,21 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                         ),
                       ),
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                numberOfDays != null
-                                    ? numberOfDays.toString()
-                                    : '',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
+                              child: Center(
+                                child: Text(
+                                  numberOfDays != null
+                                      ? numberOfDays.toString()
+                                      : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               )),
                         ),
                       ),
@@ -550,7 +570,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Day/s',
+                                'day/s',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(fontSize: 15),
                               )),
@@ -558,6 +578,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       )
                     ],
                   ),
+                  //date end
                   Row(children: [
                     const Flexible(
                       flex: 3,
@@ -573,17 +594,20 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ),
                     Flexible(
-                      flex: 5,
+                      flex: 4,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
                             alignment: Alignment.centerLeft,
-                            child: Text(
-                              dateEnd != null
-                                  ? outputFormat.format(dateEnd!)
-                                  : '',
-                              textAlign: TextAlign.left,
-                              style: const TextStyle(fontSize: 15),
+                            child: Center(
+                              child: Text(
+                                dateEnd != null
+                                    ? outputFormat.format(dateEnd!)
+                                    : '',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
                             )),
                       ),
                     ),
@@ -602,6 +626,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     )
                   ]),
+                  //number of workers
                   Row(
                     children: [
                       const Flexible(
@@ -617,17 +642,21 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 )),
                           )),
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                numberOfWorkers != null
-                                    ? numberOfWorkers.toString()
-                                    : '',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
+                              child: Center(
+                                child: Text(
+                                  numberOfWorkers != null
+                                      ? numberOfWorkers.toString()
+                                      : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               )),
                         ),
                       ),
@@ -649,6 +678,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                   const SizedBox(
                     height: 30,
                   ),
+                  //first worker count
                   Row(
                     children: [
                       Flexible(
@@ -658,22 +688,26 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                worker!.toUpperCase(),
+                                worker!,
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(fontSize: 15),
                               )),
                         ),
                       ),
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                worker2 != null ? worker1.toString() : '',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
+                              child: Center(
+                                child: Text(
+                                  worker2 != null ? worker1.toString() : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               )),
                         ),
                       ),
@@ -692,6 +726,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       )
                     ],
                   ),
+                  //second worker count
                   Row(
                     children: [
                       Flexible(
@@ -701,22 +736,26 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                secondWorker!.toUpperCase(),
+                                secondWorker!,
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(fontSize: 15),
                               )),
                         ),
                       ),
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                worker2 != null ? worker2.toString() : '',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
+                              child: Center(
+                                child: Text(
+                                  worker2 != null ? worker2.toString() : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               )),
                         ),
                       ),
@@ -735,6 +774,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       )
                     ],
                   ),
+                  //cost of labor
                   Row(
                     children: [
                       const Flexible(
@@ -744,24 +784,28 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Cost of Laborer',
+                                'Cost of Labor',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(fontSize: 15),
                               )),
                         ),
                       ),
                       Flexible(
-                        flex: 5,
+                        flex: 4,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Text(
-                                costOfLabor != null
-                                    ? costOfLabor.toString()
-                                    : '',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
+                              child: Center(
+                                child: Text(
+                                  costOfLabor != null
+                                      ? costOfLabor.toString()
+                                      : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               )),
                         ),
                       ),
@@ -1303,13 +1347,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Additional Manpower',
-                      style: TextStyle(fontSize: 20),
-                    ),
+                  const SizedBox(
+                    height: 10,
                   ),
+                  //percentage
                   Row(
                     children: [
                       const Flexible(
@@ -1340,6 +1381,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ],
                   ),
+                  //additonal first worker
                   Row(
                     children: [
                       Flexible(
@@ -1349,7 +1391,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                worker!.toUpperCase(),
+                                worker!,
                                 textAlign: TextAlign.left,
                                 style: const TextStyle(fontSize: 15),
                               )),
@@ -1372,39 +1414,42 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                secondWorker!.toUpperCase(),
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
-                              )),
+                  //additional second worker
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  secondWorker!,
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          ),
                         ),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                formData!.worker_2 != null
-                                    ? additionalWorker2!.toStringAsFixed(0)
-                                    : '',
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(fontSize: 15),
-                              )),
+                        Flexible(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  formData!.worker_2 != null
+                                      ? additionalWorker2!.toStringAsFixed(0)
+                                      : '',
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  computeButton()
                 ]),
               ),
             ),
@@ -1460,131 +1505,259 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   void formWorksComputer() {
     if (_formKey.currentState!.validate()) {
-      initialWorkers = (double.parse(volume!) /
-              double.parse(productivityRateController.text))
-          .roundToDouble();
-      if (initialWorkers! == 1) {
-        initialNumberofDays = 1;
-      } else if (initialWorkers! == 2 || initialWorkers! == 4) {
-        initialNumberofDays = 2;
-      } else if (initialWorkers! == 3 || initialWorkers! == 6) {
-        initialNumberofDays = 3;
-      } else if (initialWorkers! == 7 || initialWorkers! == 8) {
-        initialNumberofDays = 4;
-      } else if (initialWorkers! == 5 ||
-          initialWorkers! == 9 ||
-          initialWorkers! == 10) {
-        initialNumberofDays = 5;
+      if (double.parse(productivityRateController.text) <= 0 ||
+          double.parse(volume!) <= 0 ||
+          double.parse(preferedTime!) <= 0) {
+        setState(() {
+          isComputed = false;
+        });
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: const Text('Invalid Input.'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ]);
+            });
       } else {
-        initialNumberofDays = double.parse(preferedTime!);
-      }
-      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
-      setState(() {
+        initialWorkers = (double.parse(volume!) /
+                double.parse(productivityRateController.text))
+            .roundToDouble();
+        if (initialWorkers! == 1) {
+          initialNumberofDays = 1;
+        } else if (initialWorkers! == 2 || initialWorkers! == 4) {
+          initialNumberofDays = 2;
+        } else if (initialWorkers! == 3 || initialWorkers! == 6) {
+          initialNumberofDays = 3;
+        } else if (initialWorkers! == 7 || initialWorkers! == 8) {
+          initialNumberofDays = 4;
+        } else if (initialWorkers! == 5 ||
+            initialWorkers! == 9 ||
+            initialWorkers! == 10) {
+          initialNumberofDays = 5;
+        } else {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
-        if (workernumbers <= 2) {
-          worker1 = workernumbers;
-          worker2 = 1;
+        if (workernumbers <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
         } else {
-          worker1 = 2;
-          worker2 = workernumbers;
+          setState(() {
+            if (workernumbers <= 2) {
+              worker1 = workernumbers;
+              worker2 = 1;
+            } else {
+              worker1 = 2;
+              worker2 = workernumbers;
+            }
+            numberOfDays = initialNumberofDays!.round();
+            numberOfWorkers = worker1! + worker2!;
+            costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                    (worker2!.toDouble() * workerCost2!)) *
+                numberOfDays!;
+            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            isComputed = true;
+          });
         }
-        numberOfDays = initialNumberofDays!.round();
-        numberOfWorkers = worker1! + worker2!;
-        costOfLabor = ((worker1!.toDouble() * workerCost!) +
-                (worker2!.toDouble() * workerCost2!)) *
-            numberOfDays!;
-        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
-        isComputed = true;
-      });
+      }
     }
   }
 
   void masonryWorksComputer() {
     if (_formKey.currentState!.validate()) {
-      initialWorkers = (double.parse(volume!) /
-              double.parse(productivityRateController.text))
-          .roundToDouble();
-      if (initialWorkers! >= 1 && initialWorkers! <= 3) {
-        initialNumberofDays = 1;
-      } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
-        initialNumberofDays = 2;
-      } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
-        initialNumberofDays = 3;
-      } else if (initialWorkers! < 10) {
-        initialNumberofDays = 5;
+      if (double.parse(productivityRateController.text) <= 0 ||
+          double.parse(volume!) <= 0 ||
+          double.parse(preferedTime!) <= 0) {
+        setState(() {
+          isComputed = false;
+        });
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: const Text('Invalid Input.'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ]);
+            });
       } else {
-        initialNumberofDays = double.parse(preferedTime!);
-      }
-      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
-      setState(() {
+        initialWorkers = (double.parse(volume!) /
+                double.parse(productivityRateController.text))
+            .roundToDouble();
+        if (initialWorkers! >= 1 && initialWorkers! <= 3) {
+          initialNumberofDays = 1;
+        } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+          initialNumberofDays = 2;
+        } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+          initialNumberofDays = 3;
+        } else if (initialWorkers! < 10) {
+          initialNumberofDays = 5;
+        } else {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+
+        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
-        if (workernumbers == 1 || workernumbers == 2) {
-          worker1 = workernumbers;
-          worker2 = 1;
-        } else if (workernumbers == 3) {
-          worker1 = 3;
-          worker2 = 2;
+        if (workernumbers <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
         } else {
-          worker1 = 3;
-          worker2 = workernumbers;
+          setState(() {
+            if (workernumbers == 1 || workernumbers == 2) {
+              worker1 = workernumbers;
+              worker2 = 1;
+            } else if (workernumbers == 3) {
+              worker1 = 3;
+              worker2 = 2;
+            } else {
+              worker1 = 3;
+              worker2 = workernumbers;
+            }
+            numberOfDays = initialNumberofDays!.round();
+            numberOfWorkers = worker1! + worker2!;
+            costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                    (worker2!.toDouble() * workerCost2!)) *
+                numberOfDays!;
+            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            isComputed = true;
+          });
         }
-        numberOfDays = initialNumberofDays!.round();
-        numberOfWorkers = worker1! + worker2!;
-        costOfLabor = ((worker1!.toDouble() * workerCost!) +
-                (worker2!.toDouble() * workerCost2!)) *
-            numberOfDays!;
-        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
-        isComputed = true;
-      });
+      }
     }
   }
 
   void rcwComputer() {
     if (_formKey.currentState!.validate()) {
-      initialWorkers = (double.parse(volume!) /
-              double.parse(productivityRateController.text))
-          .roundToDouble();
-      if (initialWorkers! >= 1 && initialWorkers! <= 3) {
-        initialNumberofDays = 1;
-      } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
-        initialNumberofDays = 2;
-      } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
-        initialNumberofDays = 3;
-      } else if (initialWorkers! == 10) {
-        initialNumberofDays = 5;
+      if (double.parse(productivityRateController.text) <= 0 ||
+          double.parse(volume!) <= 0 ||
+          double.parse(preferedTime!) <= 0) {
+        setState(() {
+          isComputed = false;
+        });
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: const Text('Invalid Input.'),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      child: const Text("OK"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ]);
+            });
       } else {
-        initialNumberofDays = double.parse(preferedTime!);
-      }
-      int workernumbers = (initialWorkers! / initialNumberofDays!).round();
-      setState(() {
+        initialWorkers = (double.parse(volume!) /
+                double.parse(productivityRateController.text))
+            .roundToDouble();
+        if (initialWorkers! >= 1 && initialWorkers! <= 3) {
+          initialNumberofDays = 1;
+        } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+          initialNumberofDays = 2;
+        } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+          initialNumberofDays = 3;
+        } else if (initialWorkers! == 10) {
+          initialNumberofDays = 5;
+        } else {
+          initialNumberofDays = double.parse(preferedTime!);
+        }
+        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
-        if (workernumbers == 1 || workernumbers == 2) {
-          worker1 = 1;
-          worker2 = 1;
-        } else if (workernumbers == 3) {
-          worker1 = 2;
-          worker2 = 1;
-        } else if (workernumbers == 4) {
-          worker1 = 2;
-          worker2 = 2;
+
+        if (workernumbers <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
         } else {
-          worker1 = 2;
-          worker2 = workernumbers - 2;
+          setState(() {
+            if (workernumbers == 1 || workernumbers == 2) {
+              worker1 = 1;
+              worker2 = 1;
+            } else if (workernumbers == 3) {
+              worker1 = 2;
+              worker2 = 1;
+            } else if (workernumbers == 4) {
+              worker1 = 2;
+              worker2 = 2;
+            } else {
+              worker1 = 2;
+              worker2 = workernumbers - 2;
+            }
+            numberOfDays = initialNumberofDays!.round();
+            numberOfWorkers = worker1! + worker2!;
+            costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                    (worker2!.toDouble() * workerCost2!)) *
+                numberOfDays!;
+            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            isComputed = true;
+          });
         }
-        numberOfDays = initialNumberofDays!.round();
-        numberOfWorkers = worker1! + worker2!;
-        costOfLabor = ((worker1!.toDouble() * workerCost!) +
-                (worker2!.toDouble() * workerCost2!)) *
-            numberOfDays!;
-        dateEnd = selectedDate.add(Duration(days: numberOfDays!));
-        isComputed = true;
-      });
+      }
     }
   }
 
@@ -1624,6 +1797,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
           DatabaseHelper.instance.updateFormData(formDataCreate);
           updateManpower();
           refreshState();
+          setState(() {
+            isComputed = false;
+          });
         }
       },
       child: const Text('Save'));

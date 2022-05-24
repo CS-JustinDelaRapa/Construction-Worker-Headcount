@@ -42,7 +42,7 @@ class BungalowArchitechturalItems {
 
   static const List<DefaultValue> defValPaintingWorks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 6.4),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 1),
     DefaultValue(col_1: "OBD", col_1_val: 12),
     DefaultValue(col_1: "Snowcem", col_1_val: 20.0),
   ];
