@@ -1,7 +1,9 @@
 // ignore_for_file: file_names
 // import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:data_table_2/data_table_2.dart';
+import 'package:engineering/custom_icons_icons.dart';
 import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/AdditionalManpowerModel.dart';
 import 'package:engineering/model/ProjectModel.dart';
 import 'package:engineering/model/formModel.dart';
 import 'package:engineering/model/workerModel.dart';
@@ -32,6 +34,7 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
   //database
   List<FormData>? allForms;
   List<WorkerType>? allWorkers;
+  List<AdditionalManpower>? allManpower;
   bool isLoading = false;
 
   
@@ -40,8 +43,13 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
   List<String> earthWorks = ['Laborer'];
   List<int> earthworksNumber = [0];
   List<int> tempEarthworksNumber = [0];
+
+//List<int> addtionalNumber = [0];
+
   List<double> earthworksRate = [0];
   double earthworksCost = 0;
+
+double AdditionalEarthworksCost = 0;
 
   List<String> formworks = ['Carpenter', 'Laborer'];
   List<int> formworksNumber = [0,0];
@@ -125,10 +133,10 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
   }
 
   Future refreshState() async {
-    print('at refresh state');
     setState(() {isLoading = true;});
     allForms = await DatabaseHelper.instance.readAllFormData(widget.project.id!);
     allWorkers = await DatabaseHelper.instance.readWorkers(widget.project.id!);
+    allManpower = await DatabaseHelper.instance.readAddtlManpower(widget.project.id!);
 
     //update default data
     if(allForms != null){
@@ -258,6 +266,7 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
       }
     }
     setState(() {isLoading = false;});
+    print(AdditionalEarthworksCost);
   }
 
   @override
@@ -276,35 +285,65 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
         child: Column(
           children: [
             //Structural
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Structural', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
+            Container(
+                  color: Theme.of(context).brightness == Brightness.light? 
+                Colors.grey.shade100:
+                Theme.of(context).appBarTheme.backgroundColor,  
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Structural', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
+                  ],
+                ),
+              ),
             ),            
-            tile('Earthworks', earthWorks, earthworksNumber, earthworksCost, Colors.grey.shade100, this.context),
-            tile('Formworks', formworks, formworksNumber, formworksCost, Colors.white, this.context),
-            tile('Masonry', masonry, masonryNumber, masonryCost, Colors.grey.shade100, this.context),
-            tile('Reinforced Cement Works', reinforcedCementWorks, reinforcedCementWorksNumber, reinforcedCementWorksCost, Colors.white, this.context),
-            tile('Steel Reinforcement Works', steelReinforcementWorks, steelReinforcementWorksNumber, steelReinforcementWorksCost, Colors.grey.shade100, this.context),
-
+            tile('Earthworks', earthWorks, earthworksNumber, earthworksCost, Icons.landscape, this.context),
+            tile('Formworks', formworks, formworksNumber, formworksCost, Icons.house_siding_outlined, this.context),
+            tile('Masonry', masonry, masonryNumber, masonryCost, Icons.construction_rounded, this.context),
+            tile('Reinforced Cement Works', reinforcedCementWorks, reinforcedCementWorksNumber, reinforcedCementWorksCost, CustomIcons.cement_works, this.context),
+            tile('Steel Reinforcement Works', steelReinforcementWorks, steelReinforcementWorksNumber, steelReinforcementWorksCost, Icons.precision_manufacturing, this.context),
+        
             //architectural
-           Padding(
-             padding: const EdgeInsets.all(8.0),
-             child: Text('Architectural', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
-           ),            
-            tile('Flooring', flooring, flooringNumber, flooringCost, Colors.white, this.context),
-            tile('Plastering', plastering, plasteringNumber, plasteringCost, Colors.grey.shade100, this.context),
-            tile('Painting Works', paintingWorks, paintingWorksNumber, paintingWorksCost, Colors.white, this.context),
-            tile('Doors and Windows', doorsAndWindows, doorAndWindowsNumber, doorsAndWindowsCost, Colors.grey.shade100, this.context),
-            tile('Ceiling', ceiling, ceilingNumber, ceilingCost, Colors.white, this.context),            
-            tile('Roofing', roofing, roofingNumber, roofingCost, Colors.grey.shade100, this.context),
-
+            Container(
+                  color: Theme.of(context).brightness == Brightness.light? 
+                Colors.grey.shade100:
+                Theme.of(context).appBarTheme.backgroundColor,  
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Architectural', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
+                  ],
+                ),
+              ),
+            ),           
+            tile('Flooring', flooring, flooringNumber, flooringCost, CustomIcons.flooring, this.context),
+            tile('Plastering', plastering, plasteringNumber, plasteringCost, CustomIcons.plastering, this.context),
+            tile('Painting Works', paintingWorks, paintingWorksNumber, paintingWorksCost, CustomIcons.painting, this.context),
+            tile('Doors and Windows', doorsAndWindows, doorAndWindowsNumber, doorsAndWindowsCost, CustomIcons.doors, this.context),
+            tile('Ceiling', ceiling, ceilingNumber, ceilingCost, CustomIcons.ceiling, this.context),            
+            tile('Roofing', roofing, roofingNumber, roofingCost, CustomIcons.roofing, this.context),
+        
           //architectural
-           Padding(
-             padding: const EdgeInsets.all(8.0),
-             child: Text('Electrical and Plumbing', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
-           ),            
-            tile('Electrical Works', electricalWorks, electricalWorksNumber, electricalWorksCost, Colors.white, this.context),
-            tile('Plumbing', plumbing, plumbingNumber, plumbingCost, Colors.grey.shade100, this.context),
+            Container(
+                  color: Theme.of(context).brightness == Brightness.light? 
+                Colors.grey.shade100:
+                Theme.of(context).appBarTheme.backgroundColor,  
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Electrical and Plumbing', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Theme.of(context).appBarTheme.foregroundColor),),
+                  ],
+                ),
+              ),
+            ),         
+            tile('Electrical Works', electricalWorks, electricalWorksNumber, electricalWorksCost, CustomIcons.electrical, this.context),
+            tile('Plumbing', plumbing, plumbingNumber, plumbingCost, CustomIcons.plumbing, this.context),
           ]             
         ),
       )
@@ -343,48 +382,85 @@ double generateWorkerRate(FormData form, List<String> workerLabel, List<double> 
 
 }
 
-Widget tile( String title, List<String> workers, List<int> numbers, double cost, Color color, BuildContext context) => Container(
-  color: color,
-  child:   Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(title+': ', style: const TextStyle(fontWeight: FontWeight.bold),),
-                          RichText(
-                                  text: TextSpan(
-                                      text: 'Total Cost of Labors: ',
-                                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                                      children: <TextSpan>[
-                                        TextSpan(text: cost.toString(),
-                                            style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
-                                        )
-                                      ]
-                                  ),
-                                ),                          
-                        ],
-                      ),
-                    ),
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: workers.map((e) => 
-                    Text(e)
-                    ).toList()),
-                    Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: numbers.map((e) => 
-                    Text(e.toString())
-                    ).toList()),
-                  ],
-    
-                ),
+Widget tile( String title, List<String> workers, List<int> numbers, double cost, IconData icon, BuildContext context) => Column(
+  children: [
+  Container(
+      color: Theme.of(context).brightness == Brightness.light? 
+    Colors.grey.shade300:
+    Colors.grey.shade700,  
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Container(
+            margin: const EdgeInsets.only(left: 7),
+            child: Text(title, style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              ), 
+              overflow: TextOverflow.ellipsis,),
+          )),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Text(workers[0],
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,))),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Text(workers.length > 1? workers[1] : '',
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,))),              
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Text(workers.length > 2? workers[2] : '',
+          textAlign: TextAlign.center))), 
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: const Center(child: Text('Total Cost', 
+          style:TextStyle(
+              fontWeight: FontWeight.bold,
+              ),          
+          textAlign: TextAlign.center))),                          
+      ],),
+    ),
   ),
-);
+  Container(
+    color: Theme.of(context).brightness == Brightness.light?
+    Colors.grey.shade100:
+    Theme.of(context).appBarTheme.backgroundColor,    
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,          
+        children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Icon(
+             icon
+          ))),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Text(numbers[0].toString(),
+          textAlign: TextAlign.center))),              
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Text(numbers.length > 1? numbers[1].toString() : '',
+          textAlign: TextAlign.center))),              
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Text(numbers.length > 2? numbers[2].toString() : '',
+          textAlign: TextAlign.center))),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.20,
+          child: Center(child: Text(cost.toString(),
+          textAlign: TextAlign.center)))              
+      ],),
+    ),
+  )
+  // Text(numbers[0].toString()),
+],);
 
 Future<void> _createPDF() async {
   //Creates a new PDF document

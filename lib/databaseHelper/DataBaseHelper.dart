@@ -659,6 +659,23 @@ class DatabaseHelper {
         where: '${TblManpowerField.id} = ?', whereArgs: [manpower.id]);
   }
 
+  Future<List<AdditionalManpower>?> readAddtlManpower(int fk) async {
+    final reference = await instance.database;
+
+    final fromTable = await reference.query(tableManPower,
+        columns: TblManpowerField.manpowerFieldNames,
+        where:
+            '${TblManpowerField.fk} = ?',
+        whereArgs: [fk]);
+
+    return fromTable.map((fromSQL) => AdditionalManpower.fromJson(fromSQL)).toList();
+    // if (specificID.isNotEmpty) {
+    //   return FormData.fromJson(specificID.first);
+    // } else {
+    //   return null;
+    // }
+  }
+
   Future<AdditionalManpower> readAllManpower(
       int fk, String type, String work) async {
     // print('at read all manpower');
