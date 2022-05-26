@@ -2,6 +2,8 @@
 
 import 'package:engineering/model/ProjectModel.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
+import 'package:engineering/screens/mainProject/productivityRate/forms/structural/formworksForm.dart';
+import 'package:engineering/screens/mainProject/productivityRate/forms/structural/masonryForm.dart';
 import 'package:engineering/screens/mainProject/structural/items/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +26,14 @@ class ProductivityRate extends StatefulWidget {
 
 class _ProductivityRateState extends State<ProductivityRate> {
   // late List<FormData> formData;
-  late List<FormData> formData2;
+  late List<FormData> formData;
 
   RegExp regex = RegExp(r'(?!^ +$)^.+$');
   List<String> soilType = ['Soft Soil', 'Hard Soil'];
   TextEditingController productivityRateController = TextEditingController();
+  String? prodRate;
   String? _selectedType;
-  bool isLoading = true;
+  bool isLoading = false;
   double? defaultValue;
   final _formKey = GlobalKey<FormState>();
 
@@ -45,7 +48,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
 
     // formData = await DatabaseHelper.instance.readProductivityForm(
     //     widget.project.id!, BungalowStructuralItems.earthWorks.title);
-    formData2 = await DatabaseHelper.instance.readForm(widget.project.id!);
+    formData = await DatabaseHelper.instance.readForm(widget.project.id!);
 
     // for (int x = 0; x < formData.length; x++) {
     //   if (formData[x].type == "Excavation") {
@@ -59,7 +62,6 @@ class _ProductivityRateState extends State<ProductivityRate> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.project.type);
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
@@ -67,22 +69,13 @@ class _ProductivityRateState extends State<ProductivityRate> {
           onClicked: widget.openDrawer,
         ),
         title: const Text('Productivity Rate'),
+        actions: [saveButton()],
       ),
       body: SingleChildScrollView(
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
               : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: CustomWidgets()
-                            .text_subtitle('Structural Forms', 20),
-                      ),
-                    ),
-                    //earthworks
-                    structuralForms()
-                  ],
+                  children: [structuralForms()],
                 )
 
           // Padding(
@@ -226,32 +219,286 @@ class _ProductivityRateState extends State<ProductivityRate> {
     );
   }
 
-  Widget structuralForms() => Column(
-        children: formData2
-            .map((form) => Center(
-                    child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(form.type),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(form.col_1),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(form.col_1_val.toString()),
-                    ),
-                    ElevatedButton(
-                        onPressed: () => {
-                              print(form.id.toString() +
-                                  form.col_1_val.toString() +
-                                  form.col_1)
-                            },
-                        child: const Text('save'))
-                  ],
-                )))
+  Widget structuralForms() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: CustomWidgets().text_subtitle('Structural Forms', 20),
+          ),
+        ),
+        //earthworks
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CustomWidgets().text_subtitle('Earthworks', 16),
+        ),
+        earthworksForm(),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CustomWidgets().text_subtitle('Formworks', 16),
+        ),
+        formworksForm(),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CustomWidgets().text_subtitle('Masonry Works', 16),
+        ),
+        masonryForm(),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CustomWidgets().text_subtitle('Reinforced Cement Works', 16),
+        ),
+        rcwForm(),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: CustomWidgets().text_subtitle('Steel Reinforcement Works', 16),
+        ),
+        rcwForm(),
+      ]);
+
+  Widget earthworksForm() => Column(
+        children: formData
+            .map((form) => Container(
+                child: form.work == 'Earthworks'
+                    ? Center(
+                        child: Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.type),
+                            ),
+                          ),
+                          form.col_1 == 'DEFAULT'
+                              ? Flexible(
+                                  child: TextFormField(
+                                    initialValue: form.col_1_val.toString(),
+                                    validator: (value) {
+                                      if (value == null ||
+                                          value.isEmpty ||
+                                          !regex.hasMatch(value)) {
+                                        return '';
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      setState(() {
+                                        // value = form.col_1_val.toString();
+                                        prodRate = value;
+                                        print(prodRate);
+                                      });
+                                    },
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                )
+                              : Flexible(
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: DropdownButtonFormField(
+                                            validator: (value) {
+                                              if (value == null) {
+                                                return 'Required Soil Type';
+                                              }
+                                              return null;
+                                            },
+                                            value: _selectedType,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedType =
+                                                    value.toString();
+                                                if (_selectedType ==
+                                                    "Soft Soil") {
+                                                  defaultValue = 3;
+                                                  productivityRateController
+                                                          .text =
+                                                      defaultValue.toString();
+                                                } else {
+                                                  defaultValue = 2;
+                                                  productivityRateController
+                                                          .text =
+                                                      defaultValue.toString();
+                                                }
+                                              });
+                                            },
+                                            items: soilType.map((soilType) {
+                                              return DropdownMenuItem(
+                                                child: Text(soilType),
+                                                value: soilType,
+                                              );
+                                            }).toList()),
+                                      ),
+                                      Flexible(
+                                        child: TextFormField(
+                                          initialValue:
+                                              form.col_1_val.toString(),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty ||
+                                                !regex.hasMatch(value)) {
+                                              return '';
+                                            }
+                                            return null;
+                                          },
+                                          onChanged: (value) {
+                                            setState(() {
+                                              // value = form.col_1_val.toString();
+                                              prodRate = value;
+                                              print(prodRate);
+                                            });
+                                          },
+                                          keyboardType: TextInputType.number,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                          // Flexible(
+                          //   child: IconButton(
+                          //       onPressed: () => {setState(() {})},
+                          //       icon: const Icon(Icons.create_rounded)),
+                          // )
+                        ],
+                      ))
+                    : Container()))
             .toList(),
       );
+  Widget formworksForm() => Column(
+        children: formData
+            .map((form) => Container(
+                child: form.work == 'Formworks'
+                    ? Center(
+                        child: Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.type),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1_val.toString()),
+                            ),
+                          ),
+                          // Flexible(
+                          //   child: IconButton(
+                          //       onPressed: () => {setState(() {})},
+                          //       icon: const Icon(Icons.create_rounded)),
+                          // )
+                        ],
+                      ))
+                    : Container()))
+            .toList(),
+      );
+
+  Widget masonryForm() => Column(
+        children: formData
+            .map((form) => Container(
+                child: form.work == 'Masonry Works'
+                    ? Center(
+                        child: Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.type),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1_val.toString()),
+                            ),
+                          ),
+                          // Flexible(
+                          //   child: IconButton(
+                          //       onPressed: () => {setState(() {})},
+                          //       icon: const Icon(Icons.create_rounded)),
+                          // )
+                        ],
+                      ))
+                    : Container()))
+            .toList(),
+      );
+  Widget rcwForm() => Column(
+        children: formData
+            .map((form) => Container(
+                child: form.work == 'Reinforced Cement Works'
+                    ? Center(
+                        child: Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.type),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1_val.toString()),
+                            ),
+                          ),
+                          // Flexible(
+                          //   child: IconButton(
+                          //       onPressed: () => {setState(() {})},
+                          //       icon: const Icon(Icons.create_rounded)),
+                          // )
+                        ],
+                      ))
+                    : Container()))
+            .toList(),
+      );
+
+  Widget srwForm() => Column(
+        children: formData
+            .map((form) => Container(
+                child: form.work == 'Steel Reinforcement Works'
+                    ? Center(
+                        child: Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.type),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1),
+                            ),
+                          ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(form.col_1_val.toString()),
+                            ),
+                          ),
+                        ],
+                      ))
+                    : Container()))
+            .toList(),
+      );
+  Widget saveButton() =>
+      ElevatedButton(onPressed: () => {}, child: const Text('Save'));
 }

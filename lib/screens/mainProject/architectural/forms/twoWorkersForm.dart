@@ -1524,11 +1524,11 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       totalPercentage: totalPercentage!,
     );
     if (formData!.worker_1 != null) {
-      additionalWorker1 = totalPercentage! / worker1!;
-      additionalWorker2 = totalPercentage! / worker2!;
+      additionalWorker1 = totalPercentage! * worker1!;
+      additionalWorker2 = totalPercentage! * worker2!;
       double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
       double secondDecimalValue =
-          additionalWorker1! - additionalWorker1!.toInt();
+          additionalWorker2! - additionalWorker2!.toInt();
       if (decimalValue <= 0.09) {
         setState(() {
           additionalWorker1 = (additionalWorker1!.floor()).toDouble();

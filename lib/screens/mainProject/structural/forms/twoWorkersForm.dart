@@ -28,8 +28,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   late String? units, label, worker, secondWorker, surface;
   late double? defaultValue;
 
-  List<String> soilType = ['8', '6'];
-  // String? _selectedSoilType;
+  List<String> exteriorWalls = ['8', '6'];
+  List<String> interiorWalls = ['6', '4'];
 
   String? _selectedType;
 
@@ -289,40 +289,44 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 children: [
                                   Flexible(
                                     flex: 4,
-                                    child: DropdownButtonFormField(
-                                        decoration: const InputDecoration(
-                                          helperText: ' ', // this is new
-                                        ),
-                                        validator: (value) {
-                                          if (value == null) {
-                                            return 'Required CHB Type';
-                                          }
-                                          return null;
-                                        },
-                                        hint: const Text(
-                                            'CHB Type'), // Not necessary for Option 1
-                                        value: _selectedType,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            _selectedType = value.toString();
-                                            isComputed = false;
-                                            if (_selectedType == "8") {
-                                              defaultValue = 8.5;
-                                              productivityRateController.text =
-                                                  defaultValue.toString();
-                                            } else {
-                                              defaultValue = 9;
-                                              productivityRateController.text =
-                                                  defaultValue.toString();
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: DropdownButtonFormField(
+                                          decoration: const InputDecoration(
+                                            helperText: ' ', // this is new
+                                          ),
+                                          validator: (value) {
+                                            if (value == null) {
+                                              return 'Required CHB Type';
                                             }
-                                          });
-                                        },
-                                        items: soilType.map((soilType) {
-                                          return DropdownMenuItem(
-                                            child: Text(soilType + "\""),
-                                            value: soilType,
-                                          );
-                                        }).toList()),
+                                            return null;
+                                          },
+                                          value: _selectedType,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _selectedType = value.toString();
+                                              isComputed = false;
+                                              if (_selectedType == "8") {
+                                                defaultValue = 8.5;
+                                                productivityRateController
+                                                        .text =
+                                                    defaultValue.toString();
+                                              } else {
+                                                defaultValue = 9;
+                                                productivityRateController
+                                                        .text =
+                                                    defaultValue.toString();
+                                              }
+                                            });
+                                          },
+                                          items:
+                                              exteriorWalls.map((exteriorType) {
+                                            return DropdownMenuItem(
+                                              child: Text(exteriorType + "\""),
+                                              value: exteriorType,
+                                            );
+                                          }).toList()),
+                                    ),
                                   ),
                                   Flexible(
                                     flex: 2,
@@ -351,37 +355,120 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 ],
                               ),
                             )
-                          : Flexible(
-                              flex: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: TextFormField(
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty ||
-                                                !regex.hasMatch(value)) {
-                                              return '';
-                                            }
-                                            return null;
-                                          },
-                                          onChanged: (value) {
-                                            setState(() {
-                                              isComputed = false;
-                                            });
-                                          },
-                                          controller:
-                                              productivityRateController,
-                                          keyboardType: TextInputType.number,
-                                        ))),
-                              ),
-                            ),
+                          : widget.structuralType == 'Masonry Works' &&
+                                  widget.workType.contains('Interior')
+                              ? Flexible(
+                                  flex: 4,
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        flex: 4,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: DropdownButtonFormField(
+                                              decoration: const InputDecoration(
+                                                helperText: ' ', // this is new
+                                              ),
+                                              validator: (value) {
+                                                if (value == null) {
+                                                  return 'Required CHB Type';
+                                                }
+                                                return null;
+                                              },
+                                              value: _selectedType,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _selectedType =
+                                                      value.toString();
+                                                  isComputed = false;
+                                                  if (_selectedType == "6") {
+                                                    defaultValue = 9.0;
+                                                    productivityRateController
+                                                            .text =
+                                                        defaultValue.toString();
+                                                  } else {
+                                                    defaultValue = 9.5;
+                                                    productivityRateController
+                                                            .text =
+                                                        defaultValue.toString();
+                                                  }
+                                                });
+                                              },
+                                              items: interiorWalls
+                                                  .map((interiorType) {
+                                                return DropdownMenuItem(
+                                                  child:
+                                                      Text(interiorType + "\""),
+                                                  value: interiorType,
+                                                );
+                                              }).toList()),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 2,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  helperText:
+                                                      ' ', // this is new
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty ||
+                                                      !regex.hasMatch(value)) {
+                                                    return ' ';
+                                                  }
+                                                  return null;
+                                                },
+                                                controller:
+                                                    productivityRateController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                              )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Flexible(
+                                  flex: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.07,
+                                        child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: TextFormField(
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty ||
+                                                    !regex.hasMatch(value)) {
+                                                  return '';
+                                                }
+                                                return null;
+                                              },
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  isComputed = false;
+                                                });
+                                              },
+                                              controller:
+                                                  productivityRateController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                            ))),
+                                  ),
+                                ),
                       Flexible(
                         flex: 2,
                         child: Padding(
@@ -1475,11 +1562,11 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         cbTen: isChecked10,
         totalPercentage: totalPercentage!);
     if (formData!.worker_1 != null) {
-      additionalWorker1 = totalPercentage! / worker1!;
-      additionalWorker2 = totalPercentage! / worker2!;
+      additionalWorker1 = totalPercentage! * worker1!;
+      additionalWorker2 = totalPercentage! * worker2!;
       double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
       double secondDecimalValue =
-          additionalWorker1! - additionalWorker1!.toInt();
+          additionalWorker2! - additionalWorker2!.toInt();
       if (decimalValue <= 0.09) {
         setState(() {
           additionalWorker1 = (additionalWorker1!.floor()).toDouble();

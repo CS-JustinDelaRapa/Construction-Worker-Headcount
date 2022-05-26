@@ -42,54 +42,54 @@ class TwoStoreyArchitechturalItems {
     'Plywood SF',
   ];
   static const List<String> listRoofingWorks = [
-    'Trusses ',
+    'Trusses',
     'GI Sheets',
     'Gutter'
   ];
 
   static const List<DefaultValue> defValFlooringWorks = [
-    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0),
-    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0),
-    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0),
-    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0),
+    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), // EXT T&B Ground Floor
+    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), //'EXT T&B Second Floor'
+    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), //  'T&B Ground Floor'
+    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), //'T&B Second Floor'
   ];
 
   static const List<DefaultValue> defValPlasteringWorks = [
-    DefaultValue(col_1: "DEFAULT", col_1_val: 10.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 10.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 8.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 8.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 10.0), // Interior GF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 10.0), // Interior SF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 8.0), // Exterior GF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 8.0), // Exterior SF
   ];
 
   static const List<DefaultValue> defValPaintingWorks = [
-    DefaultValue(col_1: "DEFAULT", col_1_val: 6.4),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 6.4),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 0),
-    DefaultValue(col_1: "OBD", col_1_val: 12),
-    DefaultValue(col_1: "OBD", col_1_val: 12),
-    DefaultValue(col_1: "Snowcem", col_1_val: 20.0),
-    DefaultValue(col_1: "Snowcem", col_1_val: 20.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 6.4), // Interior Skim Coat GF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 6.4), // Interior Skim Coat SF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 8.6), // Exterior Skim Coat GF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 8.6), // Exterior Skim Coat SF
+    DefaultValue(col_1: "OBD", col_1_val: 12), // Interior GF
+    DefaultValue(col_1: "OBD", col_1_val: 12), // Interior SF
+    DefaultValue(col_1: "Snowcem", col_1_val: 20.0), // Exterior GF
+    DefaultValue(col_1: "Snowcem", col_1_val: 20.0), // Exterior SF
   ];
 
   static const List<DefaultValue> defValDoorsAndWindowsWorks = [
-    DefaultValue(col_1: "DEFAULT", col_1_val: 3.52),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 10.4),
-    DefaultValue(col_1: "Wooden", col_1_val: 3.38),
-    DefaultValue(col_1: "Glass", col_1_val: 2.48),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 3.52), // Lockset
+    DefaultValue(col_1: "DEFAULT", col_1_val: 10.4), // Jamb
+    DefaultValue(col_1: "Wooden", col_1_val: 3.38), // Doors
+    DefaultValue(col_1: "Glass", col_1_val: 2.48), // Windows
   ];
 
   static const List<DefaultValue> defValCeilingWorks = [
-    DefaultValue(col_1: "DEFAULT", col_1_val: 21.28),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 21.28),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 16.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 16.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 21.28), //Steel Frame GF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 21.28), //Steel Frame SF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 16.0), //Plywood GF
+    DefaultValue(col_1: "DEFAULT", col_1_val: 16.0), //Plywood SF
   ];
 
   static const List<DefaultValue> defValRoofingngWorks = [
-    DefaultValue(col_1: "DEFAULT", col_1_val: 11.52),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 11.52), //Trusses
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0), //GI Sheets
+    DefaultValue(col_1: "DEFAULT", col_1_val: 2.78), //Gutter
   ];
 
   static const flooring =

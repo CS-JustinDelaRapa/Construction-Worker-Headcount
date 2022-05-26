@@ -41,7 +41,7 @@ class TwoStoreyStructuralItems {
     'Slabs GF',
     'Slabs SF',
     'Beams FB',
-    'Beams SB',
+    'Beams RB',
     'Lintels',
     'STIRRUPS, SPACERS AND LINKS',
     'Staircase',
@@ -67,8 +67,8 @@ class TwoStoreyStructuralItems {
 
   static const List<DefaultValue> defValFormworks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 7.7),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 6.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 6.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
     DefaultValue(col_1: "DEFAULT", col_1_val: 4.3),
@@ -79,10 +79,9 @@ class TwoStoreyStructuralItems {
   static const List<DefaultValue> defValMasonry = [
     DefaultValue(col_1: "8", col_1_val: 8.5),
     DefaultValue(col_1: "8", col_1_val: 8.5),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4),
+    DefaultValue(col_1: "6", col_1_val: 9),
+    DefaultValue(col_1: "6", col_1_val: 9),
   ];
-
   static const List<DefaultValue> defValRCC = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 1.5),
     DefaultValue(col_1: "DEFAULT", col_1_val: 1.0),

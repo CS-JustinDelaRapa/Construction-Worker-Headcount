@@ -15,13 +15,21 @@ class ElectricalAndPlumbingItems {
     electricalWorks,
     plumbingWorks,
   ];
-  static const List<String> listElectricalWorks = ['Roughing Ins', 'Fixtures'];
-  static const List<String> listPlumbingWorks = ['Works', 'Fixtures'];
+  static const List<String> listElectricalWorks = [
+    'Roughing Ins',
+    'Fixtures',
+    'Cable Pulling'
+  ];
+  static const List<String> listPlumbingWorks = [
+    'Works',
+    'Fixtures',
+  ];
 
   static const List<DefaultValue> defValElectricalWorks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 30.0),
     DefaultValue(col_1: "DEFAULT", col_1_val: 10.0),
-  ];  
+    DefaultValue(col_1: "DEFAULT", col_1_val: 30.0),
+  ];
 
   static const List<DefaultValue> defValPlumbingWorks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 31.5),

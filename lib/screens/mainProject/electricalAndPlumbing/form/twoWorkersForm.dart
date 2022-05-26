@@ -99,6 +99,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         label = 'Conduit Pipes';
         units = 'm';
         surface = 'Length';
+      } else if (widget.workType == 'Fixtures') {
+        label = 'Fixtures';
+        units = 'set';
+        surface = 'Set';
       } else {
         label = 'Fixtures';
         units = 'set';
@@ -111,10 +115,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         label = 'Pipes and Fittings';
         units = 'm';
         surface = 'Length';
-      } else {
+      } else if (widget.workType == 'Fixtures') {
         label = 'Fixtures';
         units = 'set';
-        surface = 'Fixtures';
+        surface = 'Set';
       }
       worker = 'Plumber';
       secondWorker = 'Laborer';
@@ -1396,11 +1400,11 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         cbTen: isChecked10,
         totalPercentage: totalPercentage!);
     if (formData!.worker_1 != null) {
-      additionalWorker1 = totalPercentage! / worker1!;
-      additionalWorker2 = totalPercentage! / worker2!;
+      additionalWorker1 = totalPercentage! * worker1!;
+      additionalWorker2 = totalPercentage! * worker2!;
       double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
       double secondDecimalValue =
-          additionalWorker1! - additionalWorker1!.toInt();
+          additionalWorker2! - additionalWorker2!.toInt();
       if (decimalValue <= 0.09) {
         setState(() {
           additionalWorker1 = (additionalWorker1!.floor()).toDouble();
