@@ -69,7 +69,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
           onClicked: widget.openDrawer,
         ),
         title: const Text('Productivity Rate'),
-        actions: [saveButton()],
+        //actions: [saveButton()],
       ),
       body: SingleChildScrollView(
           child: isLoading
@@ -294,6 +294,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                                   child: Row(
                                     children: [
                                       Flexible(
+                                        flex: 2,
                                         child: DropdownButtonFormField(
                                             validator: (value) {
                                               if (value == null) {
@@ -308,15 +309,19 @@ class _ProductivityRateState extends State<ProductivityRate> {
                                                     value.toString();
                                                 if (_selectedType ==
                                                     "Soft Soil") {
-                                                  defaultValue = 3;
-                                                  productivityRateController
-                                                          .text =
-                                                      defaultValue.toString();
+                                                  setState(() {
+                                                    defaultValue = 3;
+                                                    productivityRateController
+                                                            .text =
+                                                        defaultValue.toString();
+                                                  });
                                                 } else {
-                                                  defaultValue = 2;
-                                                  productivityRateController
-                                                          .text =
-                                                      defaultValue.toString();
+                                                  setState(() {
+                                                    defaultValue = 2;
+                                                    productivityRateController
+                                                            .text =
+                                                        defaultValue.toString();
+                                                  });
                                                 }
                                               });
                                             },
@@ -328,35 +333,45 @@ class _ProductivityRateState extends State<ProductivityRate> {
                                             }).toList()),
                                       ),
                                       Flexible(
-                                        child: TextFormField(
-                                          initialValue:
-                                              form.col_1_val.toString(),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty ||
-                                                !regex.hasMatch(value)) {
-                                              return '';
-                                            }
-                                            return null;
-                                          },
-                                          onChanged: (value) {
-                                            setState(() {
-                                              // value = form.col_1_val.toString();
-                                              prodRate = value;
-                                              print(prodRate);
-                                            });
-                                          },
-                                          keyboardType: TextInputType.number,
+                                        flex: 1,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: TextFormField(
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty ||
+                                                      !regex.hasMatch(value)) {
+                                                    return '';
+                                                  }
+                                                  return null;
+                                                },
+                                                controller:
+                                                    productivityRateController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    prodRate = value;
+                                                    print(prodRate);
+                                                  });
+                                                },
+                                              )),
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
-                                )
-                          // Flexible(
-                          //   child: IconButton(
-                          //       onPressed: () => {setState(() {})},
-                          //       icon: const Icon(Icons.create_rounded)),
-                          // )
+                                ),
+                          Flexible(
+                            flex: 1,
+                            child: ElevatedButton(
+                                onPressed: () => {
+                                      //_selectedType
+                                      //double.parse(prodRate!)
+                                    },
+                                child: const Text("Save")),
+                          )
                         ],
                       ))
                     : Container()))
@@ -499,6 +514,10 @@ class _ProductivityRateState extends State<ProductivityRate> {
                     : Container()))
             .toList(),
       );
-  Widget saveButton() =>
-      ElevatedButton(onPressed: () => {}, child: const Text('Save'));
+  /* Widget saveButton() => ElevatedButton(
+      onPressed: () {
+        form.col_1 = _selectedType.toString();
+        form.col_1_val = double.parse(prodRate!);
+      },
+      child: const Text('Save'));*/
 }
