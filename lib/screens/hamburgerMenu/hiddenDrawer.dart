@@ -42,11 +42,15 @@ class HiddenDrawer extends StatelessWidget {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: DrawerItems.all
-                .map((item) => ListTile(
-                    title: Text(item.title,
-                        style: const TextStyle(fontWeight: FontWeight.w600)),
-                    leading: Icon(item.icon),
-                    onTap: () => onSelectedItem(item)))
+                .map((item) => SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.085,
+                      child: ListTile(
+                          title: Text(item.title,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                          leading: Icon(item.icon),
+                          onTap: () => onSelectedItem(item)),
+                    ))
                 .toList()),
       );
 }

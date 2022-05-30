@@ -21,6 +21,8 @@ class DrawerItems {
       title: 'Manpower Distribution', icon: CustomIcons.manpowerdistribution);
   static const additionalManpower = DrawerItem(
       title: 'Additional Manpower', icon: CustomIcons.additionalmanp);
+  static const dateSchedule =
+      DrawerItem(title: 'Date Schedule', icon: Icons.calendar_month_outlined);
 
   static final List<DrawerItem> all = [
     home,
@@ -30,6 +32,7 @@ class DrawerItems {
     rateOfWorkers,
     productivityRate,
     manPowerDistribution,
+    dateSchedule,
     additionalManpower
   ];
 }
