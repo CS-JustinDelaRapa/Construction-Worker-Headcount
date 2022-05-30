@@ -77,8 +77,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Shortage of construction workers due to increase in numbers of construction projects'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('30%'))),
+                    DataCell(Center(
+                      child: Text('40%'),
+                    )),
                   ],
                 ),
                 DataRow(
@@ -88,8 +89,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Unskilled construction workers due to lack of experience and training'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('20%'))),
+                    DataCell(Center(
+                      child: Text('10%'),
+                    )),
                   ],
                 ),
                 DataRow(
@@ -99,8 +101,7 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Language barrier between workers of different dialect'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('10%'))),
+                    DataCell(Center(child: Text('10%'))),
                   ],
                 ),
                 DataRow(
@@ -110,8 +111,7 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Issues of overtime scheduling with construction workers'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('20%'))),
+                    DataCell(Center(child: Text('10%'))),
                   ],
                 ),
                 DataRow(
@@ -121,8 +121,7 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Demand of higher salaries from construction workers'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('10%'))),
+                    DataCell(Center(child: Text('10%'))),
                   ],
                 ),
                 DataRow(
@@ -132,8 +131,7 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Struggle with authority leading to conflict between construction workers and engineers'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('20%'))),
+                    DataCell(Center(child: Text('10%'))),
                   ],
                 ),
                 DataRow(
@@ -143,8 +141,7 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Sudden absences of construction workers without prior notice to superiors'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('30%'))),
+                    DataCell(Center(child: Text('10%'))),
                   ],
                 ),
                 DataRow(
@@ -154,10 +151,31 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                           'Usage of electronic devices during working hours'),
                     )),
-                    DataCell(Padding(
-                        padding: EdgeInsets.all(8.0), child: Text('20%'))),
+                    DataCell(Center(child: Text('10%'))),
                   ],
                 ),
+                DataRow(
+                  cells: <DataCell>[
+                    DataCell(Center(child: Text('9'))),
+                    DataCell(Center(
+                      child: Text(
+                          'Sudden resignation of workers due to inadequate benefits, low wages, deployment abroad, etc.'),
+                    )),
+                    DataCell(Center(child: Text('30%'))),
+                  ],
+                ),
+                DataRow(
+                  cells: <DataCell>[
+                    DataCell(Center(child: Text('10'))),
+                    DataCell(Center(
+                      child: Text(
+                        'Sudden Termination(Serious Injury, relocation, habitual neglect of duties, serious misconduct, fraud, loss of confidence, commission of a crime and analogous causes)',
+                        overflow: TextOverflow.visible,
+                      ),
+                    )),
+                    DataCell(Center(child: Text('10%'))),
+                  ],
+                )
               ],
             ),
           ),
