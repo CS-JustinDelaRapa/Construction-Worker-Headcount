@@ -132,7 +132,10 @@ class _CreateProjectState extends State<CreateProject> {
                                 onPressed: () {
                                   _selectDateStart(context);
                                 }),
-                            Text(getStartDate(),
+                            Text(
+                                outputFormat
+                                    .format(startSelectedDate)
+                                    .toString(),
                                 style: const TextStyle(fontSize: 20)),
                           ],
                         )
@@ -152,7 +155,8 @@ class _CreateProjectState extends State<CreateProject> {
                         onPressed: () {
                           _selectDateEnd(context);
                         }),
-                    Text(getEndDate(), style: const TextStyle(fontSize: 20)),
+                    Text(outputFormat.format(endSelectedDate).toString(),
+                        style: const TextStyle(fontSize: 20)),
                   ],
                 ),
               ),
@@ -233,23 +237,4 @@ class _CreateProjectState extends State<CreateProject> {
           context, () => StackWidget(project: toStackProject));
     }
   }
-}
-
-String getStartDate() {
-  var date = DateTime.now().toString();
-
-  var dateParse = DateTime.parse(date);
-
-  var formattedDate = "${dateParse.month}-${dateParse.day}-${dateParse.year}";
-  return formattedDate.toString();
-}
-
-String getEndDate() {
-  var date = DateTime.now().toString();
-
-  var dateParse = DateTime.parse(date);
-
-  var formattedDate =
-      "${dateParse.month}-${dateParse.day + 1}-${dateParse.year}";
-  return formattedDate.toString();
 }
