@@ -50,6 +50,7 @@ class DatabaseHelper {
     ${TblProjectField.date_start} TEXT NOT NULL,
     ${TblProjectField.date_end} TEXT NOT NULL,
     ${TblProjectField.project_name} TEXT NOT NUll,
+    ${TblProjectField.project_manager} TEXT NOT NUll,
     ${TblProjectField.type} TEXT NOT NUll    
     )
   ''');
@@ -180,8 +181,7 @@ class DatabaseHelper {
 
     final fromTable = await reference.query(tableAllData,
         columns: TblFormDataField.formTwoFieldNames,
-        where:
-            '${TblFormDataField.fk} = ?',
+        where: '${TblFormDataField.fk} = ?',
         whereArgs: [fk]);
 
     return fromTable.map((fromSQL) => FormData.fromJson(fromSQL)).toList();
@@ -664,11 +664,12 @@ class DatabaseHelper {
 
     final fromTable = await reference.query(tableManPower,
         columns: TblManpowerField.manpowerFieldNames,
-        where:
-            '${TblManpowerField.fk} = ?',
+        where: '${TblManpowerField.fk} = ?',
         whereArgs: [fk]);
 
-    return fromTable.map((fromSQL) => AdditionalManpower.fromJson(fromSQL)).toList();
+    return fromTable
+        .map((fromSQL) => AdditionalManpower.fromJson(fromSQL))
+        .toList();
     // if (specificID.isNotEmpty) {
     //   return FormData.fromJson(specificID.first);
     // } else {

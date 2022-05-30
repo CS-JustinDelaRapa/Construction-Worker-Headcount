@@ -19,6 +19,7 @@ class _CreateProjectState extends State<CreateProject> {
   final _formKey = GlobalKey<FormState>();
   String val = "Bungalow";
   TextEditingController projectName = TextEditingController();
+  TextEditingController projectManager = TextEditingController();
   RegExp regex = new RegExp(r'(?!^ +$)^.+$');
   var outputFormat = DateFormat('MM/dd/yyyy');
   TextEditingController dateStartControler = TextEditingController();
@@ -58,18 +59,19 @@ class _CreateProjectState extends State<CreateProject> {
         title: CustomWidgets().text_title('New Project', 20),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: CustomWidgets().text_title(
-                  'Enter the name of the new project and select style.', 20),
-            ),
-            Form(
-              key: _formKey,
-              child: Padding(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: CustomWidgets().text_title(
+                    'Enter the name of the new project and select style.', 20),
+              ),
+              //project name
+              Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                 child: TextFormField(
                   initialValue: projectName.text,
@@ -91,95 +93,119 @@ class _CreateProjectState extends State<CreateProject> {
                   },
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Row(
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          CustomWidgets().text_subtitle('Start Date: ', 16),
-                          IconButton(
-                              iconSize: 30,
-                              icon: const Icon(Icons.calendar_today),
-                              onPressed: () {
-                                _selectDateStart(context);
-                              }),
-                          Text(getStartDate(),
-                              style: const TextStyle(fontSize: 20)),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
+              // project manager
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: TextFormField(
+                  initialValue: projectManager.text,
+                  decoration:
+                      const InputDecoration(hintText: ("Project Manager")),
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !regex.hasMatch(value)) {
+                      return 'This Field is Required';
+                    }
+                    return null;
+                  },
+
+                  // controller: projectName.text,
+                  onChanged: (value) {
+                    setState(() {
+                      projectManager.text = value;
+                    });
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: Row(
-                children: [
-                  CustomWidgets().text_subtitle('End Date: ', 16),
-                  IconButton(
-                      iconSize: 30,
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () {
-                        _selectDateEnd(context);
-                      }),
-                  Text(getEndDate(), style: const TextStyle(fontSize: 20)),
-                ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Row(
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            CustomWidgets().text_subtitle('Start Date: ', 16),
+                            IconButton(
+                                iconSize: 30,
+                                icon: const Icon(Icons.calendar_today),
+                                onPressed: () {
+                                  _selectDateStart(context);
+                                }),
+                            Text(getStartDate(),
+                                style: const TextStyle(fontSize: 20)),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              alignment: AlignmentDirectional.centerStart,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                child: CustomWidgets().text_title('Style:', 20),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: Row(
+                  children: [
+                    CustomWidgets().text_subtitle('End Date: ', 16),
+                    IconButton(
+                        iconSize: 30,
+                        icon: const Icon(Icons.calendar_today),
+                        onPressed: () {
+                          _selectDateEnd(context);
+                        }),
+                    Text(getEndDate(), style: const TextStyle(fontSize: 20)),
+                  ],
+                ),
               ),
-            ),
-            ListTile(
-              title: const Text("Bungalow"),
-              leading: Radio(
-                value: "Bungalow",
-                groupValue: val,
-                onChanged: (value) {
-                  setState(() {
-                    val = value.toString();
-                  });
-                },
-                activeColor: Colors.green,
-              ),
-            ),
-            ListTile(
-              title: const Text("Two-Storey"),
-              leading: Radio(
-                value: "Two-Storey",
-                groupValue: val,
-                onChanged: (value) {
-                  setState(() {
-                    val = value.toString();
-                  });
-                },
-                activeColor: Colors.green,
-              ),
-            ),
-            // const SizedBox(
-            //   height: 30,
-            // ),
-            Align(
-                alignment: Alignment.bottomCenter,
+              Container(
+                alignment: AlignmentDirectional.centerStart,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: CustomWidgets().funtion_Button(
-                      'Save',
-                      const Icon(Icons.menu_open),
-                      0.6,
-                      0.07,
-                      context,
-                      saveProject),
-                ))
-          ],
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: CustomWidgets().text_title('Style:', 20),
+                ),
+              ),
+              ListTile(
+                title: const Text("Bungalow"),
+                leading: Radio(
+                  value: "Bungalow",
+                  groupValue: val,
+                  onChanged: (value) {
+                    setState(() {
+                      val = value.toString();
+                    });
+                  },
+                  activeColor: Colors.green,
+                ),
+              ),
+              ListTile(
+                title: const Text("Two-Storey"),
+                leading: Radio(
+                  value: "Two-Storey",
+                  groupValue: val,
+                  onChanged: (value) {
+                    setState(() {
+                      val = value.toString();
+                    });
+                  },
+                  activeColor: Colors.green,
+                ),
+              ),
+              // const SizedBox(
+              //   height: 30,
+              // ),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: CustomWidgets().funtion_Button(
+                        'Save',
+                        const Icon(Icons.menu_open),
+                        0.6,
+                        0.07,
+                        context,
+                        saveProject),
+                  ))
+            ],
+          ),
         ),
       ),
     );
@@ -187,16 +213,19 @@ class _CreateProjectState extends State<CreateProject> {
 
   saveProject() async {
     if (_formKey.currentState!.validate()) {
-      final craetedProject = ProjectItem(
+      final createdProject = ProjectItem(
           project_name: projectName.text,
+          project_manager: projectManager.text,
           date_start: DateTime.now(),
           date_end: DateTime.now(),
           type: val);
+      print(createdProject.toJson());
       final iDFromSQL =
-          await DatabaseHelper.instance.createProject(craetedProject);
+          await DatabaseHelper.instance.createProject(createdProject);
       final toStackProject = ProjectItem(
           id: iDFromSQL,
           project_name: projectName.text,
+          project_manager: projectManager.text,
           date_start: DateTime.now(),
           date_end: DateTime.now(),
           type: val);

@@ -18,6 +18,7 @@ class LoadProject extends StatefulWidget {
 class _LoadProjectState extends State<LoadProject> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   TextEditingController projectName = TextEditingController();
+  TextEditingController projectManager = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List<ProjectItem>? projects;
   bool isLoading = false;
@@ -139,6 +140,9 @@ class _LoadProjectState extends State<LoadProject> {
                                                               .id,
                                                           project_name:
                                                               projectName.text,
+                                                          project_manager:
+                                                              projectManager
+                                                                  .text,
                                                           date_start: projects![
                                                                   selectedIndex!]
                                                               .date_start,
