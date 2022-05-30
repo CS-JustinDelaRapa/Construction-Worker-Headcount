@@ -1,4 +1,5 @@
 import 'package:engineering/model/AdditionalManpowerModel.dart';
+import 'package:engineering/model/ProductivityModel.dart';
 import 'package:engineering/screens/mainProject/architectural/items/bungalowArchitecturalItem.dart';
 import 'package:engineering/screens/mainProject/architectural/items/twoStoreyArchitecturalItem.dart';
 import 'package:engineering/screens/mainProject/electricalAndPlumbing/items/electricalAndPlumbingItem.dart';
@@ -91,7 +92,64 @@ class DatabaseHelper {
     ${TblManpowerField.totalPercentage} REAL NOT NULL  
     )
   ''');
+    await query.execute('''
+  CREATE TABLE $tableProductivity(
+    ${TblProductivityField.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+    ${TblProductivityField.fk} INTEGER NOT NULL,
+    ${TblProductivityField.col_1} TEXT NOT NULL,
+    ${TblProductivityField.col_1_val} REAL NOT NUll,
+    ${TblProductivityField.type} TEXT NOT NUll,
+    ${TblProductivityField.work} TEXT NOT NUll        
+    )
+  ''');  
   }
+
+//productivity
+  Future createProductivity(ProductivityItem productivityItem) async{
+    final reference = await instance.database;
+
+    //irereturn nito ang Primary key ng table, which is ID
+    final id = await reference.insert(tableProductivity, productivityItem.toJson());
+    return id;    
+  }
+
+  Future<List<ProductivityItem>?> readAllProductivity(int fk) async {
+    final reference = await instance.database;
+
+    final fromTable = await reference.query(tableProductivity,
+        columns: TblProductivityField.productivityFieldNames,
+        where:
+            '${TblProductivityField.fk} = ?',
+        whereArgs: [fk]);
+
+    return fromTable.map((fromSQL) => ProductivityItem.fromJson(fromSQL)).toList();
+  }
+
+  Future<List<ProductivityItem>?> readSpecificProductivity(int fk, String work, String type) async {
+    final reference = await instance.database;
+
+    final fromTable = await reference.query(tableProductivity,
+        columns: TblProductivityField.productivityFieldNames,
+        where:
+            '${TblProductivityField.fk} = ? and ${TblProductivityField.work} = ? and ${TblProductivityField.type} = ?',
+        whereArgs: [fk, work, type]);
+    return fromTable.map((fromSQL) => ProductivityItem.fromJson(fromSQL)).toList();
+  }
+
+    Future<int> updateProductivityWithID(ProductivityItem productivityInstance) async {
+    final reference = await instance.database;
+
+    return reference.update(tableProject, productivityInstance.toJson(),
+        where: '${TblProjectField.id} = ?', whereArgs: [productivityInstance.id]);
+  }
+
+  //   Future<int> updateProductivity(ProductivityItem productivityInstance) async {
+  //   final reference = await instance.database;
+
+  //   return reference.update(tableProject, productivityInstance.toJson(),
+  //       where: '${TblProjectField.id} = ?', 
+  //       whereArgs: [productivityInstance.id]);
+  // }
 
 //project
   Future createProject(ProjectItem projectItem) async {
@@ -104,6 +162,7 @@ class DatabaseHelper {
     if (projectItem.type == "Bungalow") {
       createDefaultProductivityRateBunagalow(id);
       createDefaultManpowerBunagalow(id);
+      createDefaultProductivityBungalow(id);
     } else {
       createDefaultProdRateTwoStorey(id);
       createDefaultManpowerTwoStorey(id);
@@ -220,12 +279,6 @@ class DatabaseHelper {
     return reference.update(tableAllData, formTwoInstance.toJson(),
         where: '${TblFormDataField.id} = ?', whereArgs: [formTwoInstance.id]);
   }
-
-  // Future<int> deleteForm(int searchKey, String tableName) async {
-  //   final refererence = await instance.database;
-  //   return refererence.delete(tableName,
-  //       where: '${TblFormField.id} = ?', whereArgs: [searchKey]);
-  // }
 
 //worker
   Future createWorker(WorkerType workerType) async {
@@ -677,8 +730,7 @@ class DatabaseHelper {
     // }
   }
 
-  Future<AdditionalManpower> readAllManpower(
-      int fk, String type, String work) async {
+  Future<AdditionalManpower> readAllManpower(int fk, String type, String work) async {
     // print('at read all manpower');
     final reference = await instance.database;
 
@@ -1268,6 +1320,19 @@ class DatabaseHelper {
 //insert into formtable
     for (int x = 0; x < defaultManpower.length; x++) {
       await createManpower(defaultManpower[x]);
+    }
+  }
+
+  Future createDefaultProductivityBungalow(int fk) async{
+    List<ProductivityItem> defaultProductivity = [
+      ProductivityItem(fk: fk, col_1: 'Soft Soil', col_1_val: 1, type: 'Excavation', work: 'Earthworks'),
+      ProductivityItem(fk: fk, col_1: 'Hard Soil', col_1_val: 1, type: 'Excavation', work: 'Earthworks'),
+
+      ProductivityItem(fk: fk, col_1: 'DEFAULT', col_1_val: 1, type: 'Backfilling', work: 'Formworks')
+    ];
+
+    for(int x = 0; x < defaultProductivity.length; x++){
+      createProductivity(defaultProductivity[x]);
     }
   }
 }
