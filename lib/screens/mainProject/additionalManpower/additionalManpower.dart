@@ -27,12 +27,14 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(3.0),
             child: DataTable(
-              headingRowHeight: MediaQuery.of(context).size.height * 0.12,
+              headingRowHeight: MediaQuery.of(context).size.height * 0.20,
               dataRowHeight: MediaQuery.of(context).size.height * 0.2,
               showBottomBorder: true,
               dividerThickness: 3.0,
+              horizontalMargin: 6.0,
+              columnSpacing: 30.0,
               border: TableBorder.all(
                 width: 1.0,
                 color: Colors.black,
@@ -48,22 +50,19 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                     softWrap: true,
                   ),
                 )),
-                DataColumn(
-                  label: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.31,
-                    child: const Text(
-                      'Labor-related Factor',
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.visible,
-                      softWrap: true,
-                    ),
+                const DataColumn(
+                  label: Text(
+                    'Labor-related Factor',
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.visible,
+                    softWrap: true,
                   ),
                 ),
                 DataColumn(
                   label: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.2,
+                    width: MediaQuery.of(context).size.width * 0.3,
                     child: const Text(
-                      'Additional Percentage to the Manpower Distribution',
+                      'Additional\nPercentage\nto the\nManpower\nDistribution',
                       overflow: TextOverflow.visible,
                       softWrap: true,
                     ),
@@ -74,12 +73,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('1'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Shortage of construction workers due to increase in numbers of construction projects'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Shortage of construction workers due to increase in numbers of construction projects'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('30%'))),
@@ -88,12 +84,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('2'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Unskilled construction workers due to lack of experience and training'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Unskilled construction workers due to lack of experience and training'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('20%'))),
@@ -102,12 +95,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('3'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Language barrier between workers of different dialect'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Language barrier between workers of different dialect'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('10%'))),
@@ -116,12 +106,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('4'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Issues of overtime scheduling with construction workers'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Issues of overtime scheduling with construction workers'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('20%'))),
@@ -130,12 +117,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('5'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Demand of higher salaries from construction workers'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Demand of higher salaries from construction workers'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('10%'))),
@@ -144,12 +128,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('6'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Struggle with authority leading to conflict between construction workers and engineers'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Struggle with authority leading to conflict between construction workers and engineers'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('20%'))),
@@ -158,12 +139,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('7'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Sudden absences of construction workers without prior notice to superiors'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Sudden absences of construction workers without prior notice to superiors'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('30%'))),
@@ -172,12 +150,9 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Center(child: Text('8'))),
-                    DataCell(Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                            'Usage of electronic devices during working hours'),
-                      ),
+                    DataCell(Center(
+                      child: Text(
+                          'Usage of electronic devices during working hours'),
                     )),
                     DataCell(Padding(
                         padding: EdgeInsets.all(8.0), child: Text('20%'))),
