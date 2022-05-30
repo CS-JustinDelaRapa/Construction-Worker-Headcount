@@ -30,7 +30,7 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
             padding: const EdgeInsets.all(3.0),
             child: DataTable(
               headingRowHeight: MediaQuery.of(context).size.height * 0.20,
-              dataRowHeight: MediaQuery.of(context).size.height * 0.2,
+              dataRowHeight: MediaQuery.of(context).size.height * 0.3,
               showBottomBorder: true,
               dividerThickness: 3.0,
               horizontalMargin: 6.0,
@@ -171,6 +171,7 @@ class _AdditionalManpowerState extends State<AdditionalManpower> {
                       child: Text(
                         'Sudden Termination(Serious Injury, relocation, habitual neglect of duties, serious misconduct, fraud, loss of confidence, commission of a crime and analogous causes)',
                         overflow: TextOverflow.visible,
+                        softWrap: true,
                       ),
                     )),
                     DataCell(Center(child: Text('10%'))),
