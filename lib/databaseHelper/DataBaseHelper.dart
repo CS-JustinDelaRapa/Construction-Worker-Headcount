@@ -101,16 +101,17 @@ class DatabaseHelper {
     ${TblProductivityField.type} TEXT NOT NUll,
     ${TblProductivityField.work} TEXT NOT NUll        
     )
-  ''');  
+  ''');
   }
 
 //productivity
-  Future createProductivity(ProductivityItem productivityItem) async{
+  Future createProductivity(ProductivityItem productivityItem) async {
     final reference = await instance.database;
 
     //irereturn nito ang Primary key ng table, which is ID
-    final id = await reference.insert(tableProductivity, productivityItem.toJson());
-    return id;    
+    final id =
+        await reference.insert(tableProductivity, productivityItem.toJson());
+    return id;
   }
 
   Future<List<ProductivityItem>?> readAllProductivity(int fk) async {
@@ -118,14 +119,16 @@ class DatabaseHelper {
 
     final fromTable = await reference.query(tableProductivity,
         columns: TblProductivityField.productivityFieldNames,
-        where:
-            '${TblProductivityField.fk} = ?',
+        where: '${TblProductivityField.fk} = ?',
         whereArgs: [fk]);
 
-    return fromTable.map((fromSQL) => ProductivityItem.fromJson(fromSQL)).toList();
+    return fromTable
+        .map((fromSQL) => ProductivityItem.fromJson(fromSQL))
+        .toList();
   }
 
-  Future<List<ProductivityItem>?> readSpecificProductivity(int fk, String work, String type) async {
+  Future<List<ProductivityItem>?> readSpecificProductivity(
+      int fk, String work, String type) async {
     final reference = await instance.database;
 
     final fromTable = await reference.query(tableProductivity,
@@ -133,21 +136,25 @@ class DatabaseHelper {
         where:
             '${TblProductivityField.fk} = ? and ${TblProductivityField.work} = ? and ${TblProductivityField.type} = ?',
         whereArgs: [fk, work, type]);
-    return fromTable.map((fromSQL) => ProductivityItem.fromJson(fromSQL)).toList();
+    return fromTable
+        .map((fromSQL) => ProductivityItem.fromJson(fromSQL))
+        .toList();
   }
 
-    Future<int> updateProductivityWithID(ProductivityItem productivityInstance) async {
+  Future<int> updateProductivityWithID(
+      ProductivityItem productivityInstance) async {
     final reference = await instance.database;
 
     return reference.update(tableProject, productivityInstance.toJson(),
-        where: '${TblProjectField.id} = ?', whereArgs: [productivityInstance.id]);
+        where: '${TblProjectField.id} = ?',
+        whereArgs: [productivityInstance.id]);
   }
 
   //   Future<int> updateProductivity(ProductivityItem productivityInstance) async {
   //   final reference = await instance.database;
 
   //   return reference.update(tableProject, productivityInstance.toJson(),
-  //       where: '${TblProjectField.id} = ?', 
+  //       where: '${TblProjectField.id} = ?',
   //       whereArgs: [productivityInstance.id]);
   // }
 
@@ -166,6 +173,8 @@ class DatabaseHelper {
     } else {
       createDefaultProdRateTwoStorey(id);
       createDefaultManpowerTwoStorey(id);
+      createDefaultProductivityTwoStorey(id);
+      ;
     }
 
     return id;
@@ -323,7 +332,8 @@ class DatabaseHelper {
     await reference.insert(tableManPower, manpower.toJson());
   }
 
-  Future<AdditionalManpower> readAllManpower(int fk, String type, String work) async {
+  Future<AdditionalManpower> readAllManpower(
+      int fk, String type, String work) async {
     // print('at read all manpower');
     final reference = await instance.database;
 
@@ -335,7 +345,6 @@ class DatabaseHelper {
         whereArgs: [fk, type, work]);
     return AdditionalManpower.fromJson(fromTable.first);
   }
-
 
   Future<List<AdditionalManpower>?> readAddtlManpower(int fk) async {
     final reference = await instance.database;
@@ -356,7 +365,6 @@ class DatabaseHelper {
   }
 
   Future<int> updateManpower(AdditionalManpower manpower) async {
-    print('at update');
     final reference = await instance.database;
 
     return reference.update(tableManPower, manpower.toJson(),
@@ -1041,7 +1049,6 @@ class DatabaseHelper {
 // */
 //earthworks
     for (int x = 0; x < TwoStoreyStructuralItems.listEarthWorks.length; x++) {
-      print('1');
       defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listEarthWorks[x],
@@ -1101,7 +1108,6 @@ class DatabaseHelper {
     for (int x = 0;
         x < TwoStoreyStructuralItems.listReinforecedWorks.length;
         x++) {
-      print('4');
       defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listReinforecedWorks[x],
@@ -1123,7 +1129,6 @@ class DatabaseHelper {
     for (int x = 0;
         x < TwoStoreyStructuralItems.listSteelReinforecedWorks.length;
         x++) {
-      print('5');
       defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyStructuralItems.listSteelReinforecedWorks[x],
@@ -1149,7 +1154,6 @@ class DatabaseHelper {
     for (int x = 0;
         x < TwoStoreyArchitechturalItems.listFlooringWorks.length;
         x++) {
-      print('6');
       defaultManpower.add(AdditionalManpower(
           fk: fk,
           type: TwoStoreyArchitechturalItems.listFlooringWorks[x],
@@ -1324,15 +1328,1036 @@ class DatabaseHelper {
     }
   }
 
-  Future createDefaultProductivityBungalow(int fk) async{
+  Future createDefaultProductivityBungalow(int fk) async {
     List<ProductivityItem> defaultProductivity = [
-      ProductivityItem(fk: fk, col_1: 'Soft Soil', col_1_val: 1, type: 'Excavation', work: 'Earthworks'),
-      ProductivityItem(fk: fk, col_1: 'Hard Soil', col_1_val: 1, type: 'Excavation', work: 'Earthworks'),
+      //structural
+      //earthworks
+      ProductivityItem(
+          fk: fk,
+          col_1: 'Soft Soil',
+          col_1_val: 3,
+          type: 'Excavation',
+          work: 'Earthworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'Hard Soil',
+          col_1_val: 2,
+          type: 'Excavation',
+          work: 'Earthworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4,
+          type: 'Backfilling',
+          work: 'Earthworks'),
+      //formworks
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 7.7,
+          type: 'Footings',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4,
+          type: 'Column',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 3.3,
+          type: 'Beam',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4.3,
+          type: 'Slab',
+          work: 'Formworks'),
+      //Masonry
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 9.0,
+          type: 'Interior',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8.5,
+          type: 'Exterior',
+          work: 'Masonry Works'),
+      //Steel Reinforcement Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 190,
+          type: 'Footings',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 200,
+          type: 'Column',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 175,
+          type: 'Slabs',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 173,
+          type: 'Beams',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 100,
+          type: 'Lintels',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 150,
+          type: 'Stirrups, spacers and links',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 200,
+          type: 'Walls',
+          work: 'Steel Reinforcement Works'),
+      //Reinforced Cement Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1.5,
+          type: 'Footings',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1,
+          type: 'Columns',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1,
+          type: 'Beams',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 2,
+          type: 'Slabs',
+          work: 'Reinforced Cement Works'),
+      //architectural
+      //Flooring
+      ProductivityItem(
+          // EXT T&B
+          fk: fk,
+          col_1: 'Mosaic Tile',
+          col_1_val: 7,
+          type: 'EXT T&B',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B
+          fk: fk,
+          col_1: 'Ceramic Tile',
+          col_1_val: 7,
+          type: 'EXT T&B',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B
+          fk: fk,
+          col_1: 'Vitrified Tile',
+          col_1_val: 10,
+          type: 'EXT T&B',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B
+          fk: fk,
+          col_1: 'Granite Tile',
+          col_1_val: 5,
+          type: 'EXT T&B',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B
+          fk: fk,
+          col_1: 'Marble Tile',
+          col_1_val: 5,
+          type: 'EXT T&B',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B
+          fk: fk,
+          col_1: 'Glazed Tile',
+          col_1_val: 8,
+          type: 'EXT T&B',
+          work: 'Flooring'),
 
-      ProductivityItem(fk: fk, col_1: 'DEFAULT', col_1_val: 1, type: 'Backfilling', work: 'Formworks')
+      ProductivityItem(
+          //T&B
+          fk: fk,
+          col_1: 'Mosaic Tile',
+          col_1_val: 7,
+          type: 'T&B',
+          work: 'Flooring'),
+      ProductivityItem(
+          //T&B
+          fk: fk,
+          col_1: 'Ceramic Tile',
+          col_1_val: 7,
+          type: 'T&B',
+          work: 'Flooring'),
+      ProductivityItem(
+          //T&B
+          fk: fk,
+          col_1: 'Marble Tile',
+          col_1_val: 5,
+          type: 'T&B',
+          work: 'Flooring'),
+      //Plastering
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 10,
+          type: 'Interior',
+          work: 'Plastering'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8,
+          type: 'Exterior',
+          work: 'Plastering'),
+      //Painting Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 6.4,
+          type: 'Interior Skim Coat',
+          work: 'Painting Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8.6,
+          type: 'Exterior Skim Coat',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'OBD',
+          col_1_val: 12,
+          type: 'Interior',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Emulsion',
+          col_1_val: 12,
+          type: 'Interior',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Texture',
+          col_1_val: 10,
+          type: 'Interior',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Enamel',
+          col_1_val: 8,
+          type: 'Interior',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Snowcem',
+          col_1_val: 20,
+          type: 'Exterior',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Enamel',
+          col_1_val: 7,
+          type: 'Exterior',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Emulsion',
+          col_1_val: 5,
+          type: 'Exterior',
+          work: 'Painting Works'),
+      //Doors and Windows
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 3.52,
+          type: 'Jamb',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 10.24,
+          type: 'Lockset',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // door
+          fk: fk,
+          col_1: 'Wooden',
+          col_1_val: 3.38,
+          type: 'Doors',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // door
+          fk: fk,
+          col_1: 'Steel',
+          col_1_val: 1.05,
+          type: 'Doors',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // door
+          fk: fk,
+          col_1: 'Aluminum',
+          col_1_val: 0.99,
+          type: 'Doors',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // Windows
+          fk: fk,
+          col_1: 'Glass',
+          col_1_val: 2.48,
+          type: 'Windows',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // Windows
+          fk: fk,
+          col_1: 'Louver',
+          col_1_val: 1.73,
+          type: 'Windows',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // Windows
+          fk: fk,
+          col_1: 'Steel',
+          col_1_val: 0.25,
+          type: 'Windows',
+          work: 'Doors and Windows'),
+      //Ceiling
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 21.28,
+          type: 'Steel Frame',
+          work: 'Ceiling'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 16,
+          type: 'Plywood',
+          work: 'Ceiling'),
+      //Roofing Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4,
+          type: 'Trusses',
+          work: 'Roofing Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 11.52,
+          type: 'GI Sheets',
+          work: 'Roofing Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 2.7,
+          type: 'Gutter',
+          work: 'Roofing Works'),
+      //Electrical and Plumbing
+      //Electrical Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 30,
+          type: 'Roughing Ins',
+          work: 'Electrical Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 10,
+          type: 'Fixtures',
+          work: 'Electrical Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 30,
+          type: 'Cable Pulling',
+          work: 'Electrical Works'),
+      //Plumbing Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 31.5,
+          type: 'Works',
+          work: 'Plumbing Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 5,
+          type: 'Fixtures',
+          work: 'Plumbing Works'),
     ];
 
-    for(int x = 0; x < defaultProductivity.length; x++){
+    for (int x = 0; x < defaultProductivity.length; x++) {
+      createProductivity(defaultProductivity[x]);
+    }
+  }
+
+  Future createDefaultProductivityTwoStorey(int fk) async {
+    List<ProductivityItem> defaultProductivity = [
+      //structural
+      //earthworks
+      ProductivityItem(
+          fk: fk,
+          col_1: 'Soft Soil',
+          col_1_val: 3,
+          type: 'Excavation',
+          work: 'Earthworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'Hard Soil',
+          col_1_val: 2,
+          type: 'Excavation',
+          work: 'Earthworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4,
+          type: 'Backfilling',
+          work: 'Earthworks'),
+      //formworks
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 7.7,
+          type: 'Footings',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4,
+          type: 'Column Ground Floor',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4,
+          type: 'Column Second Floor',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 3.3,
+          type: 'Beam FB',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 3.3,
+          type: 'Beam RB',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4.3,
+          type: 'Slab GF',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4.3,
+          type: 'Slab SF',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 3.3,
+          type: 'Staircase',
+          work: 'Formworks'),
+      //Masonry
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 9.0,
+          type: 'Interior GF',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 9.0,
+          type: 'Interior SF',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8.5,
+          type: 'Exterior GF',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8.5,
+          type: 'Exterior SF',
+          work: 'Masonry Works'),
+      //Steel Reinforcement Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 190,
+          type: 'Footings',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 200,
+          type: 'Columns GF',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 200,
+          type: 'Columns SF',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 175,
+          type: 'Slabs GF',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 175,
+          type: 'Slabs SF',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 173,
+          type: 'Beams FB',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 173,
+          type: 'Beams RB',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 100,
+          type: 'Lintels',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 150,
+          type: 'Stirrups, spacers and links',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 173,
+          type: 'Staircase',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 200,
+          type: 'Walls GF',
+          work: 'Steel Reinforcement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 200,
+          type: 'Walls SF',
+          work: 'Steel Reinforcement Works'),
+      //Reinforced Cement Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1.5,
+          type: 'Footings',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1,
+          type: 'Columns GF',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1,
+          type: 'Columns SF',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1,
+          type: 'Beams FB',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1,
+          type: 'Beams RB',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 2,
+          type: 'Slabs GF',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 2,
+          type: 'Slabs SF',
+          work: 'Reinforced Cement Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 1,
+          type: 'Staircase',
+          work: 'Reinforced Cement Works'),
+      //architectural
+      //Flooring
+      ProductivityItem(
+          // EXT T&B Ground Floor
+          fk: fk,
+          col_1: 'Mosaic Tile',
+          col_1_val: 7,
+          type: 'EXT T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Ground Floor
+          fk: fk,
+          col_1: 'Ceramic Tile',
+          col_1_val: 7,
+          type: 'EXT T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Ground Floor
+          fk: fk,
+          col_1: 'Vitrified Tile',
+          col_1_val: 10,
+          type: 'EXT T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Ground Floor
+          fk: fk,
+          col_1: 'Granite Tile',
+          col_1_val: 5,
+          type: 'EXT T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Ground Floor
+          fk: fk,
+          col_1: 'Marble Tile',
+          col_1_val: 5,
+          type: 'EXT T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Ground Floor
+          fk: fk,
+          col_1: 'Glazed Tile',
+          col_1_val: 8,
+          type: 'EXT T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Second Floor
+          fk: fk,
+          col_1: 'Mosaic Tile',
+          col_1_val: 7,
+          type: 'EXT T&B Second Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Second Floor
+          fk: fk,
+          col_1: 'Ceramic Tile',
+          col_1_val: 7,
+          type: 'EXT T&B Second Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Second Floor
+          fk: fk,
+          col_1: 'Vitrified Tile',
+          col_1_val: 10,
+          type: 'EXT T&B Second Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Second Floor
+          fk: fk,
+          col_1: 'Granite Tile',
+          col_1_val: 5,
+          type: 'EXT T&B Second Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Second Floor
+          fk: fk,
+          col_1: 'Marble Tile',
+          col_1_val: 5,
+          type: 'EXT T&B Second Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          // EXT T&B Second Floor
+          fk: fk,
+          col_1: 'Glazed Tile',
+          col_1_val: 8,
+          type: 'EXT T&B Second Floor',
+          work: 'Flooring'),
+
+      ProductivityItem(
+          //T&B Ground Floor
+          fk: fk,
+          col_1: 'Mosaic Tile',
+          col_1_val: 7,
+          type: 'T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          //T&B Ground Floor
+          fk: fk,
+          col_1: 'Ceramic Tile',
+          col_1_val: 7,
+          type: 'T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          //T&B Ground Floor
+          fk: fk,
+          col_1: 'Marble Tile',
+          col_1_val: 5,
+          type: 'T&B Ground Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          //T&B Second Floor
+          fk: fk,
+          col_1: 'Mosaic Tile',
+          col_1_val: 7,
+          type: 'T&B Second Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          //T&B Second Floor
+          fk: fk,
+          col_1: 'Ceramic Tile',
+          col_1_val: 7,
+          type: 'T&B Second Floor',
+          work: 'Flooring'),
+      ProductivityItem(
+          //T&B Second Floor
+          fk: fk,
+          col_1: 'Marble Tile',
+          col_1_val: 5,
+          type: 'T&B Second Floor',
+          work: 'Flooring'),
+      //Plastering
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 10,
+          type: 'Interior GF',
+          work: 'Plastering'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 10,
+          type: 'Interior SF',
+          work: 'Plastering'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8,
+          type: 'Exterior GF',
+          work: 'Plastering'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8,
+          type: 'Exterior SF',
+          work: 'Plastering'),
+      //Painting Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 6.4,
+          type: 'Interior Skim Coat GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 6.4,
+          type: 'Interior Skim Coat SF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8.6,
+          type: 'Exterior Skim Coat GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 8.6,
+          type: 'Exterior Skim Coat SF',
+          work: 'Painting Works'),
+
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'OBD',
+          col_1_val: 12,
+          type: 'Interior GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Emulsion',
+          col_1_val: 12,
+          type: 'Interior GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Texture',
+          col_1_val: 10,
+          type: 'Interior GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Enamel',
+          col_1_val: 8,
+          type: 'Interior GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'OBD',
+          col_1_val: 12,
+          type: 'Interior SF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Emulsion',
+          col_1_val: 12,
+          type: 'Interior SF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Texture',
+          col_1_val: 10,
+          type: 'Interior SF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 1
+          fk: fk,
+          col_1: 'Enamel',
+          col_1_val: 8,
+          type: 'Interior SF',
+          work: 'Painting Works'),
+
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Snowcem',
+          col_1_val: 20,
+          type: 'Exterior GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Enamel',
+          col_1_val: 7,
+          type: 'Exterior GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Emulsion',
+          col_1_val: 5,
+          type: 'Exterior GF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Snowcem',
+          col_1_val: 20,
+          type: 'Exterior SF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Enamel',
+          col_1_val: 7,
+          type: 'Exterior SF',
+          work: 'Painting Works'),
+      ProductivityItem(
+          //finish 2
+          fk: fk,
+          col_1: 'Emulsion',
+          col_1_val: 5,
+          type: 'Exterior SF',
+          work: 'Painting Works'),
+      //Doors and Windows
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 3.52,
+          type: 'Jamb',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 10.24,
+          type: 'Lockset',
+          work: 'Doors and Windows'),
+
+      ProductivityItem(
+          // door
+          fk: fk,
+          col_1: 'Wooden',
+          col_1_val: 3.38,
+          type: 'Doors',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // door
+          fk: fk,
+          col_1: 'Steel',
+          col_1_val: 1.05,
+          type: 'Doors',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // door
+          fk: fk,
+          col_1: 'Aluminum',
+          col_1_val: 0.99,
+          type: 'Doors',
+          work: 'Doors and Windows'),
+
+      ProductivityItem(
+          // Windows
+          fk: fk,
+          col_1: 'Glass',
+          col_1_val: 2.48,
+          type: 'Windows',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // Windows
+          fk: fk,
+          col_1: 'Louver',
+          col_1_val: 1.73,
+          type: 'Windows',
+          work: 'Doors and Windows'),
+      ProductivityItem(
+          // Windows
+          fk: fk,
+          col_1: 'Steel',
+          col_1_val: 0.25,
+          type: 'Windows',
+          work: 'Doors and Windows'),
+      //Ceiling
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 21.28,
+          type: 'Steel Frame GF',
+          work: 'Ceiling'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 21.28,
+          type: 'Steel Frame SF',
+          work: 'Ceiling'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 16,
+          type: 'Plywood GF',
+          work: 'Ceiling'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 16,
+          type: 'Plywood SF',
+          work: 'Ceiling'),
+      //Roofing Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 4,
+          type: 'Trusses',
+          work: 'Ceiling'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 11.52,
+          type: 'GI Sheets',
+          work: 'Ceiling'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 2.7,
+          type: 'Gutter',
+          work: 'Ceiling'),
+      //Electrical and Plumbing
+      //Electrical Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 30,
+          type: 'Roughing Ins',
+          work: 'Electrical Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 10,
+          type: 'Fixtures',
+          work: 'Electrical Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 30,
+          type: 'Cable Pulling',
+          work: 'Electrical Works'),
+      //Plumbing Works
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 31.5,
+          type: 'Works',
+          work: 'Plumbing Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 5,
+          type: 'Fixtures',
+          work: 'Plumbing Works'),
+    ];
+
+    for (int x = 0; x < defaultProductivity.length; x++) {
       createProductivity(defaultProductivity[x]);
     }
   }

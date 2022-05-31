@@ -20,7 +20,7 @@ class _CreateProjectState extends State<CreateProject> {
   String val = "Bungalow";
   TextEditingController projectName = TextEditingController();
   TextEditingController projectManager = TextEditingController();
-  RegExp regex = new RegExp(r'(?!^ +$)^.+$');
+  RegExp regex = RegExp(r'(?!^ +$)^.+$');
   var outputFormat = DateFormat('MM/dd/yyyy');
   TextEditingController dateStartControler = TextEditingController();
   DateTime startSelectedDate = DateTime.now();
@@ -223,7 +223,6 @@ class _CreateProjectState extends State<CreateProject> {
           date_start: DateTime.now(),
           date_end: DateTime.now(),
           type: val);
-      print(createdProject.toJson());
       final iDFromSQL =
           await DatabaseHelper.instance.createProject(createdProject);
       final toStackProject = ProjectItem(
