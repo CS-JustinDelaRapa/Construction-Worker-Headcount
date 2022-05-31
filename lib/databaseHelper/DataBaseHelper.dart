@@ -315,6 +315,54 @@ class DatabaseHelper {
         where: '${TblWorkerField.id} = ?', whereArgs: [workerInstance.id]);
   }
 
+//additional manpower
+  Future createManpower(AdditionalManpower manpower) async {
+    final reference = await instance.database;
+
+    //irereturn nito ang Primary key ng table, which is ID
+    await reference.insert(tableManPower, manpower.toJson());
+  }
+
+  Future<AdditionalManpower> readAllManpower(int fk, String type, String work) async {
+    // print('at read all manpower');
+    final reference = await instance.database;
+
+    //SELECT * FROM tbl_diary ORDER BY dateTime
+    final fromTable = await reference.query(tableManPower,
+        columns: TblManpowerField.manpowerFieldNames,
+        where:
+            '${TblManpowerField.fk} = ? and ${TblManpowerField.type} = ? and ${TblManpowerField.work} = ?',
+        whereArgs: [fk, type, work]);
+    return AdditionalManpower.fromJson(fromTable.first);
+  }
+
+
+  Future<List<AdditionalManpower>?> readAddtlManpower(int fk) async {
+    final reference = await instance.database;
+
+    final fromTable = await reference.query(tableManPower,
+        columns: TblManpowerField.manpowerFieldNames,
+        where: '${TblManpowerField.fk} = ?',
+        whereArgs: [fk]);
+
+    return fromTable
+        .map((fromSQL) => AdditionalManpower.fromJson(fromSQL))
+        .toList();
+    // if (specificID.isNotEmpty) {
+    //   return FormData.fromJson(specificID.first);
+    // } else {
+    //   return null;
+    // }
+  }
+
+  Future<int> updateManpower(AdditionalManpower manpower) async {
+    print('at update');
+    final reference = await instance.database;
+
+    return reference.update(tableManPower, manpower.toJson(),
+        where: '${TblManpowerField.id} = ?', whereArgs: [manpower.id]);
+  }
+
   Future createDefaultWorkers(int fk) async {
     List<WorkerType> defaultWorker = [
       WorkerType(workerType: 'CARPENTER', rate: 600, fk: fk),
@@ -694,53 +742,6 @@ class DatabaseHelper {
     for (int x = 0; x < defaultFormData.length; x++) {
       await createFormData(defaultFormData[x]);
     }
-  }
-
-//additional manpower
-  Future createManpower(AdditionalManpower manpower) async {
-    final reference = await instance.database;
-
-    //irereturn nito ang Primary key ng table, which is ID
-    await reference.insert(tableManPower, manpower.toJson());
-  }
-
-  Future<int> updateManpower(AdditionalManpower manpower) async {
-    print('at update');
-    final reference = await instance.database;
-
-    return reference.update(tableManPower, manpower.toJson(),
-        where: '${TblManpowerField.id} = ?', whereArgs: [manpower.id]);
-  }
-
-  Future<List<AdditionalManpower>?> readAddtlManpower(int fk) async {
-    final reference = await instance.database;
-
-    final fromTable = await reference.query(tableManPower,
-        columns: TblManpowerField.manpowerFieldNames,
-        where: '${TblManpowerField.fk} = ?',
-        whereArgs: [fk]);
-
-    return fromTable
-        .map((fromSQL) => AdditionalManpower.fromJson(fromSQL))
-        .toList();
-    // if (specificID.isNotEmpty) {
-    //   return FormData.fromJson(specificID.first);
-    // } else {
-    //   return null;
-    // }
-  }
-
-  Future<AdditionalManpower> readAllManpower(int fk, String type, String work) async {
-    // print('at read all manpower');
-    final reference = await instance.database;
-
-    //SELECT * FROM tbl_diary ORDER BY dateTime
-    final fromTable = await reference.query(tableManPower,
-        columns: TblManpowerField.manpowerFieldNames,
-        where:
-            '${TblManpowerField.fk} = ? and ${TblManpowerField.type} = ? and ${TblManpowerField.work} = ?',
-        whereArgs: [fk, type, work]);
-    return AdditionalManpower.fromJson(fromTable.first);
   }
 
 //Bungalow

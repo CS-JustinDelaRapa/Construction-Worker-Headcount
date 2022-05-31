@@ -35,7 +35,7 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
   List<FormData>? allForms;
   List<WorkerType>? allWorkers;
   List<AdditionalManpower>? allManpower;
-  bool isLoading = false;
+  bool isLoading = false, isChecked = false;
 
   
 //tile data defaults
@@ -43,88 +43,109 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
   List<String> earthWorks = ['Laborer'];
   List<int> earthworksNumber = [0];
   List<int> tempEarthworksNumber = [0];
-
-//List<int> addtionalNumber = [0];
-
+  List<int> additionalEarthworksNumber = [0];
   List<double> earthworksRate = [0];
   double earthworksCost = 0;
-
-double AdditionalEarthworksCost = 0;
+  double additionalEarthworksCost = 0;
 
   List<String> formworks = ['Carpenter', 'Laborer'];
   List<int> formworksNumber = [0,0];
+  List<int> additionalformworksNumber = [0,0];
   List<int> tempFormworksNumber = [0,0];
   List<double> formworksRate = [0,0];
   double formworksCost = 0;
+  double additionalformworksCost = 0;
   
   List<String> masonry = ['Tile Man', 'Laborer'];
   List<int> masonryNumber = [0,0];
+  List<int> additionalmasonryNumber = [0,0];
   List<int> tempMasonryNumber = [0,0];
   List<double> masonryRate = [0,0];
   double masonryCost = 0;
+  double additionalmasonryCost = 0;
 
   List<String> reinforcedCementWorks = ['Mason', 'Laborer'];
   List<int> reinforcedCementWorksNumber = [0,0];
+  List<int> additionalreinforcedCementWorksNumber = [0,0];
   List<int> tempReinforcedCementWorksNumber = [0,0];
   List<double> reinforcedCementWorksRate = [0,0];
   double reinforcedCementWorksCost = 0;
+  double additionalreinforcedCementWorksCost = 0;
 
   List<String> steelReinforcementWorks = ['Steel Man'];
   List<int> steelReinforcementWorksNumber = [0];
+  List<int> additionalsteelReinforcementWorksNumber = [0];
   List<int> tempSteelReinforcementWorksNumber = [0];
   List<double> steelReinforcementWorksRate = [0];
   double steelReinforcementWorksCost = 0;
+  double additionalsteelReinforcementWorksCost = 0;
 
 //architectural
   List<String> flooring = ['Tileman', 'Laborer'];
   List<int> flooringNumber = [0,0];
+  List<int> additionalflooringNumber = [0,0];
   List<int> tempeFlooringNumber = [0,0];
   List<double> flooringRate = [0,0];
   double flooringCost = 0;
+  double additionalflooringCost = 0;
 
   List<String> plastering = ['Mason', 'Laborer'];
   List<int> plasteringNumber = [0,0];
+  List<int> additionalplasteringNumber = [0,0];
   List<int> tempPlasteringNumber = [0,0];
   List<double> plasteringRate = [0,0];
   double plasteringCost = 0;
+  double additionalplasteringCost = 0;
 
   List<String> paintingWorks = ['Painter'];
   List<int> paintingWorksNumber = [0];
+  List<int> additionalpaintingWorksNumber = [0];
   List<int> tempPaintingWorksNumber = [0];
   List<double> paintingWorksRate = [0];
   double paintingWorksCost = 0;
+  double additionalpaintingWorksCost = 0;
 
   List<String> doorsAndWindows = ['Door Installer', 'Window Installer'];
   List<int> doorAndWindowsNumber = [0,0];
+  List<int> additionaldoorAndWindowsNumber = [0,0];
   List<int> tempDoorAndWindowsNumber = [0,0];
   List<double> doorAndWindowsRate = [0,0];
   double doorsAndWindowsCost = 0;
+  double additionaldoorsAndWindowsCost = 0;
 
   List<String> ceiling = ['Carpenter', 'Laborer'];
   List<int> ceilingNumber = [0,0];
+  List<int> additionalceilingNumber = [0,0];
   List<int> tempCeilingNumber = [0,0];
   List<double> ceilingRate = [0,0];
   double ceilingCost = 0;
+  double additionalceilingCost = 0;
 
   List<String> roofing = ['Tinsmith','Welder', 'Laborer'];
   List<int> roofingNumber = [0,0,0];
+  List<int> additionalroofingNumber = [0,0,0];
   List<int> tempRoofingNumber = [0,0,0];
   List<double> roofingRate = [0,0,0];
   double roofingCost = 0;
+  double additionalroofingCost = 0;
 
 
 //electrical and plumbing
   List<String> electricalWorks = ['Electrician', 'Laborer'];
   List<int> electricalWorksNumber = [0,0];
+  List<int> additionalelectricalWorksNumber = [0,0];
   List<int> tempElectricalWorksNumber = [0,0];
   List<double> electricalWorksRate = [0,0];
   double electricalWorksCost = 0;
+  double additionalelectricalWorksCost = 0;
 
   List<String> plumbing = ['Plumber', 'Laborer'];
   List<int> plumbingNumber = [0,0];
+  List<int> additionalplumbingNumber = [0,0];
   List<int> tempPlumbingNumber = [0,0];
   List<double> plumbingRate = [0,0];
   double plumbingCost = 0;
+  double additionalplumbingCost = 0;
 
   @override
   void initState() {
@@ -138,6 +159,101 @@ double AdditionalEarthworksCost = 0;
     allWorkers = await DatabaseHelper.instance.readWorkers(widget.project.id!);
     allManpower = await DatabaseHelper.instance.readAddtlManpower(widget.project.id!);
 
+  earthworksNumber = [0];
+  tempEarthworksNumber = [0];
+  additionalEarthworksNumber = [0];
+  earthworksRate = [0];
+  earthworksCost = 0;
+  additionalEarthworksCost = 0;
+
+  formworksNumber = [0,0];
+  additionalformworksNumber = [0,0];
+  tempFormworksNumber = [0,0];
+  formworksRate = [0,0];
+  formworksCost = 0;
+  additionalformworksCost = 0;
+  masonryNumber = [0,0];
+  additionalmasonryNumber = [0,0];
+  tempMasonryNumber = [0,0];
+  masonryRate = [0,0];
+  masonryCost = 0;
+  additionalmasonryCost = 0;
+
+  reinforcedCementWorksNumber = [0,0];
+  additionalreinforcedCementWorksNumber = [0,0];
+  tempReinforcedCementWorksNumber = [0,0];
+  reinforcedCementWorksRate = [0,0];
+  reinforcedCementWorksCost = 0;
+  additionalreinforcedCementWorksCost = 0;
+
+  steelReinforcementWorksNumber = [0];
+  additionalsteelReinforcementWorksNumber = [0];
+  tempSteelReinforcementWorksNumber = [0];
+  steelReinforcementWorksRate = [0];
+  steelReinforcementWorksCost = 0;
+  additionalsteelReinforcementWorksCost = 0;
+
+//architectural
+  flooringNumber = [0,0];
+  additionalflooringNumber = [0,0];
+  tempeFlooringNumber = [0,0];
+  flooringRate = [0,0];
+  flooringCost = 0;
+  additionalflooringCost = 0;
+
+  plasteringNumber = [0,0];
+  additionalplasteringNumber = [0,0];
+  tempPlasteringNumber = [0,0];
+  plasteringRate = [0,0];
+  plasteringCost = 0;
+  additionalplasteringCost = 0;
+
+  paintingWorksNumber = [0];
+  additionalpaintingWorksNumber = [0];
+  tempPaintingWorksNumber = [0];
+  paintingWorksRate = [0];
+  paintingWorksCost = 0;
+  additionalpaintingWorksCost = 0;
+
+  doorAndWindowsNumber = [0,0];
+  additionaldoorAndWindowsNumber = [0,0];
+  tempDoorAndWindowsNumber = [0,0];
+  doorAndWindowsRate = [0,0];
+  doorsAndWindowsCost = 0;
+  additionaldoorsAndWindowsCost = 0;
+
+  ceilingNumber = [0,0];
+  additionalceilingNumber = [0,0];
+  tempCeilingNumber = [0,0];
+  ceilingRate = [0,0];
+  ceilingCost = 0;
+  additionalceilingCost = 0;
+
+  roofingNumber = [0,0,0];
+  additionalroofingNumber = [0,0,0];
+  tempRoofingNumber = [0,0,0];
+  roofingRate = [0,0,0];
+  roofingCost = 0;
+  additionalroofingCost = 0;
+
+
+//electrical and plumbing
+  electricalWorksNumber = [0,0];
+  additionalelectricalWorksNumber = [0,0];
+  tempElectricalWorksNumber = [0,0];
+  List<double> electricalWorksRate = [0,0];
+  electricalWorksCost = 0;
+  additionalelectricalWorksCost = 0;
+
+  plumbingNumber = [0,0];
+  additionalplumbingNumber = [0,0];
+  tempPlumbingNumber = [0,0];
+  List<double> plumbingRate = [0,0];
+  plumbingCost = 0;
+  additionalplumbingCost = 0;
+
+
+
     //update default data
     if(allForms != null){
       for(int x = 0; x < allForms!.length; x++){
@@ -148,6 +264,7 @@ double AdditionalEarthworksCost = 0;
           });
           earthworksCost += generateWorkerRate(allForms![x], earthWorks, earthworksRate, tempEarthworksNumber);
           tempEarthworksNumber = [0];
+          additionalEarthworksCost += getAdditionals(allForms![x], allManpower![x], additionalEarthworksNumber, tempEarthworksNumber, earthWorks);
         }else if(allForms![x].work == 'Formworks' && allForms![x].date_end != null){
           setState(() {
             formworksNumber[0] += allForms![x].worker_1!;
@@ -157,6 +274,7 @@ double AdditionalEarthworksCost = 0;
           });
           formworksCost += generateWorkerRate(allForms![x], formworks, formworksRate, tempFormworksNumber);
           tempFormworksNumber = [0,0];
+          additionalformworksCost += getAdditionals(allForms![x], allManpower![x], additionalformworksNumber, tempFormworksNumber, formworks);
         }else if(allForms![x].work == 'Masonry Works' && allForms![x].date_end != null){
           setState(() {
             masonryNumber[0] += allForms![x].worker_1!;
@@ -175,6 +293,7 @@ double AdditionalEarthworksCost = 0;
           });
           reinforcedCementWorksCost += generateWorkerRate(allForms![x], reinforcedCementWorks, reinforcedCementWorksRate, tempReinforcedCementWorksNumber);
           tempReinforcedCementWorksNumber = [0,0];
+          additionalreinforcedCementWorksCost += getAdditionals(allForms![x], allManpower![x], additionalreinforcedCementWorksNumber, tempReinforcedCementWorksNumber, reinforcedCementWorks);
         }else if(allForms![x].work == 'Steel Reinforcement Works' && allForms![x].date_end != null){
           setState(() {
             steelReinforcementWorksNumber[0] += allForms![x].worker_1!;
@@ -182,6 +301,7 @@ double AdditionalEarthworksCost = 0;
           });
           steelReinforcementWorksCost += generateWorkerRate(allForms![x], steelReinforcementWorks,steelReinforcementWorksRate,tempSteelReinforcementWorksNumber);
           tempSteelReinforcementWorksNumber = [0,0];
+          additionalsteelReinforcementWorksCost += getAdditionals(allForms![x], allManpower![x], additionalsteelReinforcementWorksNumber, tempSteelReinforcementWorksNumber , steelReinforcementWorks);
         }else if(allForms![x].work == 'Flooring' && allForms![x].date_end != null){
           setState(() {
             flooringNumber[0] += allForms![x].worker_1!;
@@ -191,6 +311,7 @@ double AdditionalEarthworksCost = 0;
           });
           flooringCost += generateWorkerRate(allForms![x], flooring, flooringRate, tempeFlooringNumber);
           tempeFlooringNumber = [0,0];
+          additionalflooringCost += getAdditionals(allForms![x], allManpower![x], additionalflooringNumber, tempeFlooringNumber, flooring);
         }else if(allForms![x].work == 'Plastering' && allForms![x].date_end != null){
           setState(() {
             plasteringNumber[0] += allForms![x].worker_1!;
@@ -200,6 +321,7 @@ double AdditionalEarthworksCost = 0;
           });
           plasteringCost += generateWorkerRate(allForms![x], plastering, plasteringRate, tempPlasteringNumber);
           tempPlasteringNumber = [0,0];
+          additionalplasteringCost += getAdditionals(allForms![x], allManpower![x], additionalplasteringNumber, tempPlasteringNumber, plastering);
         }else if(allForms![x].work == 'Painting Works' && allForms![x].date_end != null){
           setState(() {
             paintingWorksNumber[0] += allForms![x].worker_1!;               
@@ -207,6 +329,7 @@ double AdditionalEarthworksCost = 0;
           });
           paintingWorksCost += generateWorkerRate(allForms![x], paintingWorks, paintingWorksRate, tempPaintingWorksNumber);
           tempPaintingWorksNumber = [0];
+          additionalpaintingWorksCost += getAdditionals(allForms![x], allManpower![x], additionalpaintingWorksNumber, tempPaintingWorksNumber, paintingWorks);
         }else if(allForms![x].work == 'Doors and Windows' && allForms![x].date_end != null){
           if(allForms![x].type == 'Windows'){
           setState(() {
@@ -219,6 +342,7 @@ double AdditionalEarthworksCost = 0;
           }
           doorsAndWindowsCost += generateWorkerRate(allForms![x], doorsAndWindows, doorAndWindowsRate , tempDoorAndWindowsNumber);
           tempDoorAndWindowsNumber = [0,0];
+          additionaldoorsAndWindowsCost += getAdditionals(allForms![x], allManpower![x], additionaldoorAndWindowsNumber,tempDoorAndWindowsNumber, doorsAndWindows);
         }else if(allForms![x].work == 'Ceiling' && allForms![x].date_end != null){
           setState(() {
             ceilingNumber[0] += allForms![x].worker_1!;
@@ -228,6 +352,7 @@ double AdditionalEarthworksCost = 0;
           });
           ceilingCost += generateWorkerRate(allForms![x], ceiling, ceilingRate, tempCeilingNumber);
           tempCeilingNumber = [0,0];
+          additionalceilingCost += getAdditionals(allForms![x], allManpower![x], additionalceilingNumber, tempCeilingNumber, ceiling);
         }else if(allForms![x].work == 'Roofing Works' && allForms![x].date_end != null){
           if(allForms![x].type == 'Trusses'){
           setState(() {
@@ -244,6 +369,7 @@ double AdditionalEarthworksCost = 0;
           }
           roofingCost += generateWorkerRate(allForms![x], roofing, roofingRate, tempRoofingNumber);
           tempRoofingNumber = [0,0,0];
+          additionalroofingCost += getAdditionals(allForms![x], allManpower![x], additionalroofingNumber, tempRoofingNumber, roofing);          
         }else if(allForms![x].work == 'Electrical Works' && allForms![x].date_end != null){
           setState(() {
             electricalWorksNumber[0] += allForms![x].worker_1!;
@@ -253,6 +379,7 @@ double AdditionalEarthworksCost = 0;
           });
           electricalWorksCost += generateWorkerRate(allForms![x], electricalWorks, electricalWorksRate, tempElectricalWorksNumber);
           tempElectricalWorksNumber = [0,0];
+          additionalelectricalWorksCost += getAdditionals(allForms![x], allManpower![x], additionalelectricalWorksNumber, tempElectricalWorksNumber, electricalWorks);
         }else if(allForms![x].work == 'Plumbing Works' && allForms![x].date_end != null){
           setState(() {
             plumbingNumber[0] += allForms![x].worker_1!;
@@ -262,11 +389,14 @@ double AdditionalEarthworksCost = 0;
           });
           plumbingCost += generateWorkerRate(allForms![x], plumbing, plumbingRate, plumbingNumber);
           tempPlumbingNumber = [0,0];
+          additionalplumbingCost += getAdditionals(allForms![x], allManpower![x], additionalplumbingNumber, tempPlumbingNumber, plumbing);
         }
       }
     }
+
+    print(additionalEarthworksNumber[0]);
+    print(additionalEarthworksCost);
     setState(() {isLoading = false;});
-    print(AdditionalEarthworksCost);
   }
 
   @override
@@ -285,6 +415,37 @@ double AdditionalEarthworksCost = 0;
         child: Column(
           children: [
             //Structural
+                  Container(
+                  color: Theme.of(context).brightness == Brightness.light? 
+                  Colors.grey.shade100:
+                  Theme.of(context).appBarTheme.backgroundColor,  
+                                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Checkbox(
+                            checkColor: Colors.white,
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                  isChecked = !isChecked;
+                              });
+                              refreshState();
+                            },
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 8, top: 8, right: 8),
+                          child: Text(
+                            'Additional Manpower',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                                ),
             Container(
                   color: Theme.of(context).brightness == Brightness.light? 
                 Colors.grey.shade100:
@@ -299,11 +460,11 @@ double AdditionalEarthworksCost = 0;
                 ),
               ),
             ),            
-            tile('Earthworks', earthWorks, earthworksNumber, earthworksCost, Icons.landscape, this.context),
-            tile('Formworks', formworks, formworksNumber, formworksCost, Icons.house_siding_outlined, this.context),
-            tile('Masonry', masonry, masonryNumber, masonryCost, Icons.construction_rounded, this.context),
-            tile('Reinforced Cement Works', reinforcedCementWorks, reinforcedCementWorksNumber, reinforcedCementWorksCost, CustomIcons.cement_works, this.context),
-            tile('Steel Reinforcement Works', steelReinforcementWorks, steelReinforcementWorksNumber, steelReinforcementWorksCost, Icons.precision_manufacturing, this.context),
+            tile('Earthworks', earthWorks, earthworksNumber, earthworksCost, Icons.landscape, this.context, additionalEarthworksCost, additionalEarthworksNumber, isChecked),
+            tile('Formworks', formworks, formworksNumber, formworksCost, Icons.house_siding_outlined, this.context, additionalformworksCost, additionalformworksNumber, isChecked ),
+            tile('Masonry', masonry, masonryNumber, masonryCost, Icons.construction_rounded, this.context, additionalmasonryCost, additionalmasonryNumber, isChecked ),
+            tile('Reinforced Cement Works', reinforcedCementWorks, reinforcedCementWorksNumber, reinforcedCementWorksCost, CustomIcons.cement_works, this.context, additionalreinforcedCementWorksCost, additionalreinforcedCementWorksNumber, isChecked ),
+            tile('Steel Reinforcement Works', steelReinforcementWorks, steelReinforcementWorksNumber, steelReinforcementWorksCost, Icons.precision_manufacturing, this.context, additionalsteelReinforcementWorksCost, additionalsteelReinforcementWorksNumber, isChecked ),
         
             //architectural
             Container(
@@ -320,12 +481,12 @@ double AdditionalEarthworksCost = 0;
                 ),
               ),
             ),           
-            tile('Flooring', flooring, flooringNumber, flooringCost, CustomIcons.flooring, this.context),
-            tile('Plastering', plastering, plasteringNumber, plasteringCost, CustomIcons.plastering, this.context),
-            tile('Painting Works', paintingWorks, paintingWorksNumber, paintingWorksCost, CustomIcons.painting, this.context),
-            tile('Doors and Windows', doorsAndWindows, doorAndWindowsNumber, doorsAndWindowsCost, CustomIcons.doors, this.context),
-            tile('Ceiling', ceiling, ceilingNumber, ceilingCost, CustomIcons.ceiling, this.context),            
-            tile('Roofing', roofing, roofingNumber, roofingCost, CustomIcons.roofing, this.context),
+            tile('Flooring', flooring, flooringNumber, flooringCost, CustomIcons.flooring, this.context, additionalflooringCost, additionalflooringNumber, isChecked),
+            tile('Plastering', plastering, plasteringNumber, plasteringCost, CustomIcons.plastering, this.context, additionalplasteringCost, additionalplasteringNumber, isChecked ),
+            tile('Painting Works', paintingWorks, paintingWorksNumber, paintingWorksCost, CustomIcons.painting, this.context, additionalpaintingWorksCost, additionalpaintingWorksNumber, isChecked ),
+            tile('Doors and Windows', doorsAndWindows, doorAndWindowsNumber, doorsAndWindowsCost, CustomIcons.doors, this.context, additionaldoorsAndWindowsCost, additionaldoorAndWindowsNumber, isChecked ),
+            tile('Ceiling', ceiling, ceilingNumber, ceilingCost, CustomIcons.ceiling, this.context, additionalceilingCost, additionalceilingNumber, isChecked),            
+            tile('Roofing', roofing, roofingNumber, roofingCost, CustomIcons.roofing, this.context, additionalroofingCost, additionalroofingNumber, isChecked ),
         
           //architectural
             Container(
@@ -342,8 +503,8 @@ double AdditionalEarthworksCost = 0;
                 ),
               ),
             ),         
-            tile('Electrical Works', electricalWorks, electricalWorksNumber, electricalWorksCost, CustomIcons.electrical, this.context),
-            tile('Plumbing', plumbing, plumbingNumber, plumbingCost, CustomIcons.plumbing, this.context),
+            tile('Electrical Works', electricalWorks, electricalWorksNumber, electricalWorksCost, CustomIcons.electrical, this.context, additionalelectricalWorksCost, additionalelectricalWorksNumber, isChecked ),
+            tile('Plumbing', plumbing, plumbingNumber, plumbingCost, CustomIcons.plumbing, this.context, additionalplumbingCost, additionalplumbingNumber, isChecked),
           ]             
         ),
       )
@@ -364,25 +525,116 @@ double AdditionalEarthworksCost = 0;
     );
   }
 
-double generateWorkerRate(FormData form, List<String> workerLabel, List<double> rate, List<int> number){
-  double totalCost = 0;
-  for(int x = 0; x < workerLabel.length; x++){
-    for(int y = 0; y < allWorkers!.length; y++){
-      if(allWorkers![y].workerType == workerLabel[x].toUpperCase()){
-        setState(() {
-          rate[x] = (allWorkers![y].rate * form.num_days!) * number[x];
-          totalCost += rate[x];
-        });
+  double generateWorkerRate(FormData form, List<String> workerLabel, List<double> rate, List<int> number){
+    double totalCost = 0;
+    for(int x = 0; x < workerLabel.length; x++){
+      for(int y = 0; y < allWorkers!.length; y++){
+        if(allWorkers![y].workerType == workerLabel[x].toUpperCase()){
+          setState(() {
+            rate[x] = (allWorkers![y].rate * form.num_days!) * number[x];
+            totalCost += rate[x];
+          });
+        }
       }
     }
+    return totalCost;
   }
+  // double getAdditionals(FormData formData, AdditionalManpower manpower, List<int> numbers){
+  //   double additinalCost = 0;
+  //   double _additionalManpower = 0;
+  //   double decimalValue = 0;
+  //   _additionalManpower = (formData.num_workers! * manpower.totalPercentage);
+  //   decimalValue = _additionalManpower - _additionalManpower.toInt();
+  //     if (decimalValue <= 0.09) {
+  //       setState(() {
+  //         _additionalManpower = (_additionalManpower.floor()).toDouble();
+  //       });
+  //     } else {
+  //       setState(() {
+  //         _additionalManpower = (_additionalManpower.ceil()).toDouble();
+  //       });
+  //     }
+  //   return additinalCost;
+  // }
+
+  double getAdditionals(
+    FormData formData, AdditionalManpower manpower, List<int> numbers, List<int> tempNumbers, List<String> workerLabel ){
+    double totalCost = 0;
+
+    double additionalManpowerW1 = 0;
+    double additionalManpowerW2 = 0;
+    double decimalValue = 0;
+    double decimalValue2 = 0;
+    double tempRate = 0;
+
+    additionalManpowerW1 = (formData.worker_1! * manpower.totalPercentage);
+    decimalValue = additionalManpowerW1 - additionalManpowerW1.toInt();
+      if (decimalValue <= 0.09) {
+          additionalManpowerW1 = (additionalManpowerW1.floor()).toDouble();
+      } else {
+          additionalManpowerW1 = (additionalManpowerW1.ceil()).toDouble();
+      }
+    //twoWorkers  
+    if(formData.worker_2 != null){
+      additionalManpowerW2 = (formData.worker_2! * manpower.totalPercentage);
+      decimalValue2 = additionalManpowerW2 - additionalManpowerW2.toInt();
+        if (decimalValue2 <= 0.09) {
+            additionalManpowerW2 = (additionalManpowerW2.floor()).toDouble();
+        } else {
+            additionalManpowerW2 = (additionalManpowerW2.ceil()).toDouble();
+        }
+    }
+
+    switch (formData.type) {
+      case "Trusses":
+          setState(() {
+          numbers[1]+=additionalManpowerW1.toInt();
+          tempNumbers[1]=additionalManpowerW1.toInt();  
+          numbers[2]+=additionalManpowerW2.toInt();
+          tempNumbers[2]=additionalManpowerW2.toInt();
+          });
+        break;
+      case "GI Sheets":
+      case "Gutter":      
+          setState(() {
+          numbers[0]+=additionalManpowerW1.toInt();
+          tempNumbers[0]=additionalManpowerW1.toInt();  
+          numbers[2]+=additionalManpowerW2.toInt();
+          tempNumbers[2]=additionalManpowerW2.toInt();
+          });
+          break;      
+      default:
+          setState(() {
+          numbers[0]+=additionalManpowerW1.toInt();
+          tempNumbers[0]=additionalManpowerW1.toInt();  
+          });
+          if(formData.worker_2 != null){
+          setState(() {
+          numbers[1]+=additionalManpowerW2.toInt();
+          tempNumbers[1]=additionalManpowerW2.toInt();  
+          });
+          }
+          break;          
+    }
+
+    for(int x = 0; x < workerLabel.length; x++){
+      for(int y = 0; y < allWorkers!.length; y++){
+        if(allWorkers![y].workerType == workerLabel[x].toUpperCase()){
+          setState(() {
+            tempRate = (allWorkers![y].rate * formData.num_days!) * tempNumbers[x];
+            totalCost += tempRate;
+            tempRate = 0;
+          });
+        }
+      }
+    }    
 
   return totalCost;
-}
+  }  
 
 }
 
-Widget tile( String title, List<String> workers, List<int> numbers, double cost, IconData icon, BuildContext context) => Column(
+Widget tile( String title, List<String> workers, List<int> numbers, double cost, IconData icon, BuildContext context, double additionalCost, List<int> additionalNumbers, bool isChecked) => Column(
   children: [
   Container(
       color: Theme.of(context).brightness == Brightness.light? 
@@ -442,19 +694,19 @@ Widget tile( String title, List<String> workers, List<int> numbers, double cost,
           ))),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.20,
-          child: Center(child: Text(numbers[0].toString(),
+          child: Center(child: Text(numbers[0].toString()  + (isChecked ? additionalNumbers[0] == 0?  '' : ' + '+additionalNumbers[0].toString() : ''),
           textAlign: TextAlign.center))),              
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.20,
-          child: Center(child: Text(numbers.length > 1? numbers[1].toString() : '',
+          child: Center(child: Text(numbers.length > 1? numbers[1].toString() + (isChecked ? additionalNumbers[1] == 0?  '' : ' + '+additionalNumbers[1].toString() : '') : '',
           textAlign: TextAlign.center))),              
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.20,
-          child: Center(child: Text(numbers.length > 2? numbers[2].toString() : '',
+          child: Center(child: Text(numbers.length > 2? numbers[2].toString() + (isChecked ? additionalNumbers[2] == 0?  '' : ' + '+additionalNumbers[2].toString() : '') : '',
           textAlign: TextAlign.center))),
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.20,
-          child: Center(child: Text(cost.toString(),
+          child: Center(child: Text(cost.toString()+ (isChecked ? additionalCost == 0?  '' : ' + '+additionalCost.toString() : ''),
           textAlign: TextAlign.center)))              
       ],),
     ),
