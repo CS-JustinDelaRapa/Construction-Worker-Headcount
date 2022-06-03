@@ -1378,14 +1378,26 @@ class DatabaseHelper {
       //Masonry
       ProductivityItem(
           fk: fk,
-          col_1: 'DEFAULT',
+          col_1: '6',
           col_1_val: 9.0,
           type: 'Interior',
           work: 'Masonry Works'),
       ProductivityItem(
           fk: fk,
-          col_1: 'DEFAULT',
+          col_1: '4',
+          col_1_val: 9.5,
+          type: 'Interior',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: '8',
           col_1_val: 8.5,
+          type: 'Exterior',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: '6',
+          col_1_val: 9,
           type: 'Exterior',
           work: 'Masonry Works'),
       //Steel Reinforcement Works
@@ -1798,26 +1810,50 @@ class DatabaseHelper {
       //Masonry
       ProductivityItem(
           fk: fk,
-          col_1: 'DEFAULT',
+          col_1: '6',
           col_1_val: 9.0,
           type: 'Interior GF',
           work: 'Masonry Works'),
       ProductivityItem(
           fk: fk,
-          col_1: 'DEFAULT',
+          col_1: '4',
+          col_1_val: 9.5,
+          type: 'Interior GF',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: '6',
           col_1_val: 9.0,
           type: 'Interior SF',
           work: 'Masonry Works'),
       ProductivityItem(
           fk: fk,
-          col_1: 'DEFAULT',
+          col_1: '4',
+          col_1_val: 9.5,
+          type: 'Interior SF',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: '8',
           col_1_val: 8.5,
           type: 'Exterior GF',
           work: 'Masonry Works'),
       ProductivityItem(
           fk: fk,
-          col_1: 'DEFAULT',
+          col_1: '6',
+          col_1_val: 9,
+          type: 'Exterior GF',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: '8',
           col_1_val: 8.5,
+          type: 'Exterior SF',
+          work: 'Masonry Works'),
+      ProductivityItem(
+          fk: fk,
+          col_1: '6',
+          col_1_val: 9,
           type: 'Exterior SF',
           work: 'Masonry Works'),
       //Steel Reinforcement Works

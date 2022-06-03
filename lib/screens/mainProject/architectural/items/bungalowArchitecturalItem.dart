@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 
 class BungalowArchitechturalItems {
   static const List<String> listFlooringWorks = [
-    'EXT T&B:',
-    'T&B:',
+    'EXT T&B',
+    'T&B',
   ];
   static const List<String> listPlasteringWorks = ['Interior', 'Exterior'];
   static const List<String> listPaintingWorks = [

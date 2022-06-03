@@ -19,10 +19,10 @@ class TwoStoreyStructuralItems {
     'Staircase'
   ];
   static const List<String> listMasonryWorks = [
-    'Exterior GF',
-    'Exterior SF',
     'Interior GF',
     'Interior SF',
+    'Exterior GF',
+    'Exterior SF',
   ];
   static const List<String> listReinforecedWorks = [
     'Footings',
@@ -43,7 +43,7 @@ class TwoStoreyStructuralItems {
     'Beams FB',
     'Beams RB',
     'Lintels',
-    'STIRRUPS, SPACERS AND LINKS',
+    'Stirrups, spacers and links',
     'Staircase',
     'Walls GF',
     'Walls SF',
@@ -77,10 +77,10 @@ class TwoStoreyStructuralItems {
   ];
 
   static const List<DefaultValue> defValMasonry = [
-    DefaultValue(col_1: "8", col_1_val: 8.5),
-    DefaultValue(col_1: "8", col_1_val: 8.5),
     DefaultValue(col_1: "6", col_1_val: 9),
     DefaultValue(col_1: "6", col_1_val: 9),
+    DefaultValue(col_1: "8", col_1_val: 8.5),
+    DefaultValue(col_1: "8", col_1_val: 8.5),
   ];
   static const List<DefaultValue> defValRCC = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 1.5),

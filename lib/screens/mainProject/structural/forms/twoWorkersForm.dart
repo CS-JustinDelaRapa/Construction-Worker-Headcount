@@ -6,6 +6,7 @@ import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../model/ProductivityModel.dart';
 import '../../../../model/workerModel.dart';
 
 // ignore: must_be_immutable
@@ -52,6 +53,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   }
 
   List<WorkerType>? rateOfWorkers;
+  List<ProductivityItem>? productivityRate;
   String? preferedTime;
   String? volume;
   TextEditingController productivityRateController = TextEditingController();
@@ -152,6 +154,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     manpower = await DatabaseHelper.instance.readAllManpower(
         widget.projectFk, widget.workType, widget.structuralType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
+    productivityRate =
+        await DatabaseHelper.instance.readAllProductivity(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
         workerCost = rateOfWorkers![i].rate;
@@ -164,7 +168,6 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       dateStartControler.text = formData!.date_start == null
           ? outputFormat.format(DateTime.now())
           : outputFormat.format(DateTime.parse(formData!.date_start!));
-      defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
@@ -182,7 +185,6 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       totalPercentage = manpower!.totalPercentage;
       percentage = manpower!.totalPercentage;
       _selectedType = formData!.col_1;
-      defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
     if (manpower != null) {
@@ -198,6 +200,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       isChecked10 = manpower!.cbTen;
       updateManpower();
     }
+    prodRate();
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
   }
@@ -307,12 +310,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                               _selectedType = value.toString();
                                               isComputed = false;
                                               if (_selectedType == "8") {
-                                                defaultValue = 8.5;
+                                                prodRate();
                                                 productivityRateController
                                                         .text =
                                                     defaultValue.toString();
                                               } else {
-                                                defaultValue = 9;
+                                                prodRate();
                                                 productivityRateController
                                                         .text =
                                                     defaultValue.toString();
@@ -383,12 +386,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                                       value.toString();
                                                   isComputed = false;
                                                   if (_selectedType == "6") {
-                                                    defaultValue = 9.0;
+                                                    prodRate();
                                                     productivityRateController
                                                             .text =
                                                         defaultValue.toString();
                                                   } else {
-                                                    defaultValue = 9.5;
+                                                    prodRate();
                                                     productivityRateController
                                                             .text =
                                                         defaultValue.toString();
@@ -1843,6 +1846,29 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             dateEnd = selectedDate.add(Duration(days: numberOfDays!));
             isComputed = true;
           });
+        }
+      }
+    }
+  }
+
+  void prodRate() {
+    for (int i = 0; i < productivityRate!.length; i++) {
+      if (productivityRate![i].type.toUpperCase() ==
+              widget.workType.toUpperCase() &&
+          productivityRate![i].work.toUpperCase() ==
+              widget.structuralType.toUpperCase()) {
+        if (productivityRate![i].col_1 == "DEFAULT" &&
+            productivityRate![i].work.toUpperCase() ==
+                widget.structuralType.toUpperCase()) {
+          setState(() {
+            defaultValue = productivityRate![i].col_1_val;
+          });
+        } else {
+          if (productivityRate![i].col_1 == _selectedType) {
+            setState(() {
+              defaultValue = productivityRate![i].col_1_val;
+            });
+          }
         }
       }
     }

@@ -35,10 +35,12 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => const about()));
               }
             },
-            icon: Icon(Icons.menu_outlined, color:
-            Theme.of(context).brightness == Brightness.light?
-            const Color.fromARGB(255, 41, 37, 58)
-            :null,),
+            icon: Icon(
+              Icons.menu_outlined,
+              color: Theme.of(context).brightness == Brightness.light
+                  ? const Color.fromARGB(255, 41, 37, 58)
+                  : null,
+            ),
             itemBuilder: (context) => [
               PopupMenuItem(
                 child: Consumer<ThemeProvider>(
@@ -62,7 +64,8 @@ class _HomePageState extends State<HomePage> {
                           value: provider.currentTheme,
                           borderRadius: 30.0,
                           padding: 2.0,
-                          activeToggleColor: const Color.fromARGB(255, 156, 148, 170),
+                          activeToggleColor:
+                              const Color.fromARGB(255, 156, 148, 170),
                           inactiveToggleColor: const Color(0xFF2F363D),
                           activeSwitchBorder: Border.all(
                             color: const Color.fromARGB(255, 103, 96, 116),
@@ -117,49 +120,51 @@ class _HomePageState extends State<HomePage> {
           Stack(
             children: [
               Container(
-        height: MediaQuery.of(context).size.height,
-        decoration:const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.fitHeight,
-            image:AssetImage(
-              'assets/images/main_bg.jpg',
-            ),
-          ),
-        ),
-      ),
-      Container(
-        height: MediaQuery.of(context).size.height,
-        color:   Theme.of(context).brightness == Brightness.light?
-                 const Color.fromARGB(255, 92, 175, 146).withOpacity(0.8):
-                 const Color.fromARGB(255, 32, 28, 48).withOpacity(0.9),
-      ),
+                height: MediaQuery.of(context).size.height,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(
+                      'assets/images/main_bg.jpg',
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).brightness == Brightness.light
+                    ? const Color.fromARGB(255, 92, 175, 146).withOpacity(0.8)
+                    : const Color.fromARGB(255, 32, 28, 48).withOpacity(0.9),
+              ),
               Column(
                 children: [
-                SizedBox(
-                height: MediaQuery.of(context).size.height*0.1
-                ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.5,
                     child: Center(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height*0.2,
-                        child: Image.asset('assets/images/logo_png.png')),
-                      const Text('Construction App', 
-                        style: TextStyle(
-                          fontSize: 35, 
-                          fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      const Text('Construction Worker Headcount Application', 
-                        style: TextStyle(
-                          fontSize: 14, 
-                          fontWeight: FontWeight.w400,
-                          ),
-                        )
-                      ]),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                                child:
+                                    Image.asset('assets/images/logo_png.png')),
+                            const Text(
+                              'Construction App',
+                              style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text(
+                              'Construction Worker Headcount Application',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ]),
                     ),
                   ),
                 ],
@@ -173,26 +178,32 @@ class _HomePageState extends State<HomePage> {
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,
                   child: Center(
-                child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomWidgets().nav_Button('Create Project', const Icon(Icons.add),
-                      context, 0.8, 0.08, () => const CreateProject(), null),
-                  const SizedBox(height: 30),
-                  CustomWidgets().nav_Button(
-                    'Load Project',
-                    const Icon(Icons.folder_open),
-                    context,
-                    0.8,
-                    0.08,
-                    () => const LoadProject(),
-                    null,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomWidgets().nav_Button(
+                            'Create Project',
+                            const Icon(Icons.add),
+                            context,
+                            0.8,
+                            0.08,
+                            () => const CreateProject(),
+                            null),
+                        const SizedBox(height: 30),
+                        CustomWidgets().nav_Button(
+                          'Load Project',
+                          const Icon(Icons.folder_open),
+                          context,
+                          0.8,
+                          0.08,
+                          () => const LoadProject(),
+                          null,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-                ),
-              ),
                 ),
               ),
             ],

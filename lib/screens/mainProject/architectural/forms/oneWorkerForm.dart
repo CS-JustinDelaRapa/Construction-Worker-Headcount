@@ -81,11 +81,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   List<WorkerType>? rateOfWorkers;
 
-  // String? _selectedFinishType;
-  // String? _selectedFinishType2;
-  // String? _selectedDoorType;
-  // String? _selectedWindowType;
-
   String? _selectedType;
 
   String? units, label, worker, surface;

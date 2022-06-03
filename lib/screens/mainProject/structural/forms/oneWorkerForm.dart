@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:engineering/databaseHelper/DataBaseHelper.dart';
+import 'package:engineering/model/ProductivityModel.dart';
 import 'package:engineering/model/formModel.dart';
 import 'package:engineering/model/workerModel.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   RegExp regex = RegExp(r'(?!^ +$)^.+$');
   List<String> soilType = ['Soft Soil', 'Hard Soil'];
   List<WorkerType>? rateOfWorkers;
+  List<ProductivityItem>? productivityRate;
 
   String? _selectedType;
 
@@ -135,16 +137,18 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     manpower = await DatabaseHelper.instance.readAllManpower(
         widget.projectFk, widget.workType, widget.structuralType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
+    productivityRate =
+        await DatabaseHelper.instance.readAllProductivity(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
         workerCost = rateOfWorkers![i].rate;
       }
     }
+
     if (formData != null) {
       dateStartControler.text = formData!.date_start == null
           ? outputFormat.format(DateTime.now())
           : outputFormat.format(DateTime.parse(formData!.date_start!));
-      defaultValue = formData!.col_1_val;
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
@@ -160,7 +164,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       totalPercentage = manpower!.totalPercentage;
       percentage = manpower!.totalPercentage;
       _selectedType = formData!.col_1;
-      defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
     if (manpower != null) {
@@ -176,9 +179,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       isChecked10 = manpower!.cbTen;
       updateManpower();
     }
+    prodRate();
     setState(() => isLoading = false);
-    // print('refreshhhh '+allManpower![10].toString());
-    print('work: ' + widget.workType + '||' + 'type: ' + widget.structuralType);
     productivityRateController.text = defaultValue.toString();
   }
 
@@ -276,8 +278,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             }
                                             return null;
                                           },
-                                          hint: const Text(
-                                              'Soil Type'), // Not necessary for Option 1
                                           value: _selectedType,
                                           onChanged: (value) {
                                             setState(() {
@@ -285,12 +285,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                               _selectedType = value.toString();
                                               if (_selectedType ==
                                                   "Soft Soil") {
-                                                defaultValue = 3;
+                                                prodRate();
                                                 productivityRateController
                                                         .text =
                                                     defaultValue.toString();
                                               } else {
-                                                defaultValue = 2;
+                                                prodRate();
                                                 productivityRateController
                                                         .text =
                                                     defaultValue.toString();
@@ -1574,6 +1574,29 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     }
   }
 
+  void prodRate() {
+    for (int i = 0; i < productivityRate!.length; i++) {
+      if (productivityRate![i].type.toUpperCase() ==
+              widget.workType.toUpperCase() &&
+          productivityRate![i].work.toUpperCase() ==
+              widget.structuralType.toUpperCase()) {
+        if (productivityRate![i].col_1 == "DEFAULT" &&
+            productivityRate![i].work.toUpperCase() ==
+                widget.structuralType.toUpperCase()) {
+          setState(() {
+            defaultValue = productivityRate![i].col_1_val;
+          });
+        } else {
+          if (productivityRate![i].col_1 == _selectedType) {
+            setState(() {
+              defaultValue = productivityRate![i].col_1_val;
+            });
+          }
+        }
+      }
+    }
+  }
+
   Widget computeButton() => ElevatedButton(
       onPressed: () {
         widget.structuralType.toLowerCase() == 'earthworks'
@@ -1611,48 +1634,3 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       },
       child: const Text('Save'));
 }
-
-
-  // Widget saveButton() => ElevatedButton(
-  //     onPressed: () {
-  //       if (_formKey.currentState!.validate()) {
-  //         if (isUpdating) {
-  //           final formDataUpdate = FormData(
-  //               date_start: selectedDate,
-  //               col_1: _selectedType ?? 'DEFAULT',
-  //               col_1_val: defaultValue!,
-  //               col_2: double.parse(volume!),
-  //               pref_time: int.parse(preferedTime!),
-  //               num_days: numberOfDays!,
-  //               date_end: dateEnd!,
-  //               num_workers: numberOfWorkers!,
-  //               worker_1: worker_1!,
-  //               cost_of_labor: costOfLabor!,
-  //               type: widget.structuralType,
-  //               work: widget.workType,
-  //               fk: widget.projectFk,
-  //               id: formData!.id!);
-  //           DatabaseHelper.instance.updateFormData(formDataUpdate);
-  //         } else {
-  //           final formDataCreate = FormData(
-  //             date_start: selectedDate,
-  //             col_1: _selectedType ?? 'DEFAULT',
-  //             col_1_val: defaultValue!,
-  //             col_2: 80,
-  //             pref_time: 82,
-  //             num_days: 12,
-  //             date_end: DateTime.now(),
-  //             num_workers: 12,
-  //             worker_1: 2,
-  //             cost_of_labor: 81,
-  //             type: widget.structuralType,
-  //             work: widget.workType,
-  //             fk: widget.projectFk,
-  //           );
-  //           DatabaseHelper.instance.createFormData(formDataCreate);
-  //         }
-  //         refreshState();
-  //       }
-  //     },
-  //     child: const Text('Save'));
-
