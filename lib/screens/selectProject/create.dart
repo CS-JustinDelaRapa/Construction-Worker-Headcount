@@ -220,8 +220,8 @@ class _CreateProjectState extends State<CreateProject> {
       final createdProject = ProjectItem(
           project_name: projectName.text,
           project_manager: projectManager.text,
-          date_start: DateTime.now(),
-          date_end: DateTime.now(),
+          date_start: startSelectedDate,
+          date_end: endSelectedDate,
           type: val);
       final iDFromSQL =
           await DatabaseHelper.instance.createProject(createdProject);
@@ -229,8 +229,8 @@ class _CreateProjectState extends State<CreateProject> {
           id: iDFromSQL,
           project_name: projectName.text,
           project_manager: projectManager.text,
-          date_start: DateTime.now(),
-          date_end: DateTime.now(),
+          date_start: startSelectedDate,
+          date_end: endSelectedDate,
           type: val);
       CustomWidgets().function_pushReplacement(
           context, () => StackWidget(project: toStackProject));
