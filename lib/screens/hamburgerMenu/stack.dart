@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:engineering/screens/homePage.dart';
 import 'package:engineering/screens/mainProject/additionalManpower/additionalManpower.dart';
 import 'package:engineering/screens/mainProject/architectural/architectural.dart';
+import 'package:engineering/screens/mainProject/dateSchedule/dateSchedule.dart';
 import 'package:engineering/screens/mainProject/electricalAndPlumbing/electricalAndPlumbing.dart';
 import 'package:engineering/screens/mainProject/manpowerDistribution/manpowerDistribution.dart';
 import 'package:engineering/screens/mainProject/productivityRate/productivityRate.dart';
@@ -174,6 +175,11 @@ class _StackWidgetState extends State<StackWidget> {
       case DrawerItems.additionalManpower:
         return AdditionalManpower(
           openDrawer: openDrawer,
+        );
+      case DrawerItems.dateSchedule:
+        return DateScchedule(
+          openDrawer: openDrawer,
+          fk: widget.project.id!,
         );
       case DrawerItems.home:
         return const HomePage();
