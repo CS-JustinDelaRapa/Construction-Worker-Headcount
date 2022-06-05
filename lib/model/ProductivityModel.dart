@@ -28,17 +28,17 @@ class ProductivityItem {
   final String col_1;
   final double col_1_val;
   final String type;
-  final String work;   
+  final String work;
 //const will just let a function to just read the value of our Diary class current value (context)
-  const ProductivityItem({
-    //initializing our parameter, title = this, this refer's to a current method value.
-    this.id,
-    required this.fk,
-    required this.col_1,
-    required this.col_1_val,
-    required this.type,
-    required this.work
-  });
+  const ProductivityItem(
+      {
+      //initializing our parameter, title = this, this refer's to a current method value.
+      this.id,
+      required this.fk,
+      required this.col_1,
+      required this.col_1_val,
+      required this.type,
+      required this.work});
 
   Map<String, Object?> toJson() => {
         //Key: Value, Column Field: Value
@@ -59,8 +59,7 @@ class ProductivityItem {
           String? col_1,
           double? col_1_val,
           String? type,
-          String? work
-          }) =>
+          String? work}) =>
       ProductivityItem(
           //?? = Null-Coalsing Operator, meaning, if ParameterID is null then use the value of this(context) id, else it will return the value of ParameterID
           //if parameterID is null this line 41 will cause then an error because a ?? operator right operand must not be null.
@@ -69,15 +68,19 @@ class ProductivityItem {
           col_1: col_1 ?? this.col_1,
           col_1_val: col_1_val ?? this.col_1_val,
           type: type ?? this.type,
-          work: work ?? this.work
-      );
+          work: work ?? this.work);
 
-  static ProductivityItem fromJson(Map<String, Object?> fromSQL) => ProductivityItem(
-      id: fromSQL[TblProductivityField.id] as int?,
-      fk: fromSQL[TblProductivityField.fk] as int,
-      col_1: fromSQL[TblProductivityField.col_1] as String,
-      col_1_val: fromSQL[TblProductivityField.col_1_val] as double,      
-      type: fromSQL[TblProductivityField.type] as String,
-      work: fromSQL[TblProductivityField.work] as String
-      );
+  static ProductivityItem fromJson(Map<String, Object?> fromSQL) =>
+      ProductivityItem(
+          id: fromSQL[TblProductivityField.id] as int?,
+          fk: fromSQL[TblProductivityField.fk] as int,
+          col_1: fromSQL[TblProductivityField.col_1] as String,
+          col_1_val: fromSQL[TblProductivityField.col_1_val] as double,
+          type: fromSQL[TblProductivityField.type] as String,
+          work: fromSQL[TblProductivityField.work] as String);
+
+  @override
+  String toString() {
+    return 'id: $id, fk: $fk, work: $work, col_1: $col_1, col_1_val: $col_1_val';
+  }
 }
