@@ -127,26 +127,28 @@ class DatabaseHelper {
         .toList();
   }
 
-  Future<List<ProductivityItem>?> readSpecificProductivity(
-      int fk, String work, String type) async {
+  Future<ProductivityItem?> readSpecificProductivity(
+      int fk, String work, String type, String col_1) async {
     final reference = await instance.database;
 
     final fromTable = await reference.query(tableProductivity,
         columns: TblProductivityField.productivityFieldNames,
         where:
-            '${TblProductivityField.fk} = ? and ${TblProductivityField.work} = ? and ${TblProductivityField.type} = ?',
-        whereArgs: [fk, work, type]);
-    return fromTable
-        .map((fromSQL) => ProductivityItem.fromJson(fromSQL))
-        .toList();
+            '${TblProductivityField.fk} = ? and ${TblProductivityField.work} = ? and ${TblProductivityField.type} = ? and ${TblProductivityField.col_1} = ?',
+        whereArgs: [fk, work, type, col_1]);
+    if (fromTable.isNotEmpty) {
+      return ProductivityItem.fromJson(fromTable.first);
+    } else {
+      return null;
+    }
   }
 
   Future<int> updateProductivityWithID(
       ProductivityItem productivityInstance) async {
     final reference = await instance.database;
 
-    return reference.update(tableProject, productivityInstance.toJson(),
-        where: '${TblProjectField.id} = ?',
+    return reference.update(tableProductivity, productivityInstance.toJson(),
+        where: '${TblProductivityField.id} = ?',
         whereArgs: [productivityInstance.id]);
   }
 
