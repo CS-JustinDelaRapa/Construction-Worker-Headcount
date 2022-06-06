@@ -217,23 +217,44 @@ class _CreateProjectState extends State<CreateProject> {
 
   saveProject() async {
     if (_formKey.currentState!.validate()) {
-      final createdProject = ProjectItem(
-          project_name: projectName.text,
-          project_manager: projectManager.text,
-          date_start: startSelectedDate,
-          date_end: endSelectedDate,
-          type: val);
-      final iDFromSQL =
-          await DatabaseHelper.instance.createProject(createdProject);
-      final toStackProject = ProjectItem(
-          id: iDFromSQL,
-          project_name: projectName.text,
-          project_manager: projectManager.text,
-          date_start: startSelectedDate,
-          date_end: endSelectedDate,
-          type: val);
-      CustomWidgets().function_pushReplacement(
-          context, () => StackWidget(project: toStackProject));
+      if (startSelectedDate.isAfter(
+              endSelectedDate) /*||
+          startSelectedDate.isAtSameMomentAs(endSelectedDate)*/
+          ) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: const Text('Please Enter Valid Input'),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("OK"),
+                      onPressed: () {
+                        // print(projectName[index]);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ]);
+            });
+      } else {
+        final createdProject = ProjectItem(
+            project_name: projectName.text,
+            project_manager: projectManager.text,
+            date_start: startSelectedDate,
+            date_end: endSelectedDate,
+            type: val);
+        final iDFromSQL =
+            await DatabaseHelper.instance.createProject(createdProject);
+        final toStackProject = ProjectItem(
+            id: iDFromSQL,
+            project_name: projectName.text,
+            project_manager: projectManager.text,
+            date_start: startSelectedDate,
+            date_end: endSelectedDate,
+            type: val);
+        CustomWidgets().function_pushReplacement(
+            context, () => StackWidget(project: toStackProject));
+      }
     }
   }
 }

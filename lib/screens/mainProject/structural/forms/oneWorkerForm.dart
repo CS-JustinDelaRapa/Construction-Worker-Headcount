@@ -79,10 +79,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   DateTime? dateEnd;
   double? costOfLabor, initialWorkers, initialNumberofDays, workerCost;
 
-  Future<void> _selectDate(BuildContext context) async {
+  /*Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
+        initialDate: selectedDate!,
         firstDate: DateTime.now(),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
@@ -91,7 +91,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         isComputed = false;
       });
     }
-  }
+  }*/
 
   @override
   void initState() {
@@ -146,9 +146,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     }
 
     if (formData != null) {
-      dateStartControler.text = formData!.date_start == null
-          ? outputFormat.format(DateTime.now())
-          : outputFormat.format(DateTime.parse(formData!.date_start!));
+      if (formData!.date_start == null) {
+        outputFormat.format(selectedDate);
+      } else {
+        DateTime test = DateTime.parse(formData!.date_start!);
+        selectedDate = test;
+      }
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
@@ -182,6 +185,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     prodRate();
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
+    if (formData != null) {}
   }
 
   @override
@@ -221,9 +225,19 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Center(
                                 child: TextField(
                               readOnly: true,
-                              controller: dateStartControler,
                               onTap: () async {
-                                _selectDate(context);
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: selectedDate,
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime(2101));
+                                if (pickedDate != null &&
+                                    pickedDate != selectedDate) {
+                                  setState(() {
+                                    selectedDate = pickedDate;
+                                    isComputed = false;
+                                  });
+                                }
                               },
                               decoration: InputDecoration(
                                   hintText: outputFormat

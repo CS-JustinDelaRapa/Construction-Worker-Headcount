@@ -165,9 +165,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       }
     }
     if (formData != null) {
-      dateStartControler.text = formData!.date_start == null
-          ? outputFormat.format(DateTime.now())
-          : outputFormat.format(DateTime.parse(formData!.date_start!));
+      if (formData!.date_start == null) {
+        outputFormat.format(selectedDate);
+      } else {
+        DateTime test = DateTime.parse(formData!.date_start!);
+        selectedDate = test;
+      }
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
@@ -244,7 +247,18 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                             readOnly: true,
                             controller: dateStartControler,
                             onTap: () async {
-                              _selectDate(context);
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: selectedDate,
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime(2101));
+                              if (pickedDate != null &&
+                                  pickedDate != selectedDate) {
+                                setState(() {
+                                  selectedDate = pickedDate;
+                                  isComputed = false;
+                                });
+                              }
                             },
                             decoration: InputDecoration(
                                 hintText: outputFormat
