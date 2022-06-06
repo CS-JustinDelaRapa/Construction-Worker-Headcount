@@ -2,6 +2,7 @@
 
 import 'package:engineering/databaseHelper/DataBaseHelper.dart';
 import 'package:engineering/model/ProductivityModel.dart';
+import 'package:engineering/model/ProjectModel.dart';
 import 'package:engineering/model/formModel.dart';
 import 'package:engineering/model/workerModel.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   //database
   AdditionalManpower? manpower;
   FormData? formData;
+  ProductivityItem? productivityItem;
   bool isLoading = false, isUpdating = false, isComputed = false;
 
   //auto populated
@@ -80,6 +82,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   double? costOfLabor, initialWorkers, initialNumberofDays, workerCost;
 
   /*Future<void> _selectDate(BuildContext context) async {
+  //update prod rate
+  String? dropdownValue;
+  double? prodRateValue;
+
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate!,
@@ -92,6 +99,14 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       });
     }
   }*/
+
+  Future readProdRate() async {
+    productivityItem = await DatabaseHelper.instance.readSpecificProductivity(
+        widget.projectFk,
+        widget.structuralType,
+        widget.workType,
+        _selectedType ?? 'DEFAULT');
+  }
 
   @override
   void initState() {
@@ -144,7 +159,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         workerCost = rateOfWorkers![i].rate;
       }
     }
-
     if (formData != null) {
       if (formData!.date_start == null) {
         outputFormat.format(selectedDate);
@@ -169,6 +183,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       _selectedType = formData!.col_1;
       isUpdating = true;
     }
+    readProdRate();
     if (manpower != null) {
       isChecked = manpower!.cbOne;
       isChecked2 = manpower!.cbTwo;
@@ -185,7 +200,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     prodRate();
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
-    if (formData != null) {}
+    // if (formData != null) {}
+    // print(productivityItem);
   }
 
   @override
@@ -1469,41 +1485,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     }
   }
 
-  Future updateManpower() async {
-    totalPercentage = percentage;
-    manpower = AdditionalManpower(
-        id: manpower!.id!,
-        fk: manpower!.fk,
-        work: manpower!.work,
-        type: manpower!.type,
-        cbOne: isChecked,
-        cbTwo: isChecked2,
-        cbThree: isChecked3,
-        cbFour: isChecked4,
-        cbFive: isChecked5,
-        cbSix: isChecked6,
-        cbSeven: isChecked7,
-        cbEight: isChecked8,
-        cbNine: isChecked9,
-        cbTen: isChecked10,
-        totalPercentage: totalPercentage!);
-    if (formData!.worker_1 != null) {
-      additionalWorker1 = totalPercentage! * worker_1!;
-      double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
-      if (decimalValue <= 0.09) {
-        setState(() {
-          additionalWorker1 = (additionalWorker1!.floor()).toDouble();
-        });
-      } else {
-        setState(() {
-          additionalWorker1 = (additionalWorker1!.ceil()).toDouble();
-        });
-      }
-    }
-
-    await DatabaseHelper.instance.updateManpower(manpower!);
-  }
-
   void srwComputer() {
     if (double.parse(productivityRateController.text) <= 0 ||
         double.parse(volume!) <= 0 ||
@@ -1589,6 +1570,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   }
 
   void prodRate() {
+    readProdRate();
     for (int i = 0; i < productivityRate!.length; i++) {
       if (productivityRate![i].type.toUpperCase() ==
               widget.workType.toUpperCase() &&
@@ -1605,6 +1587,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             setState(() {
               defaultValue = productivityRate![i].col_1_val;
             });
+            // break;
           }
         }
       }
@@ -1618,6 +1601,53 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             : srwComputer();
       },
       child: const Text('Compute'));
+
+  Future updateManpower() async {
+    totalPercentage = percentage;
+    manpower = AdditionalManpower(
+        id: manpower!.id!,
+        fk: manpower!.fk,
+        work: manpower!.work,
+        type: manpower!.type,
+        cbOne: isChecked,
+        cbTwo: isChecked2,
+        cbThree: isChecked3,
+        cbFour: isChecked4,
+        cbFive: isChecked5,
+        cbSix: isChecked6,
+        cbSeven: isChecked7,
+        cbEight: isChecked8,
+        cbNine: isChecked9,
+        cbTen: isChecked10,
+        totalPercentage: totalPercentage!);
+    if (formData!.worker_1 != null) {
+      additionalWorker1 = totalPercentage! * worker_1!;
+      double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
+      if (decimalValue <= 0.09) {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.floor()).toDouble();
+        });
+      } else {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.ceil()).toDouble();
+        });
+      }
+    }
+
+    await DatabaseHelper.instance.updateManpower(manpower!);
+  }
+
+  Future updateProductivityRate() async {
+    final updatePR = ProductivityItem(
+      id: productivityItem!.id,
+      fk: widget.projectFk,
+      col_1: _selectedType ?? 'DEFAULT',
+      col_1_val: double.parse(productivityRateController.text),
+      work: productivityItem!.work,
+      type: productivityItem!.type,
+    );
+    DatabaseHelper.instance.updateProductivityWithID(updatePR);
+  }
 
   Widget saveButton() => ElevatedButton(
       onPressed: () {
@@ -1639,8 +1669,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             fk: widget.projectFk,
           );
           DatabaseHelper.instance.updateFormData(formDataCreate);
-          refreshState();
+
           updateManpower();
+          updateProductivityRate();
+          refreshState();
           setState(() {
             isComputed = false;
           });

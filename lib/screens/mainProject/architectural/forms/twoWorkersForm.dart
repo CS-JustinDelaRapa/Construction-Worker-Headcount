@@ -5,6 +5,7 @@ import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../model/ProductivityModel.dart';
 import '../../../../model/workerModel.dart';
 
 // ignore: must_be_immutable
@@ -65,7 +66,16 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     }
   }
 
+  Future readProdRate() async {
+    productivityItem = await DatabaseHelper.instance.readSpecificProductivity(
+        widget.projectFk,
+        widget.architecturalType,
+        widget.workType,
+        _selectedType ?? 'DEFAULT');
+  }
+
   List<WorkerType>? rateOfWorkers;
+  List<ProductivityItem>? productivityRate;
   String? preferedTime;
   String? volume;
   TextEditingController productivityRateController = TextEditingController();
@@ -98,6 +108,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   //database
   FormData? formData;
   AdditionalManpower? manpower;
+  ProductivityItem? productivityItem;
   bool isLoading = false, isUpdating = false, isExceeded = false;
 
   //auto populated
@@ -115,21 +126,14 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     if (widget.architecturalType == 'Flooring') {
       if (widget.workType.contains('EXT')) {
         label = 'EXT T&B';
-        defaultValue = formData == null ? 7 : formData!.col_1_val;
       } else {
         label = 'T&B';
-        defaultValue = formData == null ? 7 : formData!.col_1_val;
       }
       units = 'sqm';
       surface = 'Area';
       worker = 'Tile man';
       secondWorker = 'Laborer';
     } else if (widget.architecturalType == 'Plastering') {
-      if (widget.workType.contains('Interior')) {
-        defaultValue = 10;
-      } else if (widget.workType.contains('Exterior')) {
-        defaultValue = 8;
-      }
       label = 'Finish';
       surface = 'Area';
       units = 'sqm';
@@ -137,10 +141,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       secondWorker = 'Laborer';
     } else if (widget.architecturalType == 'Ceiling') {
       if (widget.workType.contains('Steel Frame')) {
-        defaultValue = 21.28;
         label = 'Steel Frame';
       } else if (widget.workType.contains('Plywood')) {
-        defaultValue = 16;
         label = 'Plywood';
       }
       surface = 'Area';
@@ -150,17 +152,14 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     } else {
       if (widget.workType.contains('Trusses')) {
         label = 'Trusses';
-        defaultValue = 4;
         worker = 'Welder';
         surface = 'PCS';
       } else if (widget.workType.contains('Gutter')) {
         label = 'Gl Sheet';
-        defaultValue = 11.52;
         worker = 'Tinsmith';
         surface = 'Area';
       } else {
         label = 'Gl Sheet';
-        defaultValue = 0; // no productivity rate yet
         worker = 'Tinsmith';
         surface = 'Area';
       }
@@ -177,6 +176,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     manpower = await DatabaseHelper.instance.readAllManpower(
         widget.projectFk, widget.workType, widget.architecturalType);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
+    productivityRate =
+        await DatabaseHelper.instance.readAllProductivity(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
         workerCost = rateOfWorkers![i].rate;
@@ -193,6 +194,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         selectedDate = test;
       }
       defaultValue = formData!.col_1_val;
+      dateStartControler.text = formData!.date_start == null
+          ? outputFormat.format(DateTime.now())
+          : outputFormat.format(DateTime.parse(formData!.date_start!));
       volume = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
@@ -210,10 +214,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       totalPercentage = manpower!.totalPercentage;
       percentage = manpower!.totalPercentage;
       _selectedType = formData!.col_1;
-      defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
-
+    readProdRate();
     if (manpower != null) {
       isChecked = manpower!.cbOne;
       isChecked2 = manpower!.cbTwo;
@@ -227,6 +230,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       isChecked10 = manpower!.cbTen;
       updateManpower();
     }
+    prodRate();
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
   }
@@ -1518,54 +1522,6 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               ));
   }
 
-  Future updateManpower() async {
-    totalPercentage = percentage;
-    manpower = AdditionalManpower(
-      id: manpower!.id!,
-      fk: manpower!.fk,
-      work: manpower!.work,
-      type: manpower!.type,
-      cbOne: isChecked,
-      cbTwo: isChecked2,
-      cbThree: isChecked3,
-      cbFour: isChecked4,
-      cbFive: isChecked5,
-      cbSix: isChecked6,
-      cbSeven: isChecked7,
-      cbEight: isChecked8,
-      cbNine: isChecked9,
-      cbTen: isChecked10,
-      totalPercentage: totalPercentage!,
-    );
-    if (formData!.worker_1 != null) {
-      additionalWorker1 = totalPercentage! * worker1!;
-      additionalWorker2 = totalPercentage! * worker2!;
-      double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
-      double secondDecimalValue =
-          additionalWorker2! - additionalWorker2!.toInt();
-      if (decimalValue <= 0.09) {
-        setState(() {
-          additionalWorker1 = (additionalWorker1!.floor()).toDouble();
-        });
-      } else {
-        setState(() {
-          additionalWorker1 = (additionalWorker1!.ceil()).toDouble();
-        });
-      }
-      if (secondDecimalValue <= 0.09) {
-        setState(() {
-          additionalWorker2 = (additionalWorker2!.floor()).toDouble();
-        });
-      } else {
-        setState(() {
-          additionalWorker2 = (additionalWorker2!.ceil()).toDouble();
-        });
-      }
-    }
-
-    await DatabaseHelper.instance.updateManpower(manpower!);
-  }
-
   Widget extDropdown() => DropdownButtonFormField(
       decoration: const InputDecoration(
         helperText: ' ', // this is new
@@ -1582,22 +1538,22 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         setState(() {
           _selectedType = value.toString();
           if (_selectedType == "Mosaic Tile") {
-            defaultValue = 7;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           } else if (_selectedType == "Ceramic Tile") {
-            defaultValue = 7;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           } else if (_selectedType == "Vitrified Tile") {
-            defaultValue = 10;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           } else if (_selectedType == "Granite Tile") {
-            defaultValue = 5;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           } else if (_selectedType == "Marble Tile") {
-            defaultValue = 5;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           } else {
-            defaultValue = 8;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           }
         });
@@ -1625,13 +1581,13 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         setState(() {
           _selectedType = value.toString();
           if (_selectedType == "Mosaic Tile") {
-            defaultValue = 7;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           } else if (_selectedType == "Ceramic Tile") {
-            defaultValue = 7;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           } else {
-            defaultValue = 5;
+            prodRate();
             productivityRateController.text = defaultValue.toString();
           }
         });
@@ -1983,6 +1939,30 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
     }
   }
 
+  void prodRate() {
+    readProdRate();
+    for (int i = 0; i < productivityRate!.length; i++) {
+      if (productivityRate![i].type.toUpperCase() ==
+              widget.workType.toUpperCase() &&
+          productivityRate![i].work.toUpperCase() ==
+              widget.architecturalType.toUpperCase()) {
+        if (productivityRate![i].col_1 == "DEFAULT" &&
+            productivityRate![i].work.toUpperCase() ==
+                widget.architecturalType.toUpperCase()) {
+          setState(() {
+            defaultValue = productivityRate![i].col_1_val;
+          });
+        } else {
+          if (productivityRate![i].col_1 == _selectedType) {
+            setState(() {
+              defaultValue = productivityRate![i].col_1_val;
+            });
+          }
+        }
+      }
+    }
+  }
+
   Widget computeButton() => ElevatedButton(
       onPressed: () {
         if (widget.architecturalType.toLowerCase() == 'flooring') {
@@ -1996,6 +1976,66 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         }
       },
       child: const Text('Compute'));
+
+  Future updateProductivityRate() async {
+    final updatePR = ProductivityItem(
+      id: productivityItem!.id,
+      fk: widget.projectFk,
+      col_1: _selectedType ?? 'DEFAULT',
+      col_1_val: double.parse(productivityRateController.text),
+      work: productivityItem!.work,
+      type: productivityItem!.type,
+    );
+    DatabaseHelper.instance.updateProductivityWithID(updatePR);
+  }
+
+  Future updateManpower() async {
+    totalPercentage = percentage;
+    manpower = AdditionalManpower(
+      id: manpower!.id!,
+      fk: manpower!.fk,
+      work: manpower!.work,
+      type: manpower!.type,
+      cbOne: isChecked,
+      cbTwo: isChecked2,
+      cbThree: isChecked3,
+      cbFour: isChecked4,
+      cbFive: isChecked5,
+      cbSix: isChecked6,
+      cbSeven: isChecked7,
+      cbEight: isChecked8,
+      cbNine: isChecked9,
+      cbTen: isChecked10,
+      totalPercentage: totalPercentage!,
+    );
+    if (formData!.worker_1 != null) {
+      additionalWorker1 = totalPercentage! * worker1!;
+      additionalWorker2 = totalPercentage! * worker2!;
+      double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
+      double secondDecimalValue =
+          additionalWorker2! - additionalWorker2!.toInt();
+      if (decimalValue <= 0.09) {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.floor()).toDouble();
+        });
+      } else {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.ceil()).toDouble();
+        });
+      }
+      if (secondDecimalValue <= 0.09) {
+        setState(() {
+          additionalWorker2 = (additionalWorker2!.floor()).toDouble();
+        });
+      } else {
+        setState(() {
+          additionalWorker2 = (additionalWorker2!.ceil()).toDouble();
+        });
+      }
+    }
+
+    await DatabaseHelper.instance.updateManpower(manpower!);
+  }
 
   Widget saveButton() => ElevatedButton(
       onPressed: () {
@@ -2018,6 +2058,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             fk: widget.projectFk,
           );
           DatabaseHelper.instance.updateFormData(formDataCreate);
+          updateManpower();
+          updateProductivityRate();
           refreshState();
           updateManpower();
           setState(() {

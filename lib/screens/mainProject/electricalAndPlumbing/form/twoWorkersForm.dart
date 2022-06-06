@@ -5,6 +5,7 @@ import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../model/ProductivityModel.dart';
 import '../../../../model/workerModel.dart';
 
 // ignore: must_be_immutable
@@ -48,7 +49,16 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
     }
   }
 
+  Future readProdRate() async {
+    productivityItem = await DatabaseHelper.instance.readSpecificProductivity(
+        widget.projectFk,
+        widget.elecAndPlumbType,
+        widget.workType,
+        _selectedType ?? 'DEFAULT');
+  }
+
   List<WorkerType>? rateOfWorkers;
+  List<ProductivityItem>? productivityRate;
   String? preferedTime;
   String? surfaceController;
   TextEditingController productivityRateController = TextEditingController();
@@ -80,6 +90,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
   //database
   AdditionalManpower? manpower;
   FormData? formData;
+  ProductivityItem? productivityItem;
   bool isLoading = false, isUpdating = false, isComputed = false;
 
   //auto populated
@@ -133,6 +144,8 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         widget.projectFk, widget.elecAndPlumbType, widget.workType);
     manpower = await DatabaseHelper.instance.readAllManpower(
         widget.projectFk, widget.workType, widget.elecAndPlumbType);
+    productivityRate =
+        await DatabaseHelper.instance.readAllProductivity(widget.projectFk);
     rateOfWorkers = await DatabaseHelper.instance.readWorkers(widget.projectFk);
     for (int i = 0; i < rateOfWorkers!.length; i++) {
       if (rateOfWorkers![i].workerType.toUpperCase() == worker!.toUpperCase()) {
@@ -150,6 +163,9 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
         selectedDate = test;
       }
       defaultValue = formData!.col_1_val;
+      dateStartControler.text = formData!.date_start == null
+          ? outputFormat.format(DateTime.now())
+          : outputFormat.format(DateTime.parse(formData!.date_start!));
       surfaceController = formData!.col_2.toString();
       numberOfDays = formData!.num_days;
       numberOfWorkers = formData!.num_workers;
@@ -168,10 +184,9 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       totalPercentage = manpower!.totalPercentage;
       percentage = manpower!.totalPercentage;
       _selectedType = formData!.col_1;
-      defaultValue = formData!.col_1_val;
       isUpdating = true;
     }
-
+    readProdRate();
     if (manpower != null) {
       isChecked = manpower!.cbOne;
       isChecked2 = manpower!.cbTwo;
@@ -185,6 +200,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       isChecked10 = manpower!.cbTen;
       updateManpower();
     }
+    prodRate();
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
   }
@@ -1395,50 +1411,28 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
               ));
   }
 
-  Future updateManpower() async {
-    totalPercentage = percentage;
-    manpower = AdditionalManpower(
-        id: manpower!.id!,
-        fk: manpower!.fk,
-        work: manpower!.work,
-        type: manpower!.type,
-        cbOne: isChecked,
-        cbTwo: isChecked2,
-        cbThree: isChecked3,
-        cbFour: isChecked4,
-        cbFive: isChecked5,
-        cbSix: isChecked6,
-        cbSeven: isChecked7,
-        cbEight: isChecked8,
-        cbNine: isChecked9,
-        cbTen: isChecked10,
-        totalPercentage: totalPercentage!);
-    if (formData!.worker_1 != null) {
-      additionalWorker1 = totalPercentage! * worker1!;
-      additionalWorker2 = totalPercentage! * worker2!;
-      double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
-      double secondDecimalValue =
-          additionalWorker2! - additionalWorker2!.toInt();
-      if (decimalValue <= 0.09) {
-        setState(() {
-          additionalWorker1 = (additionalWorker1!.floor()).toDouble();
-        });
-      } else {
-        setState(() {
-          additionalWorker1 = (additionalWorker1!.ceil()).toDouble();
-        });
-      }
-      if (secondDecimalValue <= 0.09) {
-        setState(() {
-          additionalWorker2 = (additionalWorker2!.floor()).toDouble();
-        });
-      } else {
-        setState(() {
-          additionalWorker2 = (additionalWorker2!.ceil()).toDouble();
-        });
+  void prodRate() {
+    readProdRate();
+    for (int i = 0; i < productivityRate!.length; i++) {
+      if (productivityRate![i].type.toUpperCase() ==
+              widget.workType.toUpperCase() &&
+          productivityRate![i].work.toUpperCase() ==
+              widget.elecAndPlumbType.toUpperCase()) {
+        if (productivityRate![i].col_1 == "DEFAULT" &&
+            productivityRate![i].work.toUpperCase() ==
+                widget.elecAndPlumbType.toUpperCase()) {
+          setState(() {
+            defaultValue = productivityRate![i].col_1_val;
+          });
+        } else {
+          if (productivityRate![i].col_1 == _selectedType) {
+            setState(() {
+              defaultValue = productivityRate![i].col_1_val;
+            });
+          }
+        }
       }
     }
-    await DatabaseHelper.instance.updateManpower(manpower!);
   }
 
   Widget computeButton() => ElevatedButton(
@@ -1531,6 +1525,64 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
       },
       child: const Text('Compute'));
 
+  Future updateManpower() async {
+    totalPercentage = percentage;
+    manpower = AdditionalManpower(
+        id: manpower!.id!,
+        fk: manpower!.fk,
+        work: manpower!.work,
+        type: manpower!.type,
+        cbOne: isChecked,
+        cbTwo: isChecked2,
+        cbThree: isChecked3,
+        cbFour: isChecked4,
+        cbFive: isChecked5,
+        cbSix: isChecked6,
+        cbSeven: isChecked7,
+        cbEight: isChecked8,
+        cbNine: isChecked9,
+        cbTen: isChecked10,
+        totalPercentage: totalPercentage!);
+    if (formData!.worker_1 != null) {
+      additionalWorker1 = totalPercentage! * worker1!;
+      additionalWorker2 = totalPercentage! * worker2!;
+      double decimalValue = additionalWorker1! - additionalWorker1!.toInt();
+      double secondDecimalValue =
+          additionalWorker2! - additionalWorker2!.toInt();
+      if (decimalValue <= 0.09) {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.floor()).toDouble();
+        });
+      } else {
+        setState(() {
+          additionalWorker1 = (additionalWorker1!.ceil()).toDouble();
+        });
+      }
+      if (secondDecimalValue <= 0.09) {
+        setState(() {
+          additionalWorker2 = (additionalWorker2!.floor()).toDouble();
+        });
+      } else {
+        setState(() {
+          additionalWorker2 = (additionalWorker2!.ceil()).toDouble();
+        });
+      }
+    }
+    await DatabaseHelper.instance.updateManpower(manpower!);
+  }
+
+  Future updateProductivityRate() async {
+    final updatePR = ProductivityItem(
+      id: productivityItem!.id,
+      fk: widget.projectFk,
+      col_1: _selectedType ?? 'DEFAULT',
+      col_1_val: double.parse(productivityRateController.text),
+      work: productivityItem!.work,
+      type: productivityItem!.type,
+    );
+    DatabaseHelper.instance.updateProductivityWithID(updatePR);
+  }
+
   Widget saveButton() => ElevatedButton(
       onPressed: () {
         final formDataCreate = FormData(
@@ -1550,6 +1602,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
           fk: widget.projectFk,
         );
         DatabaseHelper.instance.updateFormData(formDataCreate);
+        updateProductivityRate();
         updateManpower();
         refreshState();
         setState(() {
