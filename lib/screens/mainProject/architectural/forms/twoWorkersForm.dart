@@ -231,6 +231,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       updateManpower();
     }
     prodRate();
+    recomputeData();
     setState(() => isLoading = false);
     productivityRateController.text = defaultValue.toString();
   }
@@ -246,98 +247,181 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             ? const Center(child: CircularProgressIndicator())
             : Form(
                 key: _formKey,
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                    //date start
-                    Row(
-                      children: [
-                        const Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Date Start',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          child: //date start
-                              Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                                child: TextField(
-                              readOnly: true,
-                              controller: dateStartControler,
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: selectedDate,
-                                    firstDate: DateTime.now(),
-                                    lastDate: DateTime(2101));
-                                if (pickedDate != null &&
-                                    pickedDate != selectedDate) {
-                                  setState(() {
-                                    selectedDate = pickedDate;
-                                    isComputed = false;
-                                  });
-                                }
-                              },
-                              decoration: InputDecoration(
-                                  hintText: outputFormat
-                                      .format(selectedDate)
-                                      .toString()),
-                            )),
-                          ),
-                        ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              //date start right side
-                              '',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(fontSize: 15),
+                child: Scrollbar(
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      //date start
+                      Row(
+                        children: [
+                          const Flexible(
+                            flex: 3,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Date Start',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //productivity rate
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  label!,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
+                          Flexible(
+                            flex: 4,
+                            child: //date start
+                                Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child: TextField(
+                                readOnly: true,
+                                controller: dateStartControler,
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate,
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime(2101));
+                                  if (pickedDate != null &&
+                                      pickedDate != selectedDate) {
+                                    setState(() {
+                                      selectedDate = pickedDate;
+                                      isComputed = false;
+                                    });
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                    hintText: outputFormat
+                                        .format(selectedDate)
+                                        .toString()),
+                              )),
+                            ),
                           ),
-                        ),
-                        widget.workType.contains('EXT T&B') &&
-                                widget.architecturalType == 'Flooring'
-                            ? Flexible(
-                                flex: 5,
-                                child: Row(
-                                  children: [
-                                    Flexible(flex: 3, child: extDropdown()),
-                                    Flexible(
-                                      flex: 1,
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                //date start right side
+                                '',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      //productivity rate
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    label!,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                          widget.workType.contains('EXT T&B') &&
+                                  widget.architecturalType == 'Flooring'
+                              ? Flexible(
+                                  flex: 5,
+                                  child: Row(
+                                    children: [
+                                      Flexible(flex: 3, child: extDropdown()),
+                                      Flexible(
+                                        flex: 1,
+                                        child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: TextFormField(
+                                                decoration:
+                                                    const InputDecoration(
+                                                  helperText:
+                                                      ' ', // this is new
+                                                ),
+                                                validator: (value) {
+                                                  if (value == null ||
+                                                      value.isEmpty ||
+                                                      !regex.hasMatch(value)) {
+                                                    return '';
+                                                  }
+                                                  return null;
+                                                },
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isComputed = false;
+                                                  });
+                                                },
+                                                controller:
+                                                    productivityRateController,
+                                                keyboardType:
+                                                    TextInputType.number,
+                                              ),
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : widget.workType.contains('T&B') &&
+                                      widget.architecturalType == 'Flooring'
+                                  ? Flexible(
+                                      flex: 5,
+                                      child: Row(
+                                        children: [
+                                          Flexible(
+                                              flex: 3, child: intDropdown()),
+                                          Flexible(
+                                            flex: 1,
+                                            child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: TextFormField(
+                                                    decoration:
+                                                        const InputDecoration(
+                                                      helperText:
+                                                          ' ', // this is new
+                                                    ),
+                                                    validator: (value) {
+                                                      if (value == null ||
+                                                          value.isEmpty ||
+                                                          !regex.hasMatch(
+                                                              value)) {
+                                                        return '';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        isComputed = false;
+                                                      });
+                                                    },
+                                                    controller:
+                                                        productivityRateController,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                  ),
+                                                )),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Flexible(
+                                      flex: 4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            8, 20, 8, 0),
+                                        child: Align(
+                                            alignment: Alignment.centerLeft,
                                             child: TextFormField(
                                               decoration: const InputDecoration(
                                                 helperText: ' ', // this is new
@@ -359,353 +443,228 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                                   productivityRateController,
                                               keyboardType:
                                                   TextInputType.number,
-                                            ),
-                                          )),
+                                            )),
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              )
-                            : widget.workType.contains('T&B') &&
-                                    widget.architecturalType == 'Flooring'
-                                ? Flexible(
-                                    flex: 5,
-                                    child: Row(
-                                      children: [
-                                        Flexible(flex: 3, child: intDropdown()),
-                                        Flexible(
-                                          flex: 1,
-                                          child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: TextFormField(
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    helperText:
-                                                        ' ', // this is new
-                                                  ),
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty ||
-                                                        !regex
-                                                            .hasMatch(value)) {
-                                                      return '';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      isComputed = false;
-                                                    });
-                                                  },
-                                                  controller:
-                                                      productivityRateController,
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                ),
-                                              )),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : Flexible(
-                                    flex: 4,
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          8, 20, 8, 0),
-                                      child: Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: TextFormField(
-                                            decoration: const InputDecoration(
-                                              helperText: ' ', // this is new
-                                            ),
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty ||
-                                                  !regex.hasMatch(value)) {
-                                                return '';
-                                              }
-                                              return null;
-                                            },
-                                            onChanged: (value) {
-                                              setState(() {
-                                                isComputed = false;
-                                              });
-                                            },
-                                            controller:
-                                                productivityRateController,
-                                            keyboardType: TextInputType.number,
-                                          )),
-                                    ),
-                                  ),
-                        Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  units! + '/day',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    //volume
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  surface!,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        //area
-                        Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextFormField(
-                                initialValue: volume == 'null' ? '' : volume,
-                                decoration: const InputDecoration(
-                                  helperText: ' ', // this is new
-                                ),
-                                keyboardType: TextInputType.number,
-                                validator: (value) {
-                                  if (value == null ||
-                                      value.isEmpty ||
-                                      !regex.hasMatch(value)) {
-                                    return 'This Field is Required';
-                                  }
-                                  return null;
-                                },
-
-                                // controller: projectName.text,
-                                onChanged: (value) {
-                                  setState(() {
-                                    volume = value;
-                                    isComputed = false;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  units!,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    //preferred time
-                    Row(
-                      children: [
-                        const Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Preferred time',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          child: //prefered time
-                              Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextFormField(
-                                initialValue:
-                                    preferedTime == 'null' ? '' : preferedTime,
-                                decoration: const InputDecoration(
-                                  helperText: ' ', // this is new
-                                ),
-                                keyboardType: TextInputType.number,
-                                validator: (value) {
-                                  if (value == null ||
-                                      value.isEmpty ||
-                                      !regex.hasMatch(value)) {
-                                    return 'This Field is Required';
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    preferedTime = value;
-                                    isComputed = false;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'day/s',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    computeButton(),
-                    // number of days
-                    Row(
-                      children: [
-                        const Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Number of days',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Center(
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
                                   child: Text(
-                                    numberOfDays != null
-                                        ? numberOfDays.toString()
-                                        : '',
+                                    units! + '/day',
                                     textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                )),
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                            ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
+                        ],
+                      ),
+                      //volume
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    surface!,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                          //area
+                          Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'day/s',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                    //date ned
-                    Row(children: [
-                      const Flexible(
-                        flex: 3,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Date End',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 15),
-                              )),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Center(
-                                child: Text(
-                                  dateEnd != null
-                                      ? outputFormat.format(dateEnd!)
-                                      : '',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
+                                child: TextFormField(
+                                  initialValue: volume == 'null' ? '' : volume,
+                                  decoration: const InputDecoration(
+                                    helperText: ' ', // this is new
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        !regex.hasMatch(value)) {
+                                      return 'This Field is Required';
+                                    }
+                                    return null;
+                                  },
+
+                                  // controller: projectName.text,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      volume = value;
+                                      isComputed = false;
+                                    });
+                                  },
                                 ),
-                              )),
-                        ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    units!,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                        ],
                       ),
-                      const Flexible(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                //date end right side
-                                '',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(fontSize: 15),
-                              )),
-                        ),
-                      )
-                    ]),
-                    //number of worker
-                    Row(
-                      children: [
-                        const Flexible(
+                      //preferred time
+                      Row(
+                        children: [
+                          const Flexible(
                             flex: 3,
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Number of workers',
+                                    'Preferred time',
                                     textAlign: TextAlign.left,
                                     style: TextStyle(fontSize: 15),
                                   )),
-                            )),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 4,
+                            child: //prefered time
+                                Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: TextFormField(
+                                  initialValue: preferedTime == 'null'
+                                      ? ''
+                                      : preferedTime,
+                                  decoration: const InputDecoration(
+                                    helperText: ' ', // this is new
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value == null ||
+                                        value.isEmpty ||
+                                        !regex.hasMatch(value)) {
+                                      return 'This Field is Required';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      preferedTime = value;
+                                      isComputed = false;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'day/s',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      computeButton(),
+                      // number of days
+                      Row(
+                        children: [
+                          const Flexible(
+                            flex: 3,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Number of days',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Center(
+                                    child: Text(
+                                      numberOfDays != null
+                                          ? numberOfDays.toString()
+                                          : '',
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'day/s',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                      //date ned
+                      Row(children: [
+                        const Flexible(
+                          flex: 3,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Date End',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 15),
+                                )),
+                          ),
+                        ),
                         Flexible(
-                          flex: 4,
+                          flex: 5,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Center(
                                   child: Text(
-                                    numberOfWorkers != null
-                                        ? numberOfWorkers.toString()
+                                    dateEnd != null
+                                        ? outputFormat.format(dateEnd!)
                                         : '',
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(
@@ -722,767 +681,780 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'worker/s',
+                                  //date end right side
+                                  '',
                                   textAlign: TextAlign.left,
                                   style: TextStyle(fontSize: 15),
                                 )),
                           ),
                         )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    //first worker count
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  worker!,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Center(
-                                  child: Text(
-                                    worker2 != null ? worker1.toString() : '',
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                )),
-                          ),
-                        ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'worker/s',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                    //second worker count
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  secondWorker!,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Center(
-                                  child: Text(
-                                    worker2 != null ? worker2.toString() : '',
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                )),
-                          ),
-                        ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'worker/s',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                    //cost of labor
-                    Row(
-                      children: [
-                        const Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Cost of Labor',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Center(
-                                  child: Text(
-                                      costOfLabor != null
-                                          ? costOfLabor.toString()
+                      ]),
+                      //number of worker
+                      Row(
+                        children: [
+                          const Flexible(
+                              flex: 3,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Number of workers',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(fontSize: 15),
+                                    )),
+                              )),
+                          Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Center(
+                                    child: Text(
+                                      numberOfWorkers != null
+                                          ? numberOfWorkers.toString()
                                           : '',
                                       textAlign: TextAlign.left,
                                       style: const TextStyle(
                                           fontSize: 15,
-                                          fontWeight: FontWeight.bold)),
-                                )),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )),
+                            ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'php',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'Additional Manpower',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(fontSize: 20),
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'worker/s',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    //cbone
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value!;
-                                  if (isChecked == true) {
-                                    cbOne = 0.4;
-                                    percentage = double.parse(
-                                        (percentage + cbOne!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbOne = 0.4;
-                                    percentage = double.parse(
-                                        (percentage - cbOne!)
-                                            .toStringAsFixed(2));
-                                  }
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      //first worker count
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    worker!.toUpperCase(),
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Center(
+                                    child: Text(
+                                      worker2 != null ? worker1.toString() : '',
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'worker/s',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                      //second worker count
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    secondWorker!.toUpperCase(),
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Center(
+                                    child: Text(
+                                      worker2 != null ? worker2.toString() : '',
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'worker/s',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                      //cost of labor
+                      Row(
+                        children: [
+                          const Flexible(
+                            flex: 3,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'COST OF LABOR',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          ),
+                          Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Center(
+                                    child: Text(
+                                        costOfLabor != null
+                                            ? costOfLabor.toString()
+                                            : '',
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                  )),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'php',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Additional Manpower',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      //cbone
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked = value!;
+                                    if (isChecked == true) {
+                                      cbOne = 0.4;
+                                      percentage = double.parse(
+                                          (percentage + cbOne!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbOne = 0.4;
+                                      percentage = double.parse(
+                                          (percentage - cbOne!)
+                                              .toStringAsFixed(2));
+                                    }
+                                    updateManpower();
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Shortage of construction workers due to increase in number of construction projects',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                          ),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '40%',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      //cbtwo
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked2,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked2 = value!;
+                                    if (isChecked2 == true) {
+                                      cbTwo = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbTwo!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbTwo = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbTwo!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
                                   updateManpower();
-                                });
-                              },
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Shortage of construction workers due to increase in number of construction projects',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Unskilled construction workers due to lack of experience and training',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '40%',
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                textAlign: TextAlign.end,
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbtwo
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked2,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked2 = value!;
-                                  if (isChecked2 == true) {
-                                    cbTwo = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbTwo!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbTwo = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbTwo!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbthree
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked3,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked3 = value!;
+                                    if (isChecked3 == true) {
+                                      cbThree = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbThree!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbThree = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbThree!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Unskilled construction workers due to lack of experience and training',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Language barrier between workers of different dialect',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              textAlign: TextAlign.end,
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbthree
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked3,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked3 = value!;
-                                  if (isChecked3 == true) {
-                                    cbThree = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbThree!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbThree = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbThree!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbfour
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked4,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked4 = value!;
+                                    if (isChecked4 == true) {
+                                      cbFour = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbFour!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbFour = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbFour!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Language barrier between workers of different dialect',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Issues of overtime scheduling with construction workers',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbfour
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked4,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked4 = value!;
-                                  if (isChecked4 == true) {
-                                    cbFour = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbFour!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbFour = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbFour!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbfive
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked5,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked5 = value!;
+                                    if (isChecked5 == true) {
+                                      cbFive = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbFive!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbFive = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbFive!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Issues of overtime scheduling with construction workers',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                'Demand of higher salaries from construction workers',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbfive
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked5,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked5 = value!;
-                                  if (isChecked5 == true) {
-                                    cbFive = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbFive!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbFive = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbFive!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbsix
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked6,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked6 = value!;
+                                    if (isChecked6 == true) {
+                                      cbSix = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbSix!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbSix = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbSix!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              'Demand of higher salaries from construction workers',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Struggle with authority leading to conflict between construction workers and engineers',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbsix
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked6,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked6 = value!;
-                                  if (isChecked6 == true) {
-                                    cbSix = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbSix!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbSix = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbSix!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbseven
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked7,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked7 = value!;
+                                    if (isChecked7 == true) {
+                                      cbSeven = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbSeven!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbSeven = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbSeven!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'Struggle with authority leading to conflict between construction workers and engineers',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Sudden absences of construction workers without prior notice to superiors',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbseven
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked7,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked7 = value!;
-                                  if (isChecked7 == true) {
-                                    cbSeven = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbSeven!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbSeven = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbSeven!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbeight
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked8,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked8 = value!;
+                                    if (isChecked8 == true) {
+                                      cbEight = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbEight!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbEight = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbEight!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Sudden absences of construction workers without prior notice to superiors',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Usage of electronic devices during working hours',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbeight
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked8,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked8 = value!;
-                                  if (isChecked8 == true) {
-                                    cbEight = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbEight!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbEight = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbEight!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbnine
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked9,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked9 = value!;
+                                    if (isChecked9 == true) {
+                                      cbNine = 0.3;
+                                      percentage = double.parse(
+                                          (percentage + cbNine!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbNine = 0.3;
+                                      percentage = double.parse(
+                                          (percentage - cbNine!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Usage of electronic devices during working hours',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Sudden resignation of workers due to inadequate benefits, low wages, deployment abroad, etc.',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '30%',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbnine
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked9,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked9 = value!;
-                                  if (isChecked9 == true) {
-                                    cbNine = 0.3;
-                                    percentage = double.parse(
-                                        (percentage + cbNine!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbNine = 0.3;
-                                    percentage = double.parse(
-                                        (percentage - cbNine!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      //cbten
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Checkbox(
+                                checkColor: Colors.white,
+                                value: isChecked10,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    isChecked10 = value!;
+                                    if (isChecked10 == true) {
+                                      cbTen = 0.1;
+                                      percentage = double.parse(
+                                          (percentage + cbTen!)
+                                              .toStringAsFixed(2));
+                                    } else {
+                                      cbTen = 0.1;
+                                      percentage = double.parse(
+                                          (percentage - cbTen!)
+                                              .toStringAsFixed(2));
+                                    }
+                                  });
+                                  updateManpower();
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Sudden resignation of workers due to inadequate benefits, low wages, deployment abroad, etc.',
-                              style: TextStyle(fontSize: 12),
+                          const Flexible(
+                            flex: 4,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                'Sudden Termination(Serious Injury, relocation, habitual neglect of duties, serious misconduct, fraud, loss of confidence, commission of a crime and analogous causes)',
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '30%',
-                              style: TextStyle(fontSize: 15),
+                          const Flexible(
+                            flex: 1,
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text(
+                                '10%',
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    //cbten
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Checkbox(
-                              checkColor: Colors.white,
-                              value: isChecked10,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked10 = value!;
-                                  if (isChecked10 == true) {
-                                    cbTen = 0.1;
-                                    percentage = double.parse(
-                                        (percentage + cbTen!)
-                                            .toStringAsFixed(2));
-                                  } else {
-                                    cbTen = 0.1;
-                                    percentage = double.parse(
-                                        (percentage - cbTen!)
-                                            .toStringAsFixed(2));
-                                  }
-                                });
-                                updateManpower();
-                              },
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      //percentage
+                      Row(
+                        children: [
+                          const Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'PERCENT %',
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(fontSize: 15),
+                                  )),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              'Sudden Termination(Serious Injury, relocation, habitual neglect of duties, serious misconduct, fraud, loss of confidence, commission of a crime and analogous causes)',
-                              style: TextStyle(fontSize: 12),
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    (totalPercentage! * 100).toStringAsFixed(0),
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  )),
                             ),
                           ),
-                        ),
-                        const Flexible(
-                          flex: 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '10%',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    //percentage
-                    Row(
-                      children: [
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Percent %',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  (totalPercentage! * 100).toStringAsFixed(0),
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    //addtl first worker
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  worker!,
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  formData!.worker_1 != null
-                                      ? additionalWorker1!.toStringAsFixed(0)
-                                      : '',
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Row(
+                        ],
+                      ),
+                      //addtl first worker
+                      Row(
                         children: [
                           Flexible(
                             flex: 2,
@@ -1491,7 +1463,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    secondWorker!,
+                                    worker!.toUpperCase(),
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(fontSize: 15),
                                   )),
@@ -1504,8 +1476,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    formData!.worker_2 != null
-                                        ? additionalWorker2!.toStringAsFixed(0)
+                                    formData!.worker_1 != null
+                                        ? additionalWorker1!.toStringAsFixed(0)
                                         : '',
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(
@@ -1516,8 +1488,46 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           ),
                         ],
                       ),
-                    ),
-                  ]),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Row(
+                          children: [
+                            Flexible(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      secondWorker!.toUpperCase(),
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(fontSize: 15),
+                                    )),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      formData!.worker_2 != null
+                                          ? additionalWorker2!
+                                              .toStringAsFixed(0)
+                                          : '',
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
               ));
   }
@@ -1624,7 +1634,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
       } else {
         initialWorkers = (double.parse(volume!) /
                 double.parse(productivityRateController.text))
-            .roundToDouble();
+            .ceilToDouble();
         if (initialWorkers! >= 1 && initialWorkers! <= 3) {
           initialNumberofDays = 1;
         } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
@@ -1639,7 +1649,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
-        int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+        int workernumbers = (initialWorkers! / initialNumberofDays!).ceil();
 
         if (workernumbers <= 0) {
           setState(() {
@@ -1671,7 +1681,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               worker1 = 3;
               worker2 = workernumbers;
             }
-            numberOfDays = initialNumberofDays!.round();
+            numberOfDays = initialNumberofDays!.ceil();
             numberOfWorkers = (worker1! + worker2!);
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
@@ -1878,7 +1888,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         initialWorkers = (double.parse(volume!) /
                 double.parse(productivityRateController.text))
             .roundToDouble();
-        if (initialWorkers! == 1 && initialWorkers! <= 3) {
+        if (initialWorkers! >= 1 && initialWorkers! <= 3) {
           initialNumberofDays = 1;
         } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
           initialNumberofDays = 2;
@@ -1960,6 +1970,354 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
           }
         }
       }
+    }
+  }
+
+  void recomputeData() {
+    if (formData!.col_1_val != defaultValue && formData!.num_workers != null) {
+      if (widget.architecturalType.toLowerCase() == 'flooring') {
+        if (defaultValue! <= 0 ||
+            double.parse(volume!) <= 0 ||
+            double.parse(preferedTime!) <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          initialWorkers =
+              (double.parse(volume!) / defaultValue!).ceilToDouble();
+          if (initialWorkers! >= 1 && initialWorkers! <= 3) {
+            initialNumberofDays = 1;
+          } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+            initialNumberofDays = 2;
+          } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+            initialNumberofDays = 3;
+          } else if (initialWorkers! == 10) {
+            initialNumberofDays = 5;
+          } else {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          if (double.parse(preferedTime!) < initialNumberofDays!) {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          int workernumbers = (initialWorkers! / initialNumberofDays!).ceil();
+
+          if (workernumbers <= 0) {
+            setState(() {
+              isComputed = false;
+            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: const Text('Invalid Input.'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          child: const Text("OK"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                });
+          } else {
+            setState(() {
+              if (workernumbers <= 2) {
+                worker1 = workernumbers;
+                worker2 = 1;
+              } else if (workernumbers == 3) {
+                worker1 = 2;
+                worker2 = 2;
+              } else {
+                worker1 = 3;
+                worker2 = workernumbers;
+              }
+              numberOfDays = initialNumberofDays!.ceil();
+              numberOfWorkers = (worker1! + worker2!);
+              costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                      (worker2!.toDouble() * workerCost2!)) *
+                  numberOfDays!;
+              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              isComputed = true;
+            });
+          }
+        }
+      } else if (widget.architecturalType.toLowerCase() == 'plastering') {
+        if (defaultValue! <= 0 ||
+            double.parse(volume!) <= 0 ||
+            double.parse(preferedTime!) <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          initialWorkers =
+              (double.parse(volume!) / defaultValue!).roundToDouble();
+          if (initialWorkers! >= 1 && initialWorkers! <= 3) {
+            initialNumberofDays = 1;
+          } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+            initialNumberofDays = 2;
+          } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+            initialNumberofDays = 3;
+          } else if (initialWorkers! == 10) {
+            initialNumberofDays = 5;
+          } else {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+          if (double.parse(preferedTime!) < initialNumberofDays!) {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          if (workernumbers <= 0) {
+            setState(() {
+              isComputed = false;
+            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: const Text('Invalid Input.'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          child: const Text("OK"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                });
+          } else {
+            setState(() {
+              if (workernumbers <= 2) {
+                worker1 = workernumbers;
+                worker2 = 1;
+              } else if (workernumbers == 3) {
+                worker1 = 2;
+                worker2 = 2;
+              } else {
+                worker1 = 2;
+                worker2 = workernumbers;
+              }
+              numberOfDays = initialNumberofDays!.round();
+              numberOfWorkers = (worker1! + worker2!);
+              costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                      (worker2!.toDouble() * workerCost2!)) *
+                  numberOfDays!;
+              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              isComputed = true;
+            });
+          }
+        }
+      } else if (widget.architecturalType.toLowerCase() == 'ceiling') {
+        if (defaultValue! <= 0 ||
+            double.parse(volume!) <= 0 ||
+            double.parse(preferedTime!) <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          initialWorkers =
+              (double.parse(volume!) / defaultValue!).roundToDouble();
+          if (initialWorkers! == 1 || initialWorkers! == 2) {
+            initialNumberofDays = 1;
+          } else if (initialWorkers! == 2 || initialWorkers! == 4) {
+            initialNumberofDays = 2;
+          } else if (initialWorkers! == 3 || initialWorkers! == 6) {
+            initialNumberofDays = 3;
+          } else if (initialWorkers! == 7 || initialWorkers! == 8) {
+            initialNumberofDays = 4;
+          } else if (initialWorkers! == 5 ||
+              initialWorkers! == 9 ||
+              initialWorkers! == 10) {
+            initialNumberofDays = 5;
+          } else {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+          if (double.parse(preferedTime!) < initialNumberofDays!) {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          if (workernumbers <= 0) {
+            setState(() {
+              isComputed = false;
+            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: const Text('Invalid Input.'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          child: const Text("OK"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                });
+          } else {
+            setState(() {
+              if (workernumbers <= 2) {
+                worker1 = workernumbers;
+                worker2 = 1;
+              } else {
+                worker1 = 2;
+                worker2 = workernumbers;
+              }
+              numberOfDays = initialNumberofDays!.round();
+              numberOfWorkers = (worker1! + worker2!);
+              costOfLabor = (worker1!.toDouble() * workerCost!) +
+                  (worker2!.toDouble() * workerCost2!);
+              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              isComputed = true;
+            });
+          }
+        }
+      } else if (widget.architecturalType.toLowerCase() == 'roofing works') {
+        if (defaultValue! <= 0 ||
+            double.parse(volume!) <= 0 ||
+            double.parse(preferedTime!) <= 0) {
+          setState(() {
+            isComputed = false;
+          });
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('Invalid Input.'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          initialWorkers =
+              (double.parse(volume!) / defaultValue!).roundToDouble();
+          if (initialWorkers! >= 1 && initialWorkers! <= 3) {
+            initialNumberofDays = 1;
+          } else if (initialWorkers! >= 4 && initialWorkers! <= 6) {
+            initialNumberofDays = 2;
+          } else if (initialWorkers! >= 7 && initialWorkers! <= 9) {
+            initialNumberofDays = 3;
+          } else if (initialWorkers! == 10) {
+            initialNumberofDays = 5;
+          } else {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          int workernumbers = (initialWorkers! / initialNumberofDays!).round();
+          if (double.parse(preferedTime!) < initialNumberofDays!) {
+            initialNumberofDays = double.parse(preferedTime!);
+          }
+          if (workernumbers <= 0) {
+            setState(() {
+              isComputed = false;
+            });
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: const Text('Invalid Input.'),
+                      actions: <Widget>[
+                        ElevatedButton(
+                          child: const Text("OK"),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]);
+                });
+          } else {
+            setState(() {
+              if (workernumbers <= 2) {
+                worker1 = 1;
+                worker2 = 1;
+              } else if (workernumbers == 3) {
+                worker1 = 2;
+                worker2 = 1;
+              } else if (workernumbers == 4) {
+                worker1 = 2;
+                worker2 = 2;
+              } else {
+                worker1 = 2;
+                worker2 = workernumbers - 2;
+              }
+              numberOfDays = initialNumberofDays!.round();
+              numberOfWorkers = (worker1! + worker2!);
+              costOfLabor = ((worker1!.toDouble() * workerCost!) +
+                      (worker2!.toDouble() * workerCost2!)) *
+                  numberOfDays!;
+              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              isComputed = true;
+            });
+          }
+        }
+      }
+      final formDataCreate = FormData(
+        id: formData!.id,
+        date_start: selectedDate.toString(),
+        col_1: _selectedType ?? 'DEFAULT',
+        col_1_val: defaultValue!,
+        col_2: double.parse(volume!),
+        pref_time: int.parse(preferedTime!),
+        num_days: numberOfDays!,
+        date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
+        num_workers: numberOfWorkers!,
+        worker_1: worker1!,
+        worker_2: worker2!,
+        work: widget.architecturalType,
+        type: widget.workType,
+        fk: widget.projectFk,
+      );
+      DatabaseHelper.instance.updateFormData(formDataCreate);
+      refreshState();
+      updateManpower();
+      setState(() {
+        isComputed = false;
+      });
     }
   }
 
@@ -2058,10 +2416,9 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             fk: widget.projectFk,
           );
           DatabaseHelper.instance.updateFormData(formDataCreate);
-          updateManpower();
           updateProductivityRate();
-          refreshState();
           updateManpower();
+          refreshState();
           setState(() {
             isComputed = false;
           });
