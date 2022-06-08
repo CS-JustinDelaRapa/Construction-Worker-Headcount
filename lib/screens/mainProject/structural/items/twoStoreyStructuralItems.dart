@@ -10,12 +10,12 @@ class TwoStoreyStructuralItems {
   static const List<String> listEarthWorks = ['Excavation', 'Backfilling'];
   static const List<String> listFormWorks = [
     'Footings',
-    'Column Ground Floor',
-    'Column Second Floor',
-    'Beam FB',
-    'Beam RB',
-    'Slab GF',
-    'Slab SF',
+    'Columns Ground Floor',
+    'Columns Second Floor',
+    'Beams FB',
+    'Beams RB',
+    'Slabs GF',
+    'Slabs SF',
     'Staircase'
   ];
   static const List<String> listMasonryWorks = [
@@ -67,8 +67,8 @@ class TwoStoreyStructuralItems {
 
   static const List<DefaultValue> defValFormworks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 7.7),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 4.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 6.0),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 6.0),
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.3),
     DefaultValue(col_1: "DEFAULT", col_1_val: 4.3),

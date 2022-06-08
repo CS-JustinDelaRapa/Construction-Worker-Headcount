@@ -30,6 +30,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   RegExp regex = RegExp(r'(?!^ +$)^.+$');
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
+  int additionalDays = 0;
   bool isChecked = false,
       isChecked2 = false,
       isChecked3 = false,
@@ -1627,13 +1628,21 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                     ]);
               });
         } else {
+          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            DateTime tempDate = selectedDate.add(Duration(days: x));
+            if (tempDate.weekday == DateTime.sunday) {
+              additionalDays++;
+            }
+          }
           setState(() {
             numberOfDays = initialNumberofDays!.ceil();
             numberOfWorkers = workernumbers;
             costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
             worker_1 = numberOfWorkers;
-            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            dateEnd = selectedDate
+                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
+            additionalDays = 0;
           });
         }
       }
@@ -1711,13 +1720,21 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                     ]);
               });
         } else {
+          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            DateTime tempDate = selectedDate.add(Duration(days: x));
+            if (tempDate.weekday == DateTime.sunday) {
+              additionalDays++;
+            }
+          }
           setState(() {
             numberOfDays = initialNumberofDays!.ceil();
             numberOfWorkers = workernumbers;
             costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
             worker_1 = numberOfWorkers;
-            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            dateEnd = selectedDate
+                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
+            additionalDays = 0;
           });
         }
       }
@@ -1869,11 +1886,28 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   Widget computeButton() => ElevatedButton(
       onPressed: () {
-        if (widget.architecturalType.toLowerCase() == 'painting works') {
-          paintingworksComputer();
-        } else if (widget.architecturalType.toLowerCase() ==
-            'doors and windows') {
-          doorsandwindowsComputer();
+        if (selectedDate.weekday == DateTime.sunday) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('No work at Sunday'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          if (widget.architecturalType.toLowerCase() == 'painting works') {
+            paintingworksComputer();
+          } else if (widget.architecturalType.toLowerCase() ==
+              'doors and windows') {
+            doorsandwindowsComputer();
+          }
         }
       },
       child: const Text('Compute'));
@@ -1935,8 +1969,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             col_2: double.parse(volume!),
             pref_time: int.parse(preferedTime!),
             num_days: numberOfDays!,
-            date_end:
-                selectedDate.add(Duration(days: numberOfDays!)).toString(),
+            date_end: dateEnd.toString(),
             num_workers: numberOfWorkers!,
             worker_1: numberOfWorkers!,
             work: widget.architecturalType,
@@ -2025,13 +2058,21 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       ]);
                 });
           } else {
+            for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+              DateTime tempDate = selectedDate.add(Duration(days: x));
+              if (tempDate.weekday == DateTime.sunday) {
+                additionalDays++;
+              }
+            }
             setState(() {
               numberOfDays = initialNumberofDays!.ceil();
               numberOfWorkers = workernumbers;
               costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
               worker_1 = numberOfWorkers;
-              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              dateEnd = selectedDate
+                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
+              additionalDays = 0;
             });
           }
         }
@@ -2105,13 +2146,21 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       ]);
                 });
           } else {
+            for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+              DateTime tempDate = selectedDate.add(Duration(days: x));
+              if (tempDate.weekday == DateTime.sunday) {
+                additionalDays++;
+              }
+            }
             setState(() {
               numberOfDays = initialNumberofDays!.ceil();
               numberOfWorkers = workernumbers;
               costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
               worker_1 = numberOfWorkers;
-              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              dateEnd = selectedDate
+                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
+              additionalDays = 0;
             });
           }
         }
@@ -2124,7 +2173,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         col_2: double.parse(volume!),
         pref_time: int.parse(preferedTime!),
         num_days: numberOfDays!,
-        date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
+        date_end: dateEnd.toString(),
         num_workers: numberOfWorkers!,
         worker_1: numberOfWorkers!,
         work: widget.architecturalType,

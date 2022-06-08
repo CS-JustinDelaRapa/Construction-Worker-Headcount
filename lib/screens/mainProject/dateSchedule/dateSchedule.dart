@@ -144,7 +144,7 @@ class _DateSccheduleState extends State<DateScchedule> {
     Color? color;
     switch (type) {
       case 'Earthworks':
-        color = const Color(0xFF0F8644);
+        color = const Color(0xffC16B57);
         break;
       case 'Formworks':
         color = const Color.fromARGB(255, 8, 97, 48);

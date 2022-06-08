@@ -2,8 +2,6 @@
 
 import 'package:engineering/model/ProjectModel.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/productivityRate/forms/structural/formworksForm.dart';
-import 'package:engineering/screens/mainProject/productivityRate/forms/structural/masonryForm.dart';
 import 'package:engineering/screens/mainProject/structural/items/twoStoreyStructuralItems.dart';
 import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
@@ -61,32 +59,48 @@ class _ProductivityRateState extends State<ProductivityRate> {
           child: isLoading
               ? const Center(child: CircularProgressIndicator())
               : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
+                  Container(
+                    color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1),
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
                           'Structural',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 20,
-                              color: Theme.of(context)
-                                  .appBarTheme
-                                  .foregroundColor),
+                              fontSize: 25,
+                              color: Theme.of(context).brightness == Brightness.light ?
+                              Colors.white :
+                              const Color.fromARGB(255, 35, 28, 59)),
                         ),
-                      ],
+                      ),
                     ),
-                  ),                  
+                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Earthworks',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
                   Column(
                       children: formData!.where((element) => 
-                      element.work == 'Earthworks' 
-                      || element.work == 'Formworks' 
-                      || element.work == 'Masonry Works'
-                      || element.work == 'Reinforced Cement Works'
-                      || element.work == 'Steel Reinforcement Works')
+                      element.work == 'Earthworks')
                       .map((form){
                         List<ProductivityItem> localProductivity=[];
 
@@ -99,31 +113,161 @@ class _ProductivityRateState extends State<ProductivityRate> {
                         return ItemRow(item:localProductivity, form: form, );
                       }).toList(),
                     ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Formworks',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Formworks')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),    
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Masonry Works',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Masonry Works')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Reinforced Cement Works',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Reinforced Cement Works')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),     
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Steel Reinforcement Works',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Steel Reinforcement Works')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ), 
+                  Container(
+                    color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1),
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
                           'Architectural',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 20,
-                              color: Theme.of(context)
-                                  .appBarTheme
-                                  .foregroundColor),
+                              fontSize: 25,
+                              color: Theme.of(context).brightness == Brightness.light ?
+                              Colors.white :
+                              const Color.fromARGB(255, 35, 28, 59)),
                         ),
-                      ],
+                      ),
                     ),
-                  ),                  
+                  ), 
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Flooring',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
                   Column(
                       children: formData!.where((element) => 
-                      element.work == 'Flooring' 
-                      || element.work == 'Plastering' 
-                      || element.work == 'Painting Works'
-                      || element.work == 'Doors and Windows'
-                      || element.work ==  'Ceiling'
-                      || element.work == 'Roofing Works')
+                      element.work == 'Flooring')
                       .map((form){
                         List<ProductivityItem> localProductivity=[];
 
@@ -135,28 +279,195 @@ class _ProductivityRateState extends State<ProductivityRate> {
 
                         return ItemRow(item:localProductivity, form: form, );
                       }).toList(),
-                    ),  
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
+                    ), 
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Plastering',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Plastering')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),                                                                                                                                       
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Painting Works',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Painting Works')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),                                                                                                                                       
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Doors and Windows',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Doors and Windows')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),    
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Ceiling',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Ceiling')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),   
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Roofing Works',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Roofing Works')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),        
+                  Container(
+                    color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1),
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
                           'Electrical and Plumbing',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
-                              fontSize: 20,
-                              color: Theme.of(context)
-                                  .appBarTheme
-                                  .foregroundColor),
+                              fontSize: 25,
+                              color: Theme.of(context).brightness == Brightness.light ?
+                              Colors.white :
+                              const Color.fromARGB(255, 35, 28, 59)),
                         ),
-                      ],
+                      ),
                     ),
-                  ),                    
+                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Electrical Works',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
                   Column(
                       children: formData!.where((element) => 
-                      element.work == 'Electrical Works' 
-                      || element.work == 'Plumbing Works')
+                      element.work == 'Electrical Works')
                       .map((form){
                         List<ProductivityItem> localProductivity=[];
 
@@ -168,7 +479,36 @@ class _ProductivityRateState extends State<ProductivityRate> {
 
                         return ItemRow(item:localProductivity, form: form, );
                       }).toList(),
-                    ),                                       
+                    ),                                                                                                                                                                                                                                                       
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Plumbing Works',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            color: Theme.of(context).brightness == Brightness.light ?
+                    Theme.of(context)
+                                  .appBarTheme
+                                  .foregroundColor:
+                  const Color.fromRGBO(139, 216, 189, 1)),
+                      ),
+                    ),                                                      
+                  Column(
+                      children: formData!.where((element) => 
+                      element.work == 'Plumbing Works')
+                      .map((form){
+                        List<ProductivityItem> localProductivity=[];
+
+                        for(int x = 0; x < productivityData!.length; x++){
+                          if(form.work == productivityData![x].work&& form.type == productivityData![x].type){
+                            localProductivity.add(productivityData![x]);
+                          }
+                        }
+
+                        return ItemRow(item:localProductivity, form: form, );
+                      }).toList(),
+                    ),                                                                                                                                                                                                                                                                           
                 ],
               )
           ),
