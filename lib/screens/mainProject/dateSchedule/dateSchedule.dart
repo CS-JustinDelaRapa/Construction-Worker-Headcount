@@ -48,6 +48,7 @@ class _DateSccheduleState extends State<DateScchedule> {
         SfCalendar(
       view: CalendarView.month,
       dataSource: MeetingDataSource(_getDataSource()),
+      //  specialRegions: _getTimeRegions(),
       onTap: (CalendarTapDetails details) {
             // List<Meeting> appointments = details.appointments as List<Meeting>;
             // print(appointments[0].eventName);
@@ -98,7 +99,9 @@ class _DateSccheduleState extends State<DateScchedule> {
         );
       },
       monthViewSettings: const MonthViewSettings(
-          appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
+          appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+          showTrailingAndLeadingDates: false                
+        ),
     ));
   }
 
@@ -108,14 +111,49 @@ class _DateSccheduleState extends State<DateScchedule> {
     setState(() {
       isLoading = true;
     });
+
     for(int x = 0; x < allForms!.length; x++){
       if(allForms![x].num_days != null){
         final DateTime today = DateTime.parse(allForms![x].date_start!);
         final DateTime startTime = DateTime(today.year, today.month, today.day);
-        final DateTime endTime = startTime.add(Duration(days: allForms![x].num_days!));
-        Color color = getColor(allForms![x].work);
-        meetings.add(Meeting(
-        allForms![x].type, startTime, endTime, color, false));
+        bool isPassedSaturday = false;
+        Color color = getColor(allForms![x].work);    
+        int counter =  allForms![x].num_days!;
+        int additional = 0;
+        for(int y = 0; y < counter; y++){
+          final DateTime endTime = startTime.add(Duration(days: y));          
+
+          if(endTime.weekday == DateTime.sunday){
+            if(!isPassedSaturday){
+              meetings.add(Meeting(allForms![x].type, startTime, endTime.subtract(const Duration(days: 1)), color, false));
+              counter = counter+2;
+              isPassedSaturday = true;
+            }
+          }else if(endTime.weekday == DateTime.monday){
+            if(((allForms![x].num_days!+2) - y) > 4 ){
+              meetings.add(Meeting(allForms![x].type, endTime, endTime.add(const Duration(days:5)), color, false));
+              counter = counter+1;
+              additional = additional+1;
+            }else{
+              if(startTime.add(Duration(days:(allForms![x].num_days!+additional))).weekday == DateTime.sunday
+              ){
+                meetings.add(Meeting(allForms![x].type, endTime, startTime.add(Duration(days:((allForms![x].num_days!+additional)-2))), color, false));
+                counter = counter+1;
+                additional = additional+1;                
+              }              
+              else{
+                meetings.add(Meeting(allForms![x].type, endTime, startTime.add(Duration(days:(allForms![x].num_days!+additional))), color, false));
+              }
+            }
+          }
+          else if(y == allForms![x].num_days!-1 && !isPassedSaturday){
+            if(
+              startTime.add(Duration(days:allForms![x].num_days!)).weekday != DateTime.sunday
+            ){
+            meetings.add(Meeting(allForms![x].type, startTime, endTime, color, false));            
+            }
+          }
+        }
       }
     }
 
