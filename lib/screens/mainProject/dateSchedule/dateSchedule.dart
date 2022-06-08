@@ -94,7 +94,7 @@ class _DateSccheduleState extends State<DateScchedule> {
                                                 const BorderRadius.all(
                                                     Radius.circular(10))),
                                         child: ListTile(
-                                            title: Text(meeting.eventName)),
+                                            title: Text(meeting.eventName, style: const TextStyle(color: Colors.white,))),
                                       ),
                                     );
                                   }),
@@ -112,7 +112,8 @@ class _DateSccheduleState extends State<DateScchedule> {
                 },
                 monthViewSettings: const MonthViewSettings(
                     appointmentDisplayMode:
-                        MonthAppointmentDisplayMode.appointment),
+                        MonthAppointmentDisplayMode.appointment,
+                        showTrailingAndLeadingDates: false ),
               ));
   }
 
@@ -122,18 +123,50 @@ class _DateSccheduleState extends State<DateScchedule> {
     setState(() {
       isLoading = true;
     });
-    for (int x = 0; x < allForms!.length; x++) {
-      if (allForms![x].num_days != null) {
+         for(int x = 0; x < allForms!.length; x++){
+      if(allForms![x].num_days != null){
         final DateTime today = DateTime.parse(allForms![x].date_start!);
         final DateTime startTime = DateTime(today.year, today.month, today.day);
-        final DateTime endTime =
-            startTime.add(Duration(days: allForms![x].num_days!));
         Color color = getColor(allForms![x].work);
-        meetings
-            .add(Meeting(allForms![x].type, startTime, endTime, color, false));
+        bool isPassedSaturday = false;  
+        int counter =  allForms![x].num_days!;
+        int additional = 0;
+        for(int y = 0; y < counter; y++){
+          final DateTime endTime = startTime.add(Duration(days: y));          
+
+          if(endTime.weekday == DateTime.sunday){
+            if(!isPassedSaturday){
+              meetings.add(Meeting(allForms![x].type, startTime, endTime.subtract(const Duration(days: 1)), color, false));
+              counter = counter+2;
+              isPassedSaturday = true;
+            }
+          }else if(endTime.weekday == DateTime.monday){
+            if(((allForms![x].num_days!+2) - y) > 4 ){
+              meetings.add(Meeting(allForms![x].type, endTime, endTime.add(const Duration(days:5)), color, false));
+              counter = counter+1;
+              additional = additional+1;
+            }else{
+              if(startTime.add(Duration(days:(allForms![x].num_days!+additional))).weekday == DateTime.sunday
+              ){
+                meetings.add(Meeting(allForms![x].type, endTime, startTime.add(Duration(days:((allForms![x].num_days!+additional)-2))), color, false));
+                counter = counter+1;
+                additional = additional+1;                
+              }              
+              else{
+                meetings.add(Meeting(allForms![x].type, endTime, startTime.add(Duration(days:(allForms![x].num_days!+additional))), color, false));
+              }
+            }
+          }
+          else if(y == allForms![x].num_days!-1 && !isPassedSaturday){
+            if(
+              startTime.add(Duration(days:allForms![x].num_days!)).weekday != DateTime.sunday
+            ){
+            meetings.add(Meeting(allForms![x].type, startTime, endTime, color, false));            
+            }
+          }
+        }
       }
     }
-
     setState(() {
       isLoading = false;
     });
@@ -147,43 +180,43 @@ class _DateSccheduleState extends State<DateScchedule> {
         color = const Color(0xffC16B57);
         break;
       case 'Formworks':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
+        color = const Color(0xff48398B);
+        break;  
       case 'Masonry Works':
-        color = Color.fromARGB(255, 9, 161, 123);
-        break;
+        color = const Color(0xff1FA263);
+        break;  
       case 'Reinforced Cement Works':
-        color = Color.fromARGB(255, 8, 94, 97);
-        break;
+        color = const Color(0xff973332);
+        break; 
       case 'Steel Reinforcement Works':
-        color = Color.fromARGB(255, 120, 147, 10);
-        break;
+        color = const Color(0xff2BB8B3);
+        break;  
       case 'Flooring':
-        color = Color.fromARGB(255, 8, 29, 97);
-        break;
+        color = const Color(0xffFB6B90);
+        break; 
       case 'Plastering':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
+        color = const Color(0xffFF8370);
+        break;  
       case 'Painting Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
+        color = const Color(0xff00B1B0);
+        break; 
       case 'Doors and Windows':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
+        color = const Color(0xffD18D96);
+        break;  
       case 'Ceiling':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
+        color = const Color(0xffE151AF);
+        break; 
       case 'Roofing Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
+        color = const Color(0xffE42256);
+        break;  
       case 'Electrical Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
+        color = const Color(0xffffa07a);
+        break; 
       case 'Plumbing Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
-        break;
-      default:
-        color = const Color.fromARGB(255, 184, 212, 44);
+        color = const Color(0xffBED7D8);
+        break;                                                                
+       default:
+        color = const Color(0xff6E3562);
         break;
     }
 
