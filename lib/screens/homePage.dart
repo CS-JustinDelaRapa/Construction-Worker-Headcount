@@ -148,20 +148,28 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.2,
-                                child:
-                                    Image.asset('assets/images/logo_png.png')),
+                                child: Theme.of(context).brightness ==
+                                        Brightness.light
+                                    ? Image.asset('assets/images/bnw_logo.png')
+                                    : Image.asset(
+                                        'assets/images/colored_logo.png')),
+                            const SizedBox(
+                              height: 20,
+                            ),
                             const Text(
-                              'Construction App',
+                              'Construction Worker Headcount',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontSize: 35,
+                                fontSize: 30,
                                 fontWeight: FontWeight.bold,
+                                // color: Color.fromARGB(255, 137, 202, 180),
                               ),
                             ),
                             const Text(
-                              'Construction Worker Headcount Application',
+                              'Construction Application',
                               style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
                               ),
                             )
                           ]),

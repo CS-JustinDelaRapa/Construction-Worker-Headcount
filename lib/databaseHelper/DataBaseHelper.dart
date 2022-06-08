@@ -1362,20 +1362,20 @@ class DatabaseHelper {
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
-          col_1_val: 4,
-          type: 'Column',
+          col_1_val: 6,
+          type: 'Columns',
           work: 'Formworks'),
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
           col_1_val: 3.3,
-          type: 'Beam',
+          type: 'Beams',
           work: 'Formworks'),
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
           col_1_val: 4.3,
-          type: 'Slab',
+          type: 'Slabs',
           work: 'Formworks'),
       //Masonry
       ProductivityItem(
@@ -1413,7 +1413,7 @@ class DatabaseHelper {
           fk: fk,
           col_1: 'DEFAULT',
           col_1_val: 200,
-          type: 'Column',
+          type: 'Columns',
           work: 'Steel Reinforcement Works'),
       ProductivityItem(
           fk: fk,
@@ -1770,38 +1770,38 @@ class DatabaseHelper {
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
-          col_1_val: 4,
-          type: 'Column Ground Floor',
+          col_1_val: 6,
+          type: 'Columns Ground Floor',
           work: 'Formworks'),
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
-          col_1_val: 4,
-          type: 'Column Second Floor',
-          work: 'Formworks'),
-      ProductivityItem(
-          fk: fk,
-          col_1: 'DEFAULT',
-          col_1_val: 3.3,
-          type: 'Beam FB',
+          col_1_val: 6,
+          type: 'Columns Second Floor',
           work: 'Formworks'),
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
           col_1_val: 3.3,
-          type: 'Beam RB',
+          type: 'Beams FB',
+          work: 'Formworks'),
+      ProductivityItem(
+          fk: fk,
+          col_1: 'DEFAULT',
+          col_1_val: 3.3,
+          type: 'Beams RB',
           work: 'Formworks'),
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
           col_1_val: 4.3,
-          type: 'Slab GF',
+          type: 'Slabs GF',
           work: 'Formworks'),
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
           col_1_val: 4.3,
-          type: 'Slab SF',
+          type: 'Slabs SF',
           work: 'Formworks'),
       ProductivityItem(
           fk: fk,
@@ -1987,84 +1987,42 @@ class DatabaseHelper {
           fk: fk,
           col_1: 'Mosaic Tile',
           col_1_val: 7,
-          type: 'EXT T&B Ground Floor',
+          type: 'EXT T&B',
           work: 'Flooring'),
       ProductivityItem(
           // EXT T&B Ground Floor
           fk: fk,
           col_1: 'Ceramic Tile',
           col_1_val: 7,
-          type: 'EXT T&B Ground Floor',
+          type: 'EXT T&B',
           work: 'Flooring'),
       ProductivityItem(
           // EXT T&B Ground Floor
           fk: fk,
           col_1: 'Vitrified Tile',
           col_1_val: 10,
-          type: 'EXT T&B Ground Floor',
+          type: 'EXT T&B',
           work: 'Flooring'),
       ProductivityItem(
           // EXT T&B Ground Floor
           fk: fk,
           col_1: 'Granite Tile',
           col_1_val: 5,
-          type: 'EXT T&B Ground Floor',
+          type: 'EXT T&B',
           work: 'Flooring'),
       ProductivityItem(
           // EXT T&B Ground Floor
           fk: fk,
           col_1: 'Marble Tile',
           col_1_val: 5,
-          type: 'EXT T&B Ground Floor',
+          type: 'EXT T&B',
           work: 'Flooring'),
       ProductivityItem(
           // EXT T&B Ground Floor
           fk: fk,
           col_1: 'Glazed Tile',
           col_1_val: 8,
-          type: 'EXT T&B Ground Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          // EXT T&B Second Floor
-          fk: fk,
-          col_1: 'Mosaic Tile',
-          col_1_val: 7,
-          type: 'EXT T&B Second Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          // EXT T&B Second Floor
-          fk: fk,
-          col_1: 'Ceramic Tile',
-          col_1_val: 7,
-          type: 'EXT T&B Second Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          // EXT T&B Second Floor
-          fk: fk,
-          col_1: 'Vitrified Tile',
-          col_1_val: 10,
-          type: 'EXT T&B Second Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          // EXT T&B Second Floor
-          fk: fk,
-          col_1: 'Granite Tile',
-          col_1_val: 5,
-          type: 'EXT T&B Second Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          // EXT T&B Second Floor
-          fk: fk,
-          col_1: 'Marble Tile',
-          col_1_val: 5,
-          type: 'EXT T&B Second Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          // EXT T&B Second Floor
-          fk: fk,
-          col_1: 'Glazed Tile',
-          col_1_val: 8,
-          type: 'EXT T&B Second Floor',
+          type: 'EXT T&B',
           work: 'Flooring'),
 
       ProductivityItem(
@@ -2072,42 +2030,21 @@ class DatabaseHelper {
           fk: fk,
           col_1: 'Mosaic Tile',
           col_1_val: 7,
-          type: 'T&B Ground Floor',
+          type: 'T&B',
           work: 'Flooring'),
       ProductivityItem(
           //T&B Ground Floor
           fk: fk,
           col_1: 'Ceramic Tile',
           col_1_val: 7,
-          type: 'T&B Ground Floor',
+          type: 'T&B',
           work: 'Flooring'),
       ProductivityItem(
           //T&B Ground Floor
           fk: fk,
           col_1: 'Marble Tile',
           col_1_val: 5,
-          type: 'T&B Ground Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          //T&B Second Floor
-          fk: fk,
-          col_1: 'Mosaic Tile',
-          col_1_val: 7,
-          type: 'T&B Second Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          //T&B Second Floor
-          fk: fk,
-          col_1: 'Ceramic Tile',
-          col_1_val: 7,
-          type: 'T&B Second Floor',
-          work: 'Flooring'),
-      ProductivityItem(
-          //T&B Second Floor
-          fk: fk,
-          col_1: 'Marble Tile',
-          col_1_val: 5,
-          type: 'T&B Second Floor',
+          type: 'T&B',
           work: 'Flooring'),
       //Plastering
       ProductivityItem(

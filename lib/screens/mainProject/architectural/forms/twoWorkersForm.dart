@@ -51,7 +51,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   var outputFormat = DateFormat('MM/dd/yyyy');
   DateTime selectedDate = DateTime.now();
-
+  int additionalDays = 0;
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -1670,6 +1670,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
+          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            DateTime tempDate = selectedDate.add(Duration(days: x));
+            if (tempDate.weekday == DateTime.sunday) {
+              additionalDays++;
+            }
+          }
           setState(() {
             if (workernumbers <= 2) {
               worker1 = workernumbers;
@@ -1686,8 +1692,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
                 numberOfDays!;
-            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            dateEnd = selectedDate
+                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
+            additionalDays = 0;
           });
         }
       }
@@ -1754,6 +1762,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
+          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            DateTime tempDate = selectedDate.add(Duration(days: x));
+            if (tempDate.weekday == DateTime.sunday) {
+              additionalDays++;
+            }
+          }
           setState(() {
             if (workernumbers <= 2) {
               worker1 = workernumbers;
@@ -1770,8 +1784,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
                 numberOfDays!;
-            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            dateEnd = selectedDate
+                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
+            additionalDays = 0;
           });
         }
       }
@@ -1842,6 +1858,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
+          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            DateTime tempDate = selectedDate.add(Duration(days: x));
+            if (tempDate.weekday == DateTime.sunday) {
+              additionalDays++;
+            }
+          }
           setState(() {
             if (workernumbers <= 2) {
               worker1 = workernumbers;
@@ -1854,8 +1876,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             numberOfWorkers = (worker1! + worker2!);
             costOfLabor = (worker1!.toDouble() * workerCost!) +
                 (worker2!.toDouble() * workerCost2!);
-            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            dateEnd = selectedDate
+                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
+            additionalDays = 0;
           });
         }
       }
@@ -1922,6 +1946,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
+          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            DateTime tempDate = selectedDate.add(Duration(days: x));
+            if (tempDate.weekday == DateTime.sunday) {
+              additionalDays++;
+            }
+          }
           setState(() {
             if (workernumbers <= 2) {
               worker1 = 1;
@@ -1941,8 +1971,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
                 numberOfDays!;
-            dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+            dateEnd = selectedDate
+                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
+            additionalDays = 0;
           });
         }
       }
@@ -2045,13 +2077,21 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                 worker1 = 3;
                 worker2 = workernumbers;
               }
+              for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+                DateTime tempDate = selectedDate.add(Duration(days: x));
+                if (tempDate.weekday == DateTime.sunday) {
+                  additionalDays++;
+                }
+              }
               numberOfDays = initialNumberofDays!.ceil();
               numberOfWorkers = (worker1! + worker2!);
               costOfLabor = ((worker1!.toDouble() * workerCost!) +
                       (worker2!.toDouble() * workerCost2!)) *
                   numberOfDays!;
-              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              dateEnd = selectedDate
+                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
+              additionalDays = 0;
             });
           }
         }
@@ -2113,6 +2153,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ]);
                 });
           } else {
+            for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+              DateTime tempDate = selectedDate.add(Duration(days: x));
+              if (tempDate.weekday == DateTime.sunday) {
+                additionalDays++;
+              }
+            }
             setState(() {
               if (workernumbers <= 2) {
                 worker1 = workernumbers;
@@ -2129,8 +2175,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               costOfLabor = ((worker1!.toDouble() * workerCost!) +
                       (worker2!.toDouble() * workerCost2!)) *
                   numberOfDays!;
-              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              dateEnd = selectedDate
+                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
+              additionalDays = 0;
             });
           }
         }
@@ -2204,12 +2252,20 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                 worker1 = 2;
                 worker2 = workernumbers;
               }
+              for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+                DateTime tempDate = selectedDate.add(Duration(days: x));
+                if (tempDate.weekday == DateTime.sunday) {
+                  additionalDays++;
+                }
+              }
               numberOfDays = initialNumberofDays!.round();
               numberOfWorkers = (worker1! + worker2!);
               costOfLabor = (worker1!.toDouble() * workerCost!) +
                   (worker2!.toDouble() * workerCost2!);
-              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              dateEnd = selectedDate
+                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
+              additionalDays = 0;
             });
           }
         }
@@ -2271,6 +2327,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ]);
                 });
           } else {
+            for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+              DateTime tempDate = selectedDate.add(Duration(days: x));
+              if (tempDate.weekday == DateTime.sunday) {
+                additionalDays++;
+              }
+            }
             setState(() {
               if (workernumbers <= 2) {
                 worker1 = 1;
@@ -2290,8 +2352,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               costOfLabor = ((worker1!.toDouble() * workerCost!) +
                       (worker2!.toDouble() * workerCost2!)) *
                   numberOfDays!;
-              dateEnd = selectedDate.add(Duration(days: numberOfDays!));
+              dateEnd = selectedDate
+                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
+              additionalDays = 0;
             });
           }
         }
@@ -2304,7 +2368,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
         col_2: double.parse(volume!),
         pref_time: int.parse(preferedTime!),
         num_days: numberOfDays!,
-        date_end: selectedDate.add(Duration(days: numberOfDays!)).toString(),
+        date_end: dateEnd.toString(),
         num_workers: numberOfWorkers!,
         worker_1: worker1!,
         worker_2: worker2!,
@@ -2323,14 +2387,32 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   Widget computeButton() => ElevatedButton(
       onPressed: () {
-        if (widget.architecturalType.toLowerCase() == 'flooring') {
-          flooringComputer();
-        } else if (widget.architecturalType.toLowerCase() == 'plastering') {
-          plasteringWorksComputer();
-        } else if (widget.architecturalType.toLowerCase() == 'ceiling') {
-          ceilingComputer();
-        } else if (widget.architecturalType.toLowerCase() == 'roofing works') {
-          roofingComputer();
+        if (selectedDate.weekday == DateTime.sunday) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    title: const Text('No work at Sunday'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        child: const Text("OK"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ]);
+              });
+        } else {
+          if (widget.architecturalType.toLowerCase() == 'flooring') {
+            flooringComputer();
+          } else if (widget.architecturalType.toLowerCase() == 'plastering') {
+            plasteringWorksComputer();
+          } else if (widget.architecturalType.toLowerCase() == 'ceiling') {
+            ceilingComputer();
+          } else if (widget.architecturalType.toLowerCase() ==
+              'roofing works') {
+            roofingComputer();
+          }
         }
       },
       child: const Text('Compute'));
@@ -2406,8 +2488,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             col_2: double.parse(volume!),
             pref_time: int.parse(preferedTime!),
             num_days: numberOfDays!,
-            date_end:
-                selectedDate.add(Duration(days: numberOfDays!)).toString(),
+            date_end: dateEnd.toString(),
             num_workers: numberOfWorkers!,
             worker_1: worker1!,
             worker_2: worker2!,

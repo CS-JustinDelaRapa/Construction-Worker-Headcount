@@ -8,10 +8,8 @@ import '../../../../model/defaulValueModel.dart';
 
 class TwoStoreyArchitechturalItems {
   static const List<String> listFlooringWorks = [
-    'EXT T&B Ground Floor',
-    'EXT T&B Second Floor',
-    'T&B Ground Floor',
-    'T&B Second Floor',
+    'EXT T&B',
+    'T&B',
   ];
   static const List<String> listPlasteringWorks = [
     'Interior GF',
@@ -49,8 +47,6 @@ class TwoStoreyArchitechturalItems {
 
   static const List<DefaultValue> defValFlooringWorks = [
     DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), // EXT T&B Ground Floor
-    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), //'EXT T&B Second Floor'
-    DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), //  'T&B Ground Floor'
     DefaultValue(col_1: "Mosaic Tile", col_1_val: 7.0), //'T&B Second Floor'
   ];
 
