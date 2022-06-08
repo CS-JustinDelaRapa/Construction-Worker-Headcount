@@ -79,7 +79,7 @@ class _DateSccheduleState extends State<DateScchedule> {
                               borderRadius: const BorderRadius.all(Radius.circular(10))
                               ),
                           child: ListTile(
-                            title: Text(meeting.eventName)
+                            title: Text(meeting.eventName, style: const TextStyle(color: Colors.white,))
                           ),
                         ),
                       );
@@ -167,46 +167,46 @@ class _DateSccheduleState extends State<DateScchedule> {
     Color? color;
     switch (type) {
       case 'Earthworks':
-        color = const Color(0xFF0F8644);
+        color = const Color(0xffC16B57);
         break;
       case 'Formworks':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xff48398B);
         break;  
       case 'Masonry Works':
-        color = Color.fromARGB(255, 9, 161, 123);
+        color = const Color(0xff1FA263);
         break;  
       case 'Reinforced Cement Works':
-        color = Color.fromARGB(255, 8, 94, 97);
+        color = const Color(0xff973332);
         break; 
       case 'Steel Reinforcement Works':
-        color = Color.fromARGB(255, 120, 147, 10);
+        color = const Color(0xff2BB8B3);
         break;  
       case 'Flooring':
-        color = Color.fromARGB(255, 8, 29, 97);
+        color = const Color(0xffFB6B90);
         break; 
       case 'Plastering':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xffFF8370);
         break;  
       case 'Painting Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xff00B1B0);
         break; 
       case 'Doors and Windows':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xffD18D96);
         break;  
       case 'Ceiling':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xffE151AF);
         break; 
       case 'Roofing Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xffE42256);
         break;  
       case 'Electrical Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xffffa07a);
         break; 
       case 'Plumbing Works':
-        color = const Color.fromARGB(255, 8, 97, 48);
+        color = const Color(0xffBED7D8);
         break;                                                                
        default:
-        color = const Color.fromARGB(255, 184, 212, 44);
+        color = const Color(0xff6E3562);
         break;
     }
 
