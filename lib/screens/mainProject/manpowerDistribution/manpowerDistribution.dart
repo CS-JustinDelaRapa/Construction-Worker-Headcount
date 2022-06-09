@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'fixed-column.widget.dart';
-import 'mobile.dart';
+import '../dateSchedule/mobile.dart';
 
 class ManpowerDistribution extends StatefulWidget {
   final VoidCallback openDrawer;
@@ -999,7 +999,6 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
           // Text(numbers[0].toString()),
         ],
       );
-
   Future<void> _createPDF(ProjectItem itemProject, List<FormData> allForms,
       List<FormData> formData) async {
     var outputFormat = DateFormat('MM/dd/yyyy');
@@ -1027,7 +1026,7 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
 
 //Creates a text element to add the invoice number
     PdfTextElement element =
-        PdfTextElement(text: 'Construction Schedule', font: subHeadingFont);
+        PdfTextElement(text: 'Manpower Distribution', font: subHeadingFont);
     element.brush = PdfBrushes.white;
 
 //Draws the heading on the page
@@ -1035,56 +1034,20 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
         page: page, bounds: Rect.fromLTWH(300, bounds.top + 8, 0, 0))!;
 
 //Creates text elements to add the address and draw it to the page
-    element = PdfTextElement(
-        text: 'Project Name: ' +
-            itemProject.project_name +
-            ' \tStart Date: ' +
-            outputFormat.format(itemProject.date_start).toString() +
-            ' \tTotal Duration: ' +
-            durations.toString() +
-            '',
-        font: PdfStandardFont(PdfFontFamily.timesRoman, 14,
-            style: PdfFontStyle.bold));
-    element.brush = PdfBrushes.black;
-    result = element.draw(
-        page: page,
-        bounds: Rect.fromLTWH(10, result.bounds.bottom + 25, 0, 0))!;
-
-    PdfFont timesRoman = PdfStandardFont(PdfFontFamily.timesRoman, 14);
-
-    element = PdfTextElement(
-        text: 'Project Manager:' +
-            itemProject.project_manager +
-            ' \tEnd Date: ' +
-            outputFormat.format(itemProject.date_end).toString() +
-            '',
-        font: PdfStandardFont(PdfFontFamily.timesRoman, 14,
-            style: PdfFontStyle.bold));
-    element.brush = PdfBrushes.black;
-    result = element.draw(
-        page: page,
-        bounds: Rect.fromLTWH(10, result.bounds.bottom + 25, 0, 0))!;
-
-    graphics.drawLine(
-        PdfPen(PdfColor(126, 151, 173), width: 0.7),
-        Offset(0, result.bounds.bottom + 3),
-        Offset(graphics.clientSize.width, result.bounds.bottom + 3));
-
     //Creates a PDF grid
     PdfGrid grid = PdfGrid();
 
 //Add the columns to the grid
-    grid.columns.add(count: 5);
+    grid.columns.add(count: 4);
 
 //Add header to the grid
     grid.headers.add(1);
 
     PdfGridRow header = grid.headers[0];
-    header.cells[0].value = 'Task Descriptions';
-    header.cells[1].value = 'Status';
-    header.cells[2].value = 'Starting Date';
-    header.cells[3].value = 'End Date';
-    header.cells[4].value = 'Duration';
+    header.cells[0].value = 'Work Type';
+    header.cells[1].value = 'Worker';
+    header.cells[2].value = 'Worker 2';
+    header.cells[3].value = 'Total Cost';
 
     //Creates the header style
     PdfGridCellStyle headerStyle = PdfGridCellStyle();
@@ -1111,27 +1074,13 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
 //Add rows to grid
 
     PdfGridRow row = grid.rows.add();
-    var status = '';
     for (int i = 0; i < allForms.length; i++) {
-      if (allForms[i].date_start != null) {
-        row = grid.rows.add();
-        DateTime start = DateTime.parse(allForms[i].date_start!);
-        DateTime end = DateTime.parse(allForms[i].date_end!);
-        final tableDuration = daysBetween(start, end);
-
-        if (end.isBefore(DateTime.now())) {
-          status = "Complete";
-        } else {
-          status = "In Progress";
-        }
-        row.cells[0].value = allForms[i].type;
-        row.cells[1].value = status;
-        row.cells[2].value = outputFormat.format(start);
-        row.cells[3].value = outputFormat.format(end);
-        row.cells[4].value = tableDuration.toString() + " Days";
-      }
+      row = grid.rows.add();
+      row.cells[0].value = allForms[i].work;
+      row.cells[1].value = '4 + 1';
+      row.cells[2].value = '4 + 1';
+      row.cells[3].value = '5000.00 + 1000.0';
     }
-
     //Set padding for grid cells
     grid.style.cellPadding = PdfPaddings(left: 2, right: 2, top: 2, bottom: 2);
 
@@ -1190,25 +1139,3 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
     return (to.difference(from).inHours / 24).round();
   }
 }
-
-/*DateTime GetStartingDate(DateTime start, DateTime start2) {
-  DateTime result;
-  if (start.isBefore(start2)) {
-    result = start;
-    print('Backfilling is Greater Than Excavation');
-  } else {
-    result = start2;
-    print('Excavation is Greater Than Backfilling');
-  }
-  return result;
-}*/
-
-/*DateTime GetEndDate(DateTime end, DateTime end2) {
-  DateTime result;
-  if (end.isAfter(end)) {
-    result = end2;
-  } else {
-    result = end;
-  }
-  return result;
-}*/
