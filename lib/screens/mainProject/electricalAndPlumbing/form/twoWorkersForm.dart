@@ -770,12 +770,25 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                           )
                         ],
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Additional Manpower',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(fontSize: 20),
+                      Container(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Theme.of(context).appBarTheme.foregroundColor
+                            : const Color.fromRGBO(139, 216, 189, 1),
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Additional Manpower',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 25,
+                                  color: Theme.of(context).brightness ==
+                                          Brightness.light
+                                      ? Colors.white
+                                      : const Color.fromARGB(255, 35, 28, 59)),
+                            ),
+                          ),
                         ),
                       ),
                       //cbone
