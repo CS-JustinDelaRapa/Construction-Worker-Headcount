@@ -643,7 +643,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     }
                                     return null;
                                   },
-
                                   // controller: projectName.text,
                                   onChanged: (value) {
                                     setState(() {
@@ -673,9 +672,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       computeButton(),
                       //number of days
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Flexible(
-                            flex: 3,
+                            flex: 2,
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
@@ -688,23 +688,44 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             ),
                           ),
                           Flexible(
-                            flex: 4,
+                            flex: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Center(
-                                    child: Text(
-                                      numberOfDays != null
-                                          ? numberOfDays.toString()
-                                          : '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )),
-                            ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: numberOfDays != null
+                                    ? Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? const Color.fromARGB(
+                                                      255, 89, 180, 148)
+                                                  : const Color.fromRGBO(
+                                                      139, 216, 189, 1),
+                                              width: 2, //width of border
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Text(
+                                              numberOfDays != null
+                                                  ? numberOfDays!.toString()
+                                                  : '',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container()),
                           ),
                           const Flexible(
                             flex: 2,
@@ -722,60 +743,88 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         ],
                       ),
                       //date end
-                      Row(children: [
-                        const Flexible(
-                          flex: 3,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Date End',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        ),
-                        Flexible(
-                          flex: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Center(
-                                  child: Text(
-                                      dateEnd != null
-                                          ? outputFormat.format(dateEnd!)
-                                          : '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)),
-                                )),
-                          ),
-                        ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  //date end right side
-                                  '',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
-                          ),
-                        )
-                      ]),
-                      //number of workers
                       Row(
-                        children: [
-                          const Flexible(
-                              flex: 3,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Flexible(
+                              flex: 2,
                               child: Padding(
                                 padding: EdgeInsets.all(8.0),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Date End',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(fontSize: 15),
+                                    )),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 5,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: dateEnd != null
+                                      ? Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.light
+                                                    ? const Color.fromARGB(
+                                                        255, 89, 180, 148)
+                                                    : const Color.fromRGBO(
+                                                        139, 216, 189, 1),
+                                                width: 2, //width of border
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Text(
+                                                dateEnd != null
+                                                    ? outputFormat
+                                                        .format(dateEnd!)
+                                                    : '',
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Container()),
+                            ),
+                            const Flexible(
+                              flex: 2,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      //date end right side
+                                      '',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(fontSize: 15),
+                                    )),
+                              ),
+                            )
+                          ]),
+                      //number of workers
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Flexible(
+                              flex: 2,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
                                 child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -785,23 +834,44 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     )),
                               )),
                           Flexible(
-                            flex: 4,
+                            flex: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Center(
-                                    child: Text(
-                                      numberOfWorkers != null
-                                          ? numberOfWorkers!.toString()
-                                          : '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )),
-                            ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: numberOfWorkers != null
+                                    ? Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? const Color.fromARGB(
+                                                      255, 89, 180, 148)
+                                                  : const Color.fromRGBO(
+                                                      139, 216, 189, 1),
+                                              width: 2, //width of border
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Text(
+                                              numberOfWorkers != null
+                                                  ? numberOfWorkers!.toString()
+                                                  : '',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container()),
                           ),
                           const Flexible(
                             flex: 2,
@@ -823,11 +893,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       ),
                       //worker
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
-                            flex: 3,
+                            flex: 2,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                               child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -838,23 +909,45 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             ),
                           ),
                           Flexible(
-                            flex: 4,
+                            flex: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Center(
-                                    child: Text(
-                                      worker_1 != null
-                                          ? worker_1!.toString()
-                                          : '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )),
-                            ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: costOfLabor != null
+                                    ? Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? const Color.fromARGB(
+                                                      255, 89, 180, 148)
+                                                  : const Color.fromRGBO(
+                                                      139, 216, 189, 1),
+                                              width: 2, //width of border
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Text(
+                                              costOfLabor != null
+                                                  ? costOfLabor!
+                                                      .toStringAsFixed(2)
+                                                  : '',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container()),
                           ),
                           const Flexible(
                             flex: 2,
@@ -873,9 +966,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       ),
                       //cost of labor
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Flexible(
-                            flex: 3,
+                            flex: 2,
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
@@ -888,23 +982,45 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             ),
                           ),
                           Flexible(
-                            flex: 4,
+                            flex: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Center(
-                                    child: Text(
-                                      costOfLabor != null
-                                          ? costOfLabor.toString()
-                                          : '',
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )),
-                            ),
+                                padding: const EdgeInsets.all(8.0),
+                                child: costOfLabor != null
+                                    ? Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Theme.of(context)
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? const Color.fromARGB(
+                                                      255, 89, 180, 148)
+                                                  : const Color.fromRGBO(
+                                                      139, 216, 189, 1),
+                                              width: 2, //width of border
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Text(
+                                              costOfLabor != null
+                                                  ? costOfLabor!
+                                                      .toStringAsFixed(2)
+                                                  : '',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container()),
                           ),
                           const Flexible(
                             flex: 2,
@@ -921,23 +1037,29 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                           )
                         ],
                       ),
-                      Container(
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Theme.of(context).appBarTheme.foregroundColor
-                            : const Color.fromRGBO(139, 216, 189, 1),
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              'Additional Manpower',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 25,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.light
-                                      ? Colors.white
-                                      : const Color.fromARGB(255, 35, 28, 59)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Container(
+                          color: Theme.of(context).brightness ==
+                                  Brightness.light
+                              ? Theme.of(context).appBarTheme.foregroundColor
+                              : const Color.fromRGBO(139, 216, 189, 1),
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                'Additional Manpower',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 25,
+                                    color: Theme.of(context).brightness ==
+                                            Brightness.light
+                                        ? Colors.white
+                                        : const Color.fromARGB(
+                                            255, 35, 28, 59)),
+                              ),
                             ),
                           ),
                         ),
@@ -1185,7 +1307,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                           const Flexible(
                             flex: 4,
                             child: Padding(
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8),
                               child: Text(
                                 'Demand of higher salaries from construction workers',
                                 style: TextStyle(fontSize: 12),
@@ -1488,15 +1610,34 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             flex: 2,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    (totalPercentage! * 100).toStringAsFixed(0),
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  )),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Theme.of(context).brightness ==
+                                              Brightness.light
+                                          ? const Color.fromARGB(
+                                              255, 89, 180, 148)
+                                          : const Color.fromRGBO(
+                                              139, 216, 189, 1),
+                                      width: 2, //width of border
+                                    ),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Text(
+                                      (totalPercentage! * 100)
+                                          .toStringAsFixed(0),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -1522,19 +1663,45 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             Flexible(
                               flex: 2,
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        formData!.worker_1 != null
-                                            ? additionalWorker1!
-                                                .toStringAsFixed(0)
-                                            : '',
-                                        textAlign: TextAlign.left,
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold))),
-                              ),
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: additionalWorker1 != null
+                                      ? Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.3,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.light
+                                                    ? const Color.fromARGB(
+                                                        255, 89, 180, 148)
+                                                    : const Color.fromRGBO(
+                                                        139, 216, 189, 1),
+                                                width: 2, //width of border
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(5)),
+                                          child: Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Text(
+                                                additionalWorker1 != null
+                                                    ? additionalWorker1!
+                                                        .toStringAsFixed(0)
+                                                    : '',
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Container()),
                             ),
                           ],
                         ),
