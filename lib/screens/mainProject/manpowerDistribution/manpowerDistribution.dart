@@ -489,7 +489,61 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          actions: [printpdfButton(itemProject, allForms, formData)],
+          actions: [
+            printpdfButton(
+                plumbingNumber,
+                additionalplumbingNumber,
+                plumbingCost,
+                additionalplumbingCost,
+                earthworksNumber,
+                earthworksCost,
+                additionalEarthworksCost,
+                additionalEarthworksNumber,
+                formworksNumber,
+                formworksCost,
+                additionalformworksCost,
+                additionalformworksNumber,
+                masonryNumber,
+                masonryCost,
+                additionalmasonryCost,
+                additionalmasonryNumber,
+                reinforcedCementWorksNumber,
+                reinforcedCementWorksCost,
+                additionalreinforcedCementWorksCost,
+                additionalreinforcedCementWorksNumber,
+                steelReinforcementWorksNumber,
+                steelReinforcementWorksCost,
+                additionalsteelReinforcementWorksCost,
+                additionalsteelReinforcementWorksNumber,
+                flooringNumber,
+                flooringCost,
+                additionalflooringCost,
+                additionalflooringNumber,
+                plasteringNumber,
+                plasteringCost,
+                additionalplasteringCost,
+                additionalplasteringNumber,
+                paintingWorksNumber,
+                paintingWorksCost,
+                additionalpaintingWorksCost,
+                additionalpaintingWorksNumber,
+                doorAndWindowsNumber,
+                doorsAndWindowsCost,
+                additionaldoorsAndWindowsCost,
+                additionaldoorAndWindowsNumber,
+                ceilingNumber,
+                ceilingCost,
+                additionalceilingCost,
+                additionalceilingNumber,
+                roofingNumber,
+                roofingCost,
+                additionalroofingCost,
+                additionalroofingNumber,
+                electricalWorksNumber,
+                electricalWorksCost,
+                additionalelectricalWorksCost,
+                additionalelectricalWorksNumber)
+          ],
           leading: OpenDrawerWidget(
             onClicked: widget.openDrawer,
           ),
@@ -999,17 +1053,65 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
           // Text(numbers[0].toString()),
         ],
       );
-  Future<void> _createPDF(ProjectItem itemProject, List<FormData> allForms,
-      List<FormData> formData) async {
-    var outputFormat = DateFormat('MM/dd/yyyy');
-    final durations = daysBetween(itemProject.date_start, itemProject.date_end);
-
+  Future<void> _createPDF(
+      List<int> plumbingNumber,
+      List<int> additionalplumbingNumber,
+      double plumbingCost,
+      double additionalplumbingCost,
+      List<int> earthworksNumber,
+      double earthworksCost,
+      double additionalEarthworksCost,
+      List<int> additionalEarthworksNumber,
+      List<int> formworksNumber,
+      double formworksCost,
+      double additionalformworksCost,
+      List<int> additionalformworksNumber,
+      List<int> masonryNumber,
+      double masonryCost,
+      double additionalmasonryCost,
+      List<int> additionalmasonryNumber,
+      List<int> reinforcedCementWorksNumber,
+      double reinforcedCementWorksCost,
+      double additionalreinforcedCementWorksCost,
+      List<int> additionalreinforcedCementWorksNumber,
+      List<int> steelReinforcementWorksNumber,
+      double steelReinforcementWorksCost,
+      double additionalsteelReinforcementWorksCost,
+      List<int> additionalsteelReinforcementWorksNumber,
+      List<int> flooringNumber,
+      double flooringCost,
+      double additionalflooringCost,
+      List<int> additionalflooringNumber,
+      List<int> plasteringNumber,
+      double plasteringCost,
+      double additionalplasteringCost,
+      List<int> additionalplasteringNumber,
+      List<int> paintingWorksNumber,
+      double paintingWorksCost,
+      double additionalpaintingWorksCost,
+      List<int> additionalpaintingWorksNumber,
+      List<int> doorAndWindowsNumber,
+      double doorsAndWindowsCost,
+      double additionaldoorsAndWindowsCost,
+      List<int> additionaldoorAndWindowsNumber,
+      List<int> ceilingNumber,
+      double ceilingCost,
+      double additionalceilingCost,
+      List<int> additionalceilingNumber,
+      List<int> roofingNumber,
+      double roofingCost,
+      double additionalroofingCost,
+      List<int> additionalroofingNumber,
+      List<int> electricalWorksNumber,
+      double electricalWorksCost,
+      double additionalelectricalWorksCost,
+      List<int> additionalelectricalWorksNumber) async {
     //Creates a new PDF document
     PdfDocument document = PdfDocument();
 
 //Adds page settings
     document.pageSettings.orientation = PdfPageOrientation.landscape;
-    document.pageSettings.margins.all = 50;
+    document.pageSettings.margins.all = 40;
 
 //Adds a page to the document
     PdfPage page = document.pages.add();
@@ -1038,16 +1140,17 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
     PdfGrid grid = PdfGrid();
 
 //Add the columns to the grid
-    grid.columns.add(count: 4);
+    grid.columns.add(count: 5);
 
 //Add header to the grid
     grid.headers.add(1);
 
     PdfGridRow header = grid.headers[0];
     header.cells[0].value = 'Work Type';
-    header.cells[1].value = 'Worker';
-    header.cells[2].value = 'Worker 2';
-    header.cells[3].value = 'Total Cost';
+    header.cells[1].value = 'Workers';
+    header.cells[2].value = '';
+    header.cells[3].value = '';
+    header.cells[4].value = 'Total Cost';
 
     //Creates the header style
     PdfGridCellStyle headerStyle = PdfGridCellStyle();
@@ -1061,26 +1164,177 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
     for (int i = 0; i < header.cells.count; i++) {
       if (i == 0 || i == 1) {
         header.cells[i].stringFormat = PdfStringFormat(
-            alignment: PdfTextAlignment.left,
+            alignment: PdfTextAlignment.center,
             lineAlignment: PdfVerticalAlignment.middle);
       } else {
         header.cells[i].stringFormat = PdfStringFormat(
-            alignment: PdfTextAlignment.right,
+            alignment: PdfTextAlignment.center,
             lineAlignment: PdfVerticalAlignment.middle);
       }
       header.cells[i].style = headerStyle;
     }
-
+    var temp = '';
 //Add rows to grid
 
     PdfGridRow row = grid.rows.add();
-    for (int i = 0; i < allForms.length; i++) {
-      row = grid.rows.add();
-      row.cells[0].value = allForms[i].work;
-      row.cells[1].value = '4 + 1';
-      row.cells[2].value = '4 + 1';
-      row.cells[3].value = '5000.00 + 1000.0';
-    }
+//1st Earthworks
+    row = grid.rows.add();
+    row.cells[0].value = 'Earthworks';
+    row.cells[1].value = 'Laborer: ' +
+        earthworksNumber[0].toString() +
+        add(additionalEarthworksNumber[0]);
+    row.cells[2].value = '--';
+    row.cells[3].value = '--';
+    row.cells[4].value =
+        earthworksCost.toString() + cost(additionalEarthworksCost);
+//2nd Formworks
+    row = grid.rows.add();
+    row.cells[0].value = 'Formworks';
+    row.cells[1].value = 'Carpenter: ' +
+        formworksNumber[0].toString() +
+        add(additionalformworksNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        formworksNumber[1].toString() +
+        add(additionalformworksNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value =
+        formworksCost.toString() + cost(additionalformworksCost);
+//3rd Masonry
+    row = grid.rows.add();
+    row.cells[0].value = 'Masonry';
+    row.cells[1].value = 'Tile Man: ' +
+        masonryNumber[0].toString() +
+        add(additionalmasonryNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        masonryNumber[1].toString() +
+        add(additionalmasonryNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value = masonryCost.toString() + cost(additionalmasonryCost);
+//4th Reinforced Cement
+    row = grid.rows.add();
+    row.cells[0].value = 'Reinforced Cement Works';
+    row.cells[1].value = 'Mason: ' +
+        reinforcedCementWorksNumber[0].toString() +
+        add(additionalreinforcedCementWorksNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        reinforcedCementWorksNumber[1].toString() +
+        add(additionalreinforcedCementWorksNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value = reinforcedCementWorksCost.toString() +
+        cost(additionalreinforcedCementWorksCost);
+
+//5th Steel Reinforcement
+    row = grid.rows.add();
+    row.cells[0].value = 'Steel Reinforcement Works';
+    row.cells[1].value = 'Steel Man: ' +
+        steelReinforcementWorksNumber[0].toString() +
+        add(additionalsteelReinforcementWorksNumber[0]);
+    row.cells[2].value = '--';
+    row.cells[3].value = '--';
+    row.cells[4].value = steelReinforcementWorksCost.toString() +
+        cost(additionalsteelReinforcementWorksCost);
+
+//6th Flooring
+    row = grid.rows.add();
+    row.cells[0].value = 'Flooring';
+    row.cells[1].value = 'Tile Man: ' +
+        flooringNumber[0].toString() +
+        add(additionalflooringNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        flooringNumber[1].toString() +
+        add(additionalflooringNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value = flooringCost.toString() + cost(additionalflooringCost);
+
+//7th Plastering
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Plastering';
+    row.cells[1].value = 'Mason: ' +
+        plasteringNumber[0].toString() +
+        add(additionalplasteringNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        plasteringNumber[1].toString() +
+        add(additionalplasteringNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value =
+        plasteringCost.toString() + cost(additionalplasteringCost);
+
+//8th Painting Works
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Painting Works';
+    row.cells[1].value = 'Painter: ' +
+        paintingWorksNumber[0].toString() +
+        add(additionalpaintingWorksNumber[0]);
+    row.cells[2].value = '--';
+    row.cells[3].value = '--';
+    row.cells[4].value =
+        paintingWorksCost.toString() + cost(additionalpaintingWorksCost);
+
+//9th Doors and Windows
+    row = grid.rows.add();
+    row.cells[0].value = 'Doors and Windows';
+    row.cells[1].value = 'Doors: ' +
+        doorAndWindowsNumber[0].toString() +
+        add(additionaldoorAndWindowsNumber[0]);
+    row.cells[2].value = 'Windows: ' +
+        doorAndWindowsNumber[1].toString() +
+        add(additionaldoorAndWindowsNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value =
+        doorsAndWindowsCost.toString() + cost(additionaldoorsAndWindowsCost);
+//10th Ceiling
+    row = grid.rows.add();
+    row.cells[0].value = 'Ceiling';
+    row.cells[1].value = 'Carpenter: ' +
+        ceilingNumber[0].toString() +
+        add(additionalceilingNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        ceilingNumber[1].toString() +
+        add(additionalceilingNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value = ceilingCost.toString() + cost(additionalceilingCost);
+
+//11th Roofing
+    row = grid.rows.add();
+    row.cells[0].value = 'Roofing';
+    row.cells[1].value = 'Tinsmith: ' +
+        roofingNumber[0].toString() +
+        add(additionalroofingNumber[0]);
+    row.cells[2].value = 'Welder: ' +
+        roofingNumber[1].toString() +
+        add(additionalroofingNumber[1]);
+    row.cells[3].value = 'Laborer: ' +
+        roofingNumber[2].toString() +
+        add(additionalroofingNumber[2]);
+    row.cells[4].value = roofingCost.toString() + cost(additionalroofingCost);
+
+//12th Electrical
+    row = grid.rows.add();
+    row.cells[0].value = 'Electrical';
+    row.cells[1].value = 'Electrician: ' +
+        electricalWorksNumber[0].toString() +
+        add(additionalelectricalWorksNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        electricalWorksNumber[1].toString() +
+        add(additionalelectricalWorksNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value =
+        electricalWorksCost.toString() + cost(additionalelectricalWorksCost);
+
+//last
+    row = grid.rows.add();
+    row.cells[0].value = 'Plumbing';
+    row.cells[1].value = 'Plumber: ' +
+        plumbingNumber[0].toString() +
+        add(additionalplumbingNumber[0]);
+    row.cells[2].value = 'Laborer: ' +
+        plumbingNumber[1].toString() +
+        add(additionalplumbingNumber[1]);
+    row.cells[3].value = '--';
+    row.cells[4].value = plumbingCost.toString() + cost(additionalplumbingCost);
+
     //Set padding for grid cells
     grid.style.cellPadding = PdfPaddings(left: 2, right: 2, top: 2, bottom: 2);
 
@@ -1097,11 +1351,11 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
         row.cells[j].style = cellStyle;
         if (j == 0 || j == 1) {
           row.cells[j].stringFormat = PdfStringFormat(
-              alignment: PdfTextAlignment.left,
+              alignment: PdfTextAlignment.center,
               lineAlignment: PdfVerticalAlignment.middle);
         } else {
           row.cells[j].stringFormat = PdfStringFormat(
-              alignment: PdfTextAlignment.right,
+              alignment: PdfTextAlignment.center,
               lineAlignment: PdfVerticalAlignment.middle);
         }
       }
@@ -1114,7 +1368,7 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
 //Draws the grid to the PDF page
     PdfLayoutResult gridResult = grid.draw(
         page: page,
-        bounds: Rect.fromLTWH(0, result.bounds.bottom + 20,
+        bounds: Rect.fromLTWH(0, result.bounds.bottom + 10,
             graphics.clientSize.width, graphics.clientSize.height - 100),
         format: layoutFormat)!;
 
@@ -1124,12 +1378,116 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
     saveAndLaunchFile(bytes, 'Output.pdf');
   }
 
-  Widget printpdfButton(ProjectItem? itemProject, List<FormData>? allForms,
-          List<FormData>? formData) =>
+  Widget printpdfButton(
+          List<int> plumbingNumber,
+          List<int> additionalplumbingNumber,
+          double plumbingCost,
+          double additionalplumbingCost,
+          List<int> earthworksNumber,
+          double earthworksCost,
+          double additionalEarthworksCost,
+          List<int> additionalEarthworksNumber,
+          List<int> formworksNumber,
+          double formworksCost,
+          double additionalformworksCost,
+          List<int> additionalformworksNumber,
+          List<int> masonryNumber,
+          double masonryCost,
+          double additionalmasonryCost,
+          List<int> additionalmasonryNumber,
+          List<int> reinforcedCementWorksNumber,
+          double reinforcedCementWorksCost,
+          double additionalreinforcedCementWorksCost,
+          List<int> additionalreinforcedCementWorksNumber,
+          List<int> steelReinforcementWorksNumber,
+          double steelReinforcementWorksCost,
+          double additionalsteelReinforcementWorksCost,
+          List<int> additionalsteelReinforcementWorksNumber,
+          List<int> flooringNumber,
+          double flooringCost,
+          double additionalflooringCost,
+          List<int> additionalflooringNumber,
+          List<int> plasteringNumber,
+          double plasteringCost,
+          double additionalplasteringCost,
+          List<int> additionalplasteringNumber,
+          List<int> paintingWorksNumber,
+          double paintingWorksCost,
+          double additionalpaintingWorksCost,
+          List<int> additionalpaintingWorksNumber,
+          List<int> doorAndWindowsNumber,
+          double doorsAndWindowsCost,
+          double additionaldoorsAndWindowsCost,
+          List<int> additionaldoorAndWindowsNumber,
+          List<int> ceilingNumber,
+          double ceilingCost,
+          double additionalceilingCost,
+          List<int> additionalceilingNumber,
+          List<int> roofingNumber,
+          double roofingCost,
+          double additionalroofingCost,
+          List<int> additionalroofingNumber,
+          List<int> electricalWorksNumber,
+          double electricalWorksCost,
+          double additionalelectricalWorksCost,
+          List<int> additionalelectricalWorksNumber) =>
       ElevatedButton(
         child: const Text('Create PDF'),
         onPressed: () {
-          _createPDF(itemProject!, allForms!, formData!);
+          _createPDF(
+            plumbingNumber,
+            additionalplumbingNumber,
+            plumbingCost,
+            additionalplumbingCost,
+            earthworksNumber,
+            earthworksCost,
+            additionalEarthworksCost,
+            additionalEarthworksNumber,
+            formworksNumber,
+            formworksCost,
+            additionalformworksCost,
+            additionalformworksNumber,
+            masonryNumber,
+            masonryCost,
+            additionalmasonryCost,
+            additionalmasonryNumber,
+            reinforcedCementWorksNumber,
+            reinforcedCementWorksCost,
+            additionalreinforcedCementWorksCost,
+            additionalreinforcedCementWorksNumber,
+            steelReinforcementWorksNumber,
+            steelReinforcementWorksCost,
+            additionalsteelReinforcementWorksCost,
+            additionalsteelReinforcementWorksNumber,
+            flooringNumber,
+            flooringCost,
+            additionalflooringCost,
+            additionalflooringNumber,
+            plasteringNumber,
+            plasteringCost,
+            additionalplasteringCost,
+            additionalplasteringNumber,
+            paintingWorksNumber,
+            paintingWorksCost,
+            additionalpaintingWorksCost,
+            additionalpaintingWorksNumber,
+            doorAndWindowsNumber,
+            doorsAndWindowsCost,
+            additionaldoorsAndWindowsCost,
+            additionaldoorAndWindowsNumber,
+            ceilingNumber,
+            ceilingCost,
+            additionalceilingCost,
+            additionalceilingNumber,
+            roofingNumber,
+            roofingCost,
+            additionalroofingCost,
+            additionalroofingNumber,
+            electricalWorksNumber,
+            electricalWorksCost,
+            additionalelectricalWorksCost,
+            additionalelectricalWorksNumber,
+          );
         },
       );
 
@@ -1138,4 +1496,24 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
     to = DateTime(to.year, to.month, to.day);
     return (to.difference(from).inHours / 24).round();
   }
+}
+
+String add(int num) {
+  var temp = '';
+  if (num == 0) {
+    temp = '';
+  } else {
+    temp = ' + ' + num.toString();
+  }
+  return temp;
+}
+
+String cost(double num) {
+  var temp = '';
+  if (num == 0) {
+    temp = '';
+  } else {
+    temp = ' + ' + num.toString();
+  }
+  return temp;
 }
