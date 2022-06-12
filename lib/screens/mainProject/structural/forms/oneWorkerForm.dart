@@ -570,21 +570,19 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Flexible(
-                            flex: 2,
-                            child: Padding(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
+                            child: const Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Number of days',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
-                                  )),
+                              child: Text(
+                                'Number of days',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                          Flexible(
-                            flex: 5,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: numberOfDays != null
@@ -628,7 +626,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.center,
                                   child: Text(
                                     'day/s',
                                     textAlign: TextAlign.left,
@@ -642,9 +640,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Flexible(
-                              flex: 2,
-                              child: Padding(
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
+                              child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Align(
                                     alignment: Alignment.centerLeft,
@@ -655,8 +653,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     )),
                               ),
                             ),
-                            Flexible(
-                              flex: 5,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: dateEnd != null
@@ -717,10 +715,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Flexible(
-                              flex: 2,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
+                              child: const Padding(
+                                padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
                                 child: Align(
                                     alignment: Alignment.centerLeft,
                                     child: Text(
@@ -729,8 +727,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       style: TextStyle(fontSize: 15),
                                     )),
                               )),
-                          Flexible(
-                            flex: 5,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: numberOfWorkers != null
@@ -769,12 +767,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       )
                                     : Container()),
                           ),
-                          const Flexible(
-                            flex: 2,
-                            child: Padding(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
+                            child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.center,
                                   child: Text(
                                     'worker/s',
                                     textAlign: TextAlign.left,
@@ -791,8 +789,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Flexible(
-                            flex: 2,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                               child: Align(
@@ -804,8 +802,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   )),
                             ),
                           ),
-                          Flexible(
-                            flex: 5,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: costOfLabor != null
@@ -844,12 +842,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       )
                                     : Container()),
                           ),
-                          const Flexible(
-                            flex: 2,
-                            child: Padding(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
+                            child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.center,
                                   child: Text(
                                     'worker/s',
                                     textAlign: TextAlign.left,
@@ -863,9 +861,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Flexible(
-                            flex: 2,
-                            child: Padding(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
+                            child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
                                   alignment: Alignment.centerLeft,
@@ -876,8 +874,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   )),
                             ),
                           ),
-                          Flexible(
-                            flex: 5,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: costOfLabor != null
@@ -917,12 +915,12 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                       )
                                     : Container()),
                           ),
-                          const Flexible(
-                            flex: 2,
-                            child: Padding(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
+                            child: const Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.center,
                                   child: Text(
                                     'php',
                                     textAlign: TextAlign.left,

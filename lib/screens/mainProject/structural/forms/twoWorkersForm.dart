@@ -673,21 +673,19 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Number of days',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
+                            child: Text(
+                              'Number of days',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(fontSize: 15),
+                            ),
                           ),
                         ),
-                        Flexible(
-                          flex: 5,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: numberOfDays != null
@@ -725,12 +723,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     )
                                   : Container()),
                         ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'day/s',
                                   textAlign: TextAlign.left,
@@ -744,21 +742,19 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Flexible(
-                            flex: 2,
-                            child: Padding(
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
+                            child: const Padding(
                               padding: EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Date End',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
-                                  )),
+                              child: Text(
+                                'Date End',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontSize: 15),
+                              ),
                             ),
                           ),
-                          Flexible(
-                            flex: 5,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.33,
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: dateEnd != null
@@ -817,20 +813,19 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Flexible(
-                            flex: 2,
-                            child: Padding(
-                              padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Number of workers',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 15),
-                                  )),
-                            )),
-                        Flexible(
-                          flex: 5,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'Number of workers',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: numberOfWorkers != null
@@ -868,12 +863,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     )
                                   : Container()),
                         ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'worker/s',
                                   textAlign: TextAlign.left,
@@ -897,14 +892,15 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                             padding: const EdgeInsets.all(8),
                             child: Text(
                               worker!.toUpperCase(),
+                              textAlign: TextAlign.left,
                               style: const TextStyle(fontSize: 15),
                             ),
                           ),
                         ),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.30,
+                          width: MediaQuery.of(context).size.width * 0.33,
                           child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                               child: worker1 != null
                                   ? Container(
                                       width: MediaQuery.of(context).size.width *
@@ -944,11 +940,13 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                           width: MediaQuery.of(context).size.width * 0.33,
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              'worker/s',
-                              textAlign: TextAlign.right,
-                              style: TextStyle(fontSize: 15),
-                            ),
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'worker/s',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontSize: 15),
+                                )),
                           ),
                         )
                       ],
@@ -957,8 +955,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Flexible(
-                          flex: 2,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: Align(
@@ -970,8 +968,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                 )),
                           ),
                         ),
-                        Flexible(
-                          flex: 5,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: worker2 != null
@@ -1009,12 +1007,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     )
                                   : Container()),
                         ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'worker/s',
                                   textAlign: TextAlign.left,
@@ -1028,21 +1026,19 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'COST OF LABOR',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
+                            child: Text(
+                              'Cost Of Labor',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(fontSize: 15),
+                            ),
                           ),
                         ),
-                        Flexible(
-                          flex: 5,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
                           child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: costOfLabor != null
@@ -1081,12 +1077,12 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     )
                                   : Container()),
                         ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Align(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: Text(
                                   'php',
                                   textAlign: TextAlign.left,
