@@ -97,7 +97,15 @@ class _DateSccheduleState extends State<DateScchedule> {
                                             title: Text(meeting.eventName,
                                                 style: const TextStyle(
                                                   color: Colors.white,
-                                                ))),
+                                                  fontWeight: FontWeight.bold
+                                                )),
+                                            subtitle: Text(meeting.eventSubtitle, 
+                                            style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14
+                                                )
+                                            ),        
+                                        ),
                                       ),
                                     );
                                   }),
@@ -139,14 +147,14 @@ class _DateSccheduleState extends State<DateScchedule> {
 
           if (endTime.weekday == DateTime.sunday) {
             if (!isPassedSaturday) {
-              meetings.add(Meeting(allForms![x].type, startTime,
+              meetings.add(Meeting(allForms![x].type, allForms![x].work ,startTime,
                   endTime.subtract(const Duration(days: 1)), color, false));
               counter = counter + 2;
               isPassedSaturday = true;
             }
           } else if (endTime.weekday == DateTime.monday) {
             if (((allForms![x].num_days! + 2) - y) > 4) {
-              meetings.add(Meeting(allForms![x].type, endTime,
+              meetings.add(Meeting(allForms![x].type, allForms![x].work, endTime,
                   endTime.add(const Duration(days: 5)), color, false));
               counter = counter + 1;
               additional = additional + 1;
@@ -158,6 +166,7 @@ class _DateSccheduleState extends State<DateScchedule> {
                   DateTime.sunday) {
                 meetings.add(Meeting(
                     allForms![x].type,
+                    allForms![x].work,
                     endTime,
                     startTime.add(Duration(
                         days: ((allForms![x].num_days! + additional) - 2))),
@@ -168,6 +177,7 @@ class _DateSccheduleState extends State<DateScchedule> {
               } else {
                 meetings.add(Meeting(
                     allForms![x].type,
+                    allForms![x].work,
                     endTime,
                     startTime.add(
                         Duration(days: (allForms![x].num_days! + additional))),
@@ -179,7 +189,7 @@ class _DateSccheduleState extends State<DateScchedule> {
             if (startTime.add(Duration(days: allForms![x].num_days!)).weekday !=
                 DateTime.sunday) {
               meetings.add(
-                  Meeting(allForms![x].type, startTime, endTime, color, false));
+                  Meeting(allForms![x].type, allForms![x].work ,startTime, endTime, color, false));
             }
           }
         }
@@ -267,6 +277,11 @@ class MeetingDataSource extends CalendarDataSource {
     return _getMeetingData(index).eventName;
   }
 
+    @override
+  String getSubtitle(int index) {
+    return _getMeetingData(index).eventSubtitle;
+  }
+
   @override
   Color getColor(int index) {
     return _getMeetingData(index).background;
@@ -292,10 +307,13 @@ class MeetingDataSource extends CalendarDataSource {
 /// information about the event data which will be rendered in calendar.
 class Meeting {
   /// Creates a meeting class with required details.
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+  Meeting(this.eventName, this.eventSubtitle, this.from, this.to, this.background, this.isAllDay);
 
   /// Event name which is equivalent to subject property of [Appointment].
   String eventName;
+
+  /// Event name which is equivalent to subject property of [Appointment].
+  String eventSubtitle;
 
   /// From which is equivalent to start time property of [Appointment].
   DateTime from;
