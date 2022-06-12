@@ -1625,47 +1625,18 @@ class DatabaseHelper {
           type: 'Lockset',
           work: 'Doors and Windows'),
       ProductivityItem(
-          // door
           fk: fk,
-          col_1: 'Wooden',
-          col_1_val: 3.38,
+          col_1: 'DEFAULT',
+          col_1_val: 21.6,
           type: 'Doors',
           work: 'Doors and Windows'),
       ProductivityItem(
-          // door
           fk: fk,
-          col_1: 'Steel',
-          col_1_val: 1.05,
-          type: 'Doors',
-          work: 'Doors and Windows'),
-      ProductivityItem(
-          // door
-          fk: fk,
-          col_1: 'Aluminum',
-          col_1_val: 0.99,
-          type: 'Doors',
-          work: 'Doors and Windows'),
-      ProductivityItem(
-          // Windows
-          fk: fk,
-          col_1: 'Glass',
-          col_1_val: 2.48,
+          col_1: 'DEFAULT',
+          col_1_val: 12.8,
           type: 'Windows',
           work: 'Doors and Windows'),
-      ProductivityItem(
-          // Windows
-          fk: fk,
-          col_1: 'Louver',
-          col_1_val: 1.73,
-          type: 'Windows',
-          work: 'Doors and Windows'),
-      ProductivityItem(
-          // Windows
-          fk: fk,
-          col_1: 'Steel',
-          col_1_val: 0.25,
-          type: 'Windows',
-          work: 'Doors and Windows'),
+
       //Ceiling
       ProductivityItem(
           fk: fk,
@@ -2209,50 +2180,19 @@ class DatabaseHelper {
           col_1_val: 10.24,
           type: 'Lockset',
           work: 'Doors and Windows'),
-
       ProductivityItem(
-          // door
           fk: fk,
-          col_1: 'Wooden',
-          col_1_val: 3.38,
+          col_1: 'DEFAULT',
+          col_1_val: 21.6,
           type: 'Doors',
           work: 'Doors and Windows'),
       ProductivityItem(
-          // door
           fk: fk,
-          col_1: 'Steel',
-          col_1_val: 1.05,
-          type: 'Doors',
-          work: 'Doors and Windows'),
-      ProductivityItem(
-          // door
-          fk: fk,
-          col_1: 'Aluminum',
-          col_1_val: 0.99,
-          type: 'Doors',
+          col_1: 'DEFAULT',
+          col_1_val: 12.8,
+          type: 'Windows',
           work: 'Doors and Windows'),
 
-      ProductivityItem(
-          // Windows
-          fk: fk,
-          col_1: 'Glass',
-          col_1_val: 2.48,
-          type: 'Windows',
-          work: 'Doors and Windows'),
-      ProductivityItem(
-          // Windows
-          fk: fk,
-          col_1: 'Louver',
-          col_1_val: 1.73,
-          type: 'Windows',
-          work: 'Doors and Windows'),
-      ProductivityItem(
-          // Windows
-          fk: fk,
-          col_1: 'Steel',
-          col_1_val: 0.25,
-          type: 'Windows',
-          work: 'Doors and Windows'),
       //Ceiling
       ProductivityItem(
           fk: fk,

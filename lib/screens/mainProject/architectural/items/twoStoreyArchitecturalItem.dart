@@ -71,8 +71,8 @@ class TwoStoreyArchitechturalItems {
   static const List<DefaultValue> defValDoorsAndWindowsWorks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.52), // Lockset
     DefaultValue(col_1: "DEFAULT", col_1_val: 10.4), // Jamb
-    DefaultValue(col_1: "Wooden", col_1_val: 3.38), // Doors
-    DefaultValue(col_1: "Glass", col_1_val: 2.48), // Windows
+    DefaultValue(col_1: "DEFAULT", col_1_val: 21.6), // Doors
+    DefaultValue(col_1: "DEFAULT", col_1_val: 12.8), // Windows
   ];
 
   static const List<DefaultValue> defValCeilingWorks = [

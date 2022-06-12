@@ -877,19 +877,20 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     //first worker count
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        Flexible(
-                          flex: 2,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.all(8),
                             child: Text(
                               worker!.toUpperCase(),
-                              style: const TextStyle(fontSize: 14.5),
+                              style: const TextStyle(fontSize: 15),
                             ),
                           ),
                         ),
-                        Flexible(
-                          flex: 4,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.30,
                           child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                               child: worker1 != null
@@ -927,17 +928,15 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     )
                                   : Container()),
                         ),
-                        const Flexible(
-                          flex: 2,
-                          child: Padding(
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.33,
+                          child: const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'worker/s',
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontSize: 15),
-                                )),
+                            child: Text(
+                              'worker/s',
+                              textAlign: TextAlign.right,
+                              style: TextStyle(fontSize: 15),
+                            ),
                           ),
                         )
                       ],

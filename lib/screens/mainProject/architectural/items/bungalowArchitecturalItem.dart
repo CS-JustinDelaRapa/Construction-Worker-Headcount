@@ -50,8 +50,8 @@ class BungalowArchitechturalItems {
   static const List<DefaultValue> defValDoorsAndWindowsWorks = [
     DefaultValue(col_1: "DEFAULT", col_1_val: 3.52),
     DefaultValue(col_1: "DEFAULT", col_1_val: 10.24),
-    DefaultValue(col_1: "Wooden", col_1_val: 3.38),
-    DefaultValue(col_1: "Glass", col_1_val: 2.48),
+    DefaultValue(col_1: "DEFAULT", col_1_val: 21.6), // Doors
+    DefaultValue(col_1: "DEFAULT", col_1_val: 12.8), // Windows
   ];
 
   static const List<DefaultValue> defValCeilingWorks = [

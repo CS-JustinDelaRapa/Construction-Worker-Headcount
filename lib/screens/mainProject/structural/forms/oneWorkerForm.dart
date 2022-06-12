@@ -819,9 +819,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 8.0),
                                             child: Text(
-                                              costOfLabor != null
-                                                  ? costOfLabor!
-                                                      .toStringAsFixed(2)
+                                              worker_1 != null
+                                                  ? worker_1.toString()
                                                   : '',
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w500,

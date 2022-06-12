@@ -69,18 +69,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     'Emulsion',
   ];
 
-  List<String> doorType = [
-    'Wooden',
-    'Steel',
-    'Aluminum',
-  ];
-
-  List<String> windowType = [
-    'Glass',
-    'Louver',
-    'Steel',
-  ];
-
   List<WorkerType>? rateOfWorkers;
   List<ProductivityItem>? productivityRate;
 
@@ -158,7 +146,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         units = 'sqm';
         worker = 'Door Installer';
       } else if (widget.workType.contains('Windows')) {
-        label = 'Windows';
+        label = 'Pre-fabricated steel window';
         surface = 'Area';
         units = 'sqm';
         worker = 'Window Installer';
@@ -318,14 +306,16 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                   )),
                             ),
                           ),
-                          widget.workType == 'Doors'
+                          widget.workType.contains('Interior') &&
+                                  !widget.workType.contains('Skim Coat')
                               ? Flexible(
                                   flex: 5,
                                   child: Row(
                                     children: [
-                                      Flexible(flex: 2, child: doorDropdown()),
                                       Flexible(
-                                        flex: 1,
+                                          flex: 7, child: finishDropdown()),
+                                      Flexible(
+                                        flex: 3,
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Align(
@@ -359,15 +349,17 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     ],
                                   ),
                                 )
-                              : widget.workType == 'Windows'
+                              : widget.workType.contains('Exterior') &&
+                                      !widget.workType.contains('Skim Coat')
                                   ? Flexible(
                                       flex: 5,
                                       child: Row(
                                         children: [
                                           Flexible(
-                                              flex: 2, child: windowDropdown()),
+                                              flex: 7,
+                                              child: finishDropdown2()),
                                           Flexible(
-                                            flex: 1,
+                                            flex: 3,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
@@ -404,128 +396,25 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                         ],
                                       ),
                                     )
-                                  : widget.workType.contains('Interior') &&
-                                          !widget.workType.contains('Skim Coat')
-                                      ? Flexible(
-                                          flex: 5,
-                                          child: Row(
-                                            children: [
-                                              Flexible(
-                                                  flex: 7,
-                                                  child: finishDropdown()),
-                                              Flexible(
-                                                flex: 3,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Align(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      child: TextFormField(
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          helperText:
-                                                              ' ', // this is new
-                                                        ),
-                                                        validator: (value) {
-                                                          if (value == null ||
-                                                              value.isEmpty ||
-                                                              !regex.hasMatch(
-                                                                  value)) {
-                                                            return '';
-                                                          }
-                                                          return null;
-                                                        },
-                                                        onChanged: (value) {
-                                                          setState(() {
-                                                            isComputed = false;
-                                                          });
-                                                        },
-                                                        controller:
-                                                            productivityRateController,
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                      )),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : widget.workType.contains('Exterior') &&
-                                              !widget.workType
-                                                  .contains('Skim Coat')
-                                          ? Flexible(
-                                              flex: 5,
-                                              child: Row(
-                                                children: [
-                                                  Flexible(
-                                                      flex: 7,
-                                                      child: finishDropdown2()),
-                                                  Flexible(
-                                                    flex: 3,
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Align(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: TextFormField(
-                                                            decoration:
-                                                                const InputDecoration(
-                                                              helperText:
-                                                                  ' ', // this is new
-                                                            ),
-                                                            validator: (value) {
-                                                              if (value ==
-                                                                      null ||
-                                                                  value
-                                                                      .isEmpty ||
-                                                                  !regex.hasMatch(
-                                                                      value)) {
-                                                                return '';
-                                                              }
-                                                              return null;
-                                                            },
-                                                            onChanged: (value) {
-                                                              setState(() {
-                                                                isComputed =
-                                                                    false;
-                                                              });
-                                                            },
-                                                            controller:
-                                                                productivityRateController,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                          )),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          : Flexible(
-                                              flex: 4,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: TextFormField(
-                                                      controller:
-                                                          productivityRateController,
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          isComputed = false;
-                                                        });
-                                                      },
-                                                    )),
-                                              ),
-                                            ),
+                                  : Flexible(
+                                      flex: 4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: TextFormField(
+                                              controller:
+                                                  productivityRateController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  isComputed = false;
+                                                });
+                                              },
+                                            )),
+                                      ),
+                                    ),
                           Flexible(
                             flex: 2,
                             child: Padding(
@@ -912,7 +801,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                             flex: 5,
                             child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: costOfLabor != null
+                                child: worker_1 != null
                                     ? Container(
                                         width:
                                             MediaQuery.of(context).size.width *
@@ -935,9 +824,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 8.0),
                                             child: Text(
-                                              costOfLabor != null
-                                                  ? costOfLabor!
-                                                      .toStringAsFixed(2)
+                                              worker_1 != null
+                                                  ? worker_1!.toString()
                                                   : '',
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w500,
@@ -1856,28 +1744,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         initialWorkers = (double.parse(volume!) /
                 double.parse(productivityRateController.text))
             .ceilToDouble();
-        if (initialWorkers! == 1) {
-          initialNumberofDays = 1;
-        } else if (initialWorkers! == 2 || initialWorkers! == 4) {
-          initialNumberofDays = 2;
-        } else if (initialWorkers! == 3 ||
-            initialWorkers! == 5 ||
-            initialWorkers! == 6) {
-          initialNumberofDays = 3;
-        } else if (initialWorkers! == 7 ||
-            initialWorkers! == 8 ||
-            initialWorkers! == 11 ||
-            initialWorkers! == 12) {
-          initialNumberofDays = 4;
-        } else if (initialWorkers! == 9 ||
-            initialWorkers! == 10 ||
-            initialWorkers! == 13 ||
-            initialWorkers! == 14 ||
-            initialWorkers! == 15) {
-          initialNumberofDays = 5;
-        } else {
-          initialNumberofDays = double.parse(preferedTime!);
-        }
+        initialNumberofDays = initialWorkers;
         if (double.parse(preferedTime!) < initialNumberofDays!) {
           initialNumberofDays = double.parse(preferedTime!);
         }
@@ -1921,76 +1788,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
       }
     }
   }
-
-  Widget doorDropdown() => DropdownButtonFormField(
-      decoration: const InputDecoration(
-        helperText: ' ', // this is new
-      ),
-      validator: (value) {
-        if (value == null) {
-          return 'Required Door Type';
-        }
-        return null;
-      },
-      hint: const Text('Door Type'), // Not necessary for Option 1
-      value: _selectedType,
-      onChanged: (value) {
-        setState(() {
-          isComputed = false;
-          _selectedType = value.toString();
-          if (_selectedType == "Wooden") {
-            prodRate();
-            productivityRateController.text = defaultValue.toString();
-          } else if (_selectedType == "Steel") {
-            prodRate();
-            productivityRateController.text = defaultValue.toString();
-          } else {
-            prodRate();
-            productivityRateController.text = defaultValue.toString();
-          }
-        });
-      },
-      items: doorType.map((doorType) {
-        return DropdownMenuItem(
-          child: Text(doorType),
-          value: doorType,
-        );
-      }).toList());
-
-  Widget windowDropdown() => DropdownButtonFormField(
-      decoration: const InputDecoration(
-        helperText: ' ', // this is new
-      ),
-      validator: (value) {
-        if (value == null) {
-          return 'Required Window Type';
-        }
-        return null;
-      },
-      hint: const Text('Window Type'), // Not necessary for Option 1
-      value: _selectedType,
-      onChanged: (value) {
-        setState(() {
-          isComputed = false;
-          _selectedType = value.toString();
-          if (_selectedType == "Glass") {
-            prodRate();
-            productivityRateController.text = defaultValue.toString();
-          } else if (_selectedType == "Louvre") {
-            prodRate();
-            productivityRateController.text = defaultValue.toString();
-          } else {
-            prodRate();
-            productivityRateController.text = defaultValue.toString();
-          }
-        });
-      },
-      items: windowType.map((windowType) {
-        return DropdownMenuItem(
-          child: Text(windowType),
-          value: windowType,
-        );
-      }).toList());
 
   Widget finishDropdown() => DropdownButtonFormField(
       decoration: const InputDecoration(
@@ -2282,28 +2079,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         } else {
           initialWorkers =
               (double.parse(volume!) / defaultValue!).ceilToDouble();
-          if (initialWorkers! == 1) {
-            initialNumberofDays = 1;
-          } else if (initialWorkers! == 2 || initialWorkers! == 4) {
-            initialNumberofDays = 2;
-          } else if (initialWorkers! == 3 ||
-              initialWorkers! == 5 ||
-              initialWorkers! == 6) {
-            initialNumberofDays = 3;
-          } else if (initialWorkers! == 7 ||
-              initialWorkers! == 8 ||
-              initialWorkers! == 11 ||
-              initialWorkers! == 12) {
-            initialNumberofDays = 4;
-          } else if (initialWorkers! == 9 ||
-              initialWorkers! == 10 ||
-              initialWorkers! == 13 ||
-              initialWorkers! == 14 ||
-              initialWorkers! == 15) {
-            initialNumberofDays = 5;
-          } else {
-            initialNumberofDays = double.parse(preferedTime!);
-          }
+          initialNumberofDays = initialWorkers;
           if (double.parse(preferedTime!) < initialNumberofDays!) {
             initialNumberofDays = double.parse(preferedTime!);
           }
