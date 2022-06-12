@@ -565,7 +565,7 @@ Future<void> _createPDF(ProjectItem itemProject, List<FormData> allForms,
   List<int> bytes = document.save();
   document.dispose();
 
-  saveAndLaunchFile(bytes, 'Output.pdf');
+  saveAndLaunchFile(bytes, 'Date Schedule.pdf');
 }
 
 Widget printpdfButton(ProjectItem? itemProject, List<FormData>? allForms,

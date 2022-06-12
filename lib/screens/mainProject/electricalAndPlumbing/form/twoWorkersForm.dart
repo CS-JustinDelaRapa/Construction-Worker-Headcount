@@ -211,7 +211,19 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.workType),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.workType,
+                style: TextStyle(fontSize: 18),
+              ),
+              Text(
+                widget.elecAndPlumbType,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
           actions: [isComputed ? saveButton() : Container()],
         ),
         body: isLoading

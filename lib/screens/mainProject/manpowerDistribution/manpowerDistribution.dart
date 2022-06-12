@@ -1375,7 +1375,7 @@ class _ManpowerDistributionState extends State<ManpowerDistribution> {
     List<int> bytes = document.save();
     document.dispose();
 
-    saveAndLaunchFile(bytes, 'Output.pdf');
+    saveAndLaunchFile(bytes, 'Manpower Distribution.pdf');
   }
 
   Widget printpdfButton(

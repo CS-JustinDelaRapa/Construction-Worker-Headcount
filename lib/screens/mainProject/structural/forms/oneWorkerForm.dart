@@ -210,7 +210,19 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.workType),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.workType,
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              widget.structuralType,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
         actions: [isComputed ? saveButton() : Container()],
       ),
       body: isLoading

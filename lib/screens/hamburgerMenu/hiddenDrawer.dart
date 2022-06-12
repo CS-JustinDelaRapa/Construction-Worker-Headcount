@@ -22,13 +22,13 @@ class HiddenDrawer extends StatelessWidget {
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             const Padding(
               padding: EdgeInsets.only(left: 20),
-              child: Text('Construction',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 30)),
+              child: Text('Construction Worker Headcount',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25)),
             ),
             const Padding(
               padding: EdgeInsets.only(left: 20),
-              child: Text('Construction Worker Headcount Application',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 12)),
+              child: Text('Construction Application',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.05),
             buildDrawerItems(context),
