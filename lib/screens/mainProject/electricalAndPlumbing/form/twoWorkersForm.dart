@@ -1764,8 +1764,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
                 numberOfDays!;
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -1899,8 +1901,10 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                   costOfLabor = ((worker1!.toDouble() * workerCost!) +
                           (worker2!.toDouble() * workerCost2!)) *
                       numberOfDays!;
-                  dateEnd = selectedDate.add(
-                      Duration(days: (numberOfDays! - 1) + additionalDays));
+                  dateEnd = numberOfDays == 1
+                      ? selectedDate
+                      : selectedDate.add(
+                          Duration(days: (numberOfDays! - 1) + additionalDays));
                   isComputed = true;
                   additionalDays = 0;
                 });

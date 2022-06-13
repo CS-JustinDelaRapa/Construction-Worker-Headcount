@@ -678,8 +678,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Align(
@@ -691,8 +691,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                     )),
                               ),
                             ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: dateEnd != null
@@ -734,8 +734,8 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                                         )
                                       : Container()),
                             ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Align(
@@ -754,7 +754,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: const Padding(
                                 padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
                                 child: Align(
@@ -1934,8 +1934,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
                 numberOfDays!;
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -2026,8 +2028,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
                 numberOfDays!;
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -2118,8 +2122,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             numberOfWorkers = (worker1! + worker2!);
             costOfLabor = (worker1!.toDouble() * workerCost!) +
                 (worker2!.toDouble() * workerCost2!);
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -2213,8 +2219,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
             costOfLabor = ((worker1!.toDouble() * workerCost!) +
                     (worker2!.toDouble() * workerCost2!)) *
                 numberOfDays!;
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -2330,8 +2338,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               costOfLabor = ((worker1!.toDouble() * workerCost!) +
                       (worker2!.toDouble() * workerCost2!)) *
                   numberOfDays!;
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });
@@ -2417,8 +2427,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               costOfLabor = ((worker1!.toDouble() * workerCost!) +
                       (worker2!.toDouble() * workerCost2!)) *
                   numberOfDays!;
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });
@@ -2504,8 +2516,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               numberOfWorkers = (worker1! + worker2!);
               costOfLabor = (worker1!.toDouble() * workerCost!) +
                   (worker2!.toDouble() * workerCost2!);
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });
@@ -2594,8 +2608,10 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
               costOfLabor = ((worker1!.toDouble() * workerCost!) +
                       (worker2!.toDouble() * workerCost2!)) *
                   numberOfDays!;
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });

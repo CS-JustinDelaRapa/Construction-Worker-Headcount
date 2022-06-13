@@ -147,15 +147,8 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.2,
-                                child: Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? Image.asset('assets/images/bnw_logo.png')
-                                    : Image.asset(
-                                        'assets/images/colored_logo.png')),
-                            const SizedBox(
-                              height: 20,
-                            ),
+                                    MediaQuery.of(context).size.height * 0.25,
+                                child: Image.asset('assets/images/2.png')),
                             const Text(
                               'Construction Worker Headcount',
                               textAlign: TextAlign.center,

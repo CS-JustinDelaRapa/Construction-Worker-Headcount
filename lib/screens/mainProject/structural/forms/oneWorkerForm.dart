@@ -1679,8 +1679,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             worker_1 = workernumbers;
             numberOfWorkers = workernumbers;
             costOfLabor = (workerCost! * workernumbers) * numberOfDays!;
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -1772,8 +1774,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               worker_1 = workernumbers;
               numberOfWorkers = workernumbers;
               costOfLabor = (workerCost! * workernumbers) * numberOfDays!;
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });
@@ -1982,8 +1986,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               worker_1 = workernumbers;
               numberOfWorkers = workernumbers;
               costOfLabor = (workerCost! * workernumbers) * numberOfDays!;
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });
@@ -2071,8 +2077,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                 worker_1 = workernumbers;
                 numberOfWorkers = workernumbers;
                 costOfLabor = (workerCost! * workernumbers) * numberOfDays!;
-                dateEnd = selectedDate
-                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+                dateEnd = numberOfDays == 1
+                    ? selectedDate
+                    : selectedDate.add(
+                        Duration(days: (numberOfDays! - 1) + additionalDays));
                 isComputed = true;
                 additionalDays = 0;
               });

@@ -649,7 +649,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Align(
@@ -661,8 +661,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                     )),
                               ),
                             ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: dateEnd != null
@@ -704,8 +704,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                                         )
                                       : Container()),
                             ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: const Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Align(
@@ -724,7 +724,7 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.33,
+                              width: MediaQuery.of(context).size.width * 0.33,
                               child: const Padding(
                                 padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
                                 child: Align(
@@ -1721,8 +1721,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             numberOfWorkers = workernumbers;
             costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
             worker_1 = numberOfWorkers;
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -1792,8 +1794,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
             numberOfWorkers = workernumbers;
             costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
             worker_1 = numberOfWorkers;
-            dateEnd = selectedDate
-                .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+            dateEnd = numberOfDays == 1
+                ? selectedDate
+                : selectedDate
+                    .add(Duration(days: (numberOfDays! - 1) + additionalDays));
             isComputed = true;
             additionalDays = 0;
           });
@@ -2060,8 +2064,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               numberOfWorkers = workernumbers;
               costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
               worker_1 = numberOfWorkers;
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });
@@ -2127,8 +2133,10 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
               numberOfWorkers = workernumbers;
               costOfLabor = (numberOfWorkers! * workerCost!) * numberOfDays!;
               worker_1 = numberOfWorkers;
-              dateEnd = selectedDate
-                  .add(Duration(days: (numberOfDays! - 1) + additionalDays));
+              dateEnd = numberOfDays == 1
+                  ? selectedDate
+                  : selectedDate.add(
+                      Duration(days: (numberOfDays! - 1) + additionalDays));
               isComputed = true;
               additionalDays = 0;
             });
