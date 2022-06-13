@@ -157,11 +157,16 @@ class _DateSccheduleState extends State<DateScchedule> {
             }
           } else if (endTime.weekday == DateTime.monday) {
             if (((allForms![x].num_days! + 2) - y) > 4) {
-              if(isPassedSaturday){
-              meetings.add(Meeting(allForms![x].type, allForms![x].work,
-                  endTime, endTime.add(const Duration(days: 5)), color, false));
-              counter = counter + 1;
-              additional = additional + 1;
+              if (isPassedSaturday) {
+                meetings.add(Meeting(
+                    allForms![x].type,
+                    allForms![x].work,
+                    endTime,
+                    endTime.add(const Duration(days: 5)),
+                    color,
+                    false));
+                counter = counter + 1;
+                additional = additional + 1;
               }
             } else {
               if (startTime
@@ -338,7 +343,10 @@ class Meeting {
 Future<void> _createPDF(ProjectItem itemProject, List<FormData> allForms,
     List<FormData> formData) async {
   var outputFormat = DateFormat('MM/dd/yyyy');
-  final durations = daysBetween(itemProject.date_start, itemProject.date_end);
+  final durations =
+      daysBetween(itemProject.date_start, itemProject.date_end) == 0
+          ? 1
+          : daysBetween(itemProject.date_start, itemProject.date_end);
 
   //Creates a new PDF document
   PdfDocument document = PdfDocument();
@@ -448,7 +456,7 @@ Future<void> _createPDF(ProjectItem itemProject, List<FormData> allForms,
     if (allForms[i].date_start != null) {
       DateTime start = DateTime.parse(allForms[i].date_start!);
       DateTime end = DateTime.parse(allForms[i].date_end!);
-      final tableDuration = daysBetween(start, end);
+      final tableDuration = allForms[i].num_days;
       if (end.isBefore(DateTime.now())) {
         status = "Complete";
       } else {
@@ -550,7 +558,7 @@ Future<void> _createPDF(ProjectItem itemProject, List<FormData> allForms,
   }
 
   //Set padding for grid cells
-  grid.style.cellPadding = PdfPaddings(left: 2, right: 2, top: 2, bottom: 2);
+  grid.style.cellPadding = PdfPaddings(left: 10, right: 10, top: 2, bottom: 2);
 
 //Creates the grid cell styles
   PdfGridCellStyle cellStyle = PdfGridCellStyle();

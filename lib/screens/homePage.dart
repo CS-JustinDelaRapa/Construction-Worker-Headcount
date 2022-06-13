@@ -149,13 +149,16 @@ class _HomePageState extends State<HomePage> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.25,
                                 child: Image.asset('assets/images/2.png')),
-                            const Text(
-                              'Construction Worker Headcount',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                // color: Color.fromARGB(255, 137, 202, 180),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'Construction Worker Headcount',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  // color: Color.fromARGB(255, 137, 202, 180),
+                                ),
                               ),
                             ),
                             const Text(
