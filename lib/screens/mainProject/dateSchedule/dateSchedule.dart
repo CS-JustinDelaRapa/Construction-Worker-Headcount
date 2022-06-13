@@ -140,9 +140,19 @@ class _DateSccheduleState extends State<DateScchedule> {
         Color color = getColor(allForms![x].work);
         int counter = allForms![x].num_days!;
         int additional = 0;
+
+        if(allForms![x].date_start == allForms![x].date_end){
+          meetings.add(Meeting(
+                    allForms![x].type,
+                    allForms![x].work,
+                    startTime,
+                    startTime,
+                    color,
+                    false));
+        }
+        else{
         for (int y = 0; y < counter; y++) {
           final DateTime endTime = startTime.add(Duration(days: y));
-
           if (endTime.weekday == DateTime.sunday) {
             if (!isPassedSaturday) {
               meetings.add(Meeting(
@@ -185,6 +195,7 @@ class _DateSccheduleState extends State<DateScchedule> {
                 counter = counter + 1;
                 additional = additional + 1;
               } else {
+                if(isPassedSaturday){
                 meetings.add(Meeting(
                     allForms![x].type,
                     allForms![x].work,
@@ -193,6 +204,7 @@ class _DateSccheduleState extends State<DateScchedule> {
                         Duration(days: (allForms![x].num_days! + additional))),
                     color,
                     false));
+                }
               }
             }
           } else if (y == allForms![x].num_days! - 1 && !isPassedSaturday) {
@@ -202,6 +214,7 @@ class _DateSccheduleState extends State<DateScchedule> {
                   startTime, endTime, color, false));
             }
           }
+        }
         }
       }
     }
