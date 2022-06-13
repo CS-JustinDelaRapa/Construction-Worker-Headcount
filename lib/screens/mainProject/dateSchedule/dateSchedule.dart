@@ -94,17 +94,14 @@ class _DateSccheduleState extends State<DateScchedule> {
                                                 const BorderRadius.all(
                                                     Radius.circular(10))),
                                         child: ListTile(
-                                            title: Text(meeting.eventName,
-                                                style: const TextStyle(
+                                          title: Text(meeting.eventName,
+                                              style: const TextStyle(
                                                   color: Colors.white,
-                                                  fontWeight: FontWeight.bold
-                                                )),
-                                            subtitle: Text(meeting.eventSubtitle, 
-                                            style: const TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          subtitle: Text(meeting.eventSubtitle,
+                                              style: const TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 14
-                                                )
-                                            ),        
+                                                  fontSize: 14)),
                                         ),
                                       ),
                                     );
@@ -134,12 +131,13 @@ class _DateSccheduleState extends State<DateScchedule> {
     setState(() {
       isLoading = true;
     });
+
     for (int x = 0; x < allForms!.length; x++) {
       if (allForms![x].num_days != null) {
         final DateTime today = DateTime.parse(allForms![x].date_start!);
         final DateTime startTime = DateTime(today.year, today.month, today.day);
-        Color color = getColor(allForms![x].work);
         bool isPassedSaturday = false;
+        Color color = getColor(allForms![x].work);
         int counter = allForms![x].num_days!;
         int additional = 0;
         for (int y = 0; y < counter; y++) {
@@ -147,17 +145,24 @@ class _DateSccheduleState extends State<DateScchedule> {
 
           if (endTime.weekday == DateTime.sunday) {
             if (!isPassedSaturday) {
-              meetings.add(Meeting(allForms![x].type, allForms![x].work ,startTime,
-                  endTime.subtract(const Duration(days: 1)), color, false));
+              meetings.add(Meeting(
+                  allForms![x].type,
+                  allForms![x].work,
+                  startTime,
+                  endTime.subtract(const Duration(days: 1)),
+                  color,
+                  false));
               counter = counter + 2;
               isPassedSaturday = true;
             }
           } else if (endTime.weekday == DateTime.monday) {
             if (((allForms![x].num_days! + 2) - y) > 4) {
-              meetings.add(Meeting(allForms![x].type, allForms![x].work, endTime,
-                  endTime.add(const Duration(days: 5)), color, false));
+              if(isPassedSaturday){
+              meetings.add(Meeting(allForms![x].type, allForms![x].work,
+                  endTime, endTime.add(const Duration(days: 5)), color, false));
               counter = counter + 1;
               additional = additional + 1;
+              }
             } else {
               if (startTime
                       .add(
@@ -188,13 +193,14 @@ class _DateSccheduleState extends State<DateScchedule> {
           } else if (y == allForms![x].num_days! - 1 && !isPassedSaturday) {
             if (startTime.add(Duration(days: allForms![x].num_days!)).weekday !=
                 DateTime.sunday) {
-              meetings.add(
-                  Meeting(allForms![x].type, allForms![x].work ,startTime, endTime, color, false));
+              meetings.add(Meeting(allForms![x].type, allForms![x].work,
+                  startTime, endTime, color, false));
             }
           }
         }
       }
     }
+
     setState(() {
       isLoading = false;
     });
@@ -277,7 +283,7 @@ class MeetingDataSource extends CalendarDataSource {
     return _getMeetingData(index).eventName;
   }
 
-    @override
+  @override
   String getSubtitle(int index) {
     return _getMeetingData(index).eventSubtitle;
   }
@@ -307,7 +313,8 @@ class MeetingDataSource extends CalendarDataSource {
 /// information about the event data which will be rendered in calendar.
 class Meeting {
   /// Creates a meeting class with required details.
-  Meeting(this.eventName, this.eventSubtitle, this.from, this.to, this.background, this.isAllDay);
+  Meeting(this.eventName, this.eventSubtitle, this.from, this.to,
+      this.background, this.isAllDay);
 
   /// Event name which is equivalent to subject property of [Appointment].
   String eventName;
