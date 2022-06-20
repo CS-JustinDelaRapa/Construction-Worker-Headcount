@@ -7,6 +7,7 @@ import 'package:engineering/model/formModel.dart';
 import 'package:engineering/model/workerModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../model/AdditionalManpowerModel.dart';
 
@@ -27,10 +28,10 @@ class OneWorkerForm extends StatefulWidget {
 }
 
 class _OneWorkerFormState extends State<OneWorkerForm> {
-  TextEditingController dateStartControler = TextEditingController();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();   
 
   var outputFormat = DateFormat('MM/dd/yyyy');
-  DateTime selectedDate = DateTime.now();
+  late DateTime selectedDate;
   int additionalDays = 0;
   final _formKey = GlobalKey<FormState>();
   RegExp regex = RegExp(r'(?!^ +$)^.+$');
@@ -109,6 +110,8 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
         _selectedType ?? 'DEFAULT');
   }
 
+  
+
   @override
   void initState() {
     refreshState();
@@ -148,6 +151,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
+
+    final SharedPreferences prefs = await _prefs;
+    final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
+    selectedDate =  DateTime.parse(defaultTime);
+
     formData = await DatabaseHelper.instance
         .readFormData(widget.projectFk, widget.structuralType, widget.workType);
     manpower = await DatabaseHelper.instance.readAllManpower(
@@ -205,6 +213,19 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
     // if (formData != null) {}
     // print(productivityItem);
   }
+
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  // Future<void> _changeDefaultTime() async {
+  //   final SharedPreferences prefs = await _prefs;
+  //   final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
+  //   final DateTime prefTime = DateTime.parse(defaultTime);
+
+  //   if(formData.date_end){
+
+  //   }
+
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -1885,8 +1906,19 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   }
 
   Widget saveButton() => ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
+            final SharedPreferences prefs = await _prefs;
+            final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
+            if(dateEnd!.isAfter(DateTime.parse(defaultTime))){
+              if(dateEnd!.add(const Duration(days: 1)).weekday != DateTime.sunday){
+                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 1)).toString());
+              }else{
+                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 2)).toString());
+              }
+            }
+
+
           final formDataCreate = FormData(
             id: formData!.id,
             date_start: selectedDate.toString(),

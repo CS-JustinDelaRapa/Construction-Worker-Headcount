@@ -136,7 +136,7 @@ class _DateSccheduleState extends State<DateScchedule> {
       if (allForms![x].num_days != null) {
         final DateTime today = DateTime.parse(allForms![x].date_start!);
         final DateTime startTime = DateTime(today.year, today.month, today.day);
-        bool isPassedSaturday = false;
+        bool isPassedSunday = false;
         Color color = getColor(allForms![x].work);
         int counter = allForms![x].num_days!;
         int additional = 0;
@@ -154,7 +154,7 @@ class _DateSccheduleState extends State<DateScchedule> {
         for (int y = 0; y < counter; y++) {
           final DateTime endTime = startTime.add(Duration(days: y));
           if (endTime.weekday == DateTime.sunday) {
-            if (!isPassedSaturday) {
+            if (!isPassedSunday) {
               meetings.add(Meeting(
                   allForms![x].type,
                   allForms![x].work,
@@ -163,11 +163,11 @@ class _DateSccheduleState extends State<DateScchedule> {
                   color,
                   false));
               counter = counter + 2;
-              isPassedSaturday = true;
+              isPassedSunday = true;
             }
           } else if (endTime.weekday == DateTime.monday) {
             if (((allForms![x].num_days! + 2) - y) > 4) {
-              if (isPassedSaturday) {
+              if (isPassedSunday) {
                 meetings.add(Meeting(
                     allForms![x].type,
                     allForms![x].work,
@@ -195,7 +195,7 @@ class _DateSccheduleState extends State<DateScchedule> {
                 counter = counter + 1;
                 additional = additional + 1;
               } else {
-                if(isPassedSaturday){
+                if(isPassedSunday){
                 meetings.add(Meeting(
                     allForms![x].type,
                     allForms![x].work,
@@ -207,12 +207,16 @@ class _DateSccheduleState extends State<DateScchedule> {
                 }
               }
             }
-          } else if (y == allForms![x].num_days! - 1 && !isPassedSaturday) {
+          } else if (y == allForms![x].num_days! - 1 && !isPassedSunday) {
             if (startTime.add(Duration(days: allForms![x].num_days!)).weekday !=
                 DateTime.sunday) {
               meetings.add(Meeting(allForms![x].type, allForms![x].work,
                   startTime, endTime, color, false));
             }
+          }
+          else if(!isPassedSunday && allForms![x].num_days == 2 && startTime.weekday == DateTime.friday){
+            meetings.add(Meeting(allForms![x].type, allForms![x].work,
+                  startTime, endTime.add(const Duration(days: 1)), color, false));
           }
         }
         }

@@ -5,6 +5,7 @@ import 'package:engineering/model/AdditionalManpowerModel.dart';
 import 'package:engineering/model/formModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../model/ProductivityModel.dart';
 import '../../../../model/workerModel.dart';
@@ -26,6 +27,8 @@ class TwoWorkersForm extends StatefulWidget {
 }
 
 class _TwoWorkersForm extends State<TwoWorkersForm> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();   
+
   late String? units, label, worker, secondWorker, surface;
   late double? defaultValue;
 
@@ -160,6 +163,11 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
+    final SharedPreferences prefs = await _prefs;
+    final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
+    selectedDate =  DateTime.parse(defaultTime);
+
+
     formData = await DatabaseHelper.instance
         .readFormData(widget.projectFk, widget.structuralType, widget.workType);
     manpower = await DatabaseHelper.instance.readAllManpower(
@@ -2523,8 +2531,19 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
   }
 
   Widget saveButton() => ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
+            final SharedPreferences prefs = await _prefs;
+            final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
+            if(dateEnd!.isAfter(DateTime.parse(defaultTime))){
+              if(dateEnd!.add(const Duration(days: 1)).weekday != DateTime.sunday){
+                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 1)).toString());
+              }else{
+                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 2)).toString());
+              }
+            }
+
+
           final formDataCreate = FormData(
             id: formData!.id,
             date_start: selectedDate.toString(),

@@ -3,6 +3,7 @@
 import 'package:engineering/model/AdditionalManpowerModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../databaseHelper/DataBaseHelper.dart';
 import '../../../../model/ProductivityModel.dart';
 import '../../../../model/formModel.dart';
@@ -25,6 +26,8 @@ class OneWorkerForm extends StatefulWidget {
 }
 
 class _OneWorkerFormState extends State<OneWorkerForm> {
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  
   TextEditingController dateStartControler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   RegExp regex = RegExp(r'(?!^ +$)^.+$');
@@ -157,6 +160,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
 
   Future refreshState() async {
     setState(() => isLoading = true);
+    final SharedPreferences prefs = await _prefs;
+    final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
+    selectedDate =  DateTime.parse(defaultTime);
+
+
     formData = await DatabaseHelper.instance.readFormData(
         widget.projectFk, widget.architecturalType, widget.workType);
     manpower = await DatabaseHelper.instance.readAllManpower(
@@ -1954,8 +1962,19 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   }
 
   Widget saveButton() => ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
+            final SharedPreferences prefs = await _prefs;
+            final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
+            if(dateEnd!.isAfter(DateTime.parse(defaultTime))){
+              if(dateEnd!.add(const Duration(days: 1)).weekday != DateTime.sunday){
+                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 1)).toString());
+              }else{
+                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 2)).toString());
+              }
+            }
+
+
           final formDataCreate = FormData(
             id: formData!.id,
             date_start: selectedDate.toString(),
