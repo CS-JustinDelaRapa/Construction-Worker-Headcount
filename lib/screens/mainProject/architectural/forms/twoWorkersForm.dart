@@ -1912,7 +1912,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
-          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+          for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
             DateTime tempDate = selectedDate.add(Duration(days: x));
             if (tempDate.weekday == DateTime.sunday) {
               additionalDays++;
@@ -2006,7 +2006,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
-          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+          for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
             DateTime tempDate = selectedDate.add(Duration(days: x));
             if (tempDate.weekday == DateTime.sunday) {
               additionalDays++;
@@ -2104,7 +2104,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
-          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+          for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
             DateTime tempDate = selectedDate.add(Duration(days: x));
             if (tempDate.weekday == DateTime.sunday) {
               additionalDays++;
@@ -2194,7 +2194,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                     ]);
               });
         } else {
-          for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+          for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
             DateTime tempDate = selectedDate.add(Duration(days: x));
             if (tempDate.weekday == DateTime.sunday) {
               additionalDays++;
@@ -2327,7 +2327,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                 worker1 = 3;
                 worker2 = workernumbers;
               }
-              for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+              for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
                 DateTime tempDate = selectedDate.add(Duration(days: x));
                 if (tempDate.weekday == DateTime.sunday) {
                   additionalDays++;
@@ -2405,7 +2405,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ]);
                 });
           } else {
-            for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
               DateTime tempDate = selectedDate.add(Duration(days: x));
               if (tempDate.weekday == DateTime.sunday) {
                 additionalDays++;
@@ -2506,7 +2506,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                 worker1 = 2;
                 worker2 = workernumbers;
               }
-              for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+              for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
                 DateTime tempDate = selectedDate.add(Duration(days: x));
                 if (tempDate.weekday == DateTime.sunday) {
                   additionalDays++;
@@ -2583,7 +2583,7 @@ class _TwoWorkersForm extends State<TwoWorkersForm> {
                       ]);
                 });
           } else {
-            for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
               DateTime tempDate = selectedDate.add(Duration(days: x));
               if (tempDate.weekday == DateTime.sunday) {
                 additionalDays++;

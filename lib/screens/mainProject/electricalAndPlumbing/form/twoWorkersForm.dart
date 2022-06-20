@@ -751,8 +751,8 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 8.0),
                                             child: Text(
-                                              numberOfWorkers != null
-                                                  ? numberOfWorkers!.toString()
+                                              worker1 != null
+                                                  ? worker1!.toString()
                                                   : '',
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.w500,
@@ -1753,7 +1753,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
               worker1 = 2;
               worker2 = workernumbers - 2;
             }
-            for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+            for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
               DateTime tempDate = selectedDate.add(Duration(days: x));
               if (tempDate.weekday == DateTime.sunday) {
                 additionalDays++;
@@ -1890,7 +1890,7 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                     worker1 = 2;
                     worker2 = workernumbers - 2;
                   }
-                  for (int x = 1; x <= initialNumberofDays!.ceil(); x++) {
+                  for (int x = 0; x < initialNumberofDays!.ceil(); x++) {
                     DateTime tempDate = selectedDate.add(Duration(days: x));
                     if (tempDate.weekday == DateTime.sunday) {
                       additionalDays++;

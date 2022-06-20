@@ -56,7 +56,10 @@ class _LoadProjectState extends State<LoadProject> {
               key: _scaffoldKey,
               children: [
                 const ListTile(
-                  leading: Text('ID'),
+                  leading: Padding(
+                    padding: EdgeInsets.only(top: 4.0),
+                    child: Text('No.'),
+                  ),
                   title: Text('Project Name'),
                   trailing: Text('Style'),
                 ),
@@ -81,7 +84,7 @@ class _LoadProjectState extends State<LoadProject> {
                                           : const Color.fromARGB(
                                               255, 250, 252, 243)
                                       : null,
-                                  leading: Text(projects![index].id.toString()),
+                                  leading: Text((index + 1).toString()),
                                   title: Text(projects![index].project_name),
                                   trailing: Text(projects![index].type),
                                   onTap: () {

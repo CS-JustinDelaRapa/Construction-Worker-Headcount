@@ -22,7 +22,7 @@ class DrawerItems {
   static const additionalManpower = DrawerItem(
       title: 'Additional Manpower', icon: CustomIcons.additionalmanp);
   static const dateSchedule =
-      DrawerItem(title: 'Date Schedule', icon: Icons.calendar_today);
+      DrawerItem(title: 'Construction Schedule', icon: Icons.calendar_today);
 
   static final List<DrawerItem> all = [
     home,
