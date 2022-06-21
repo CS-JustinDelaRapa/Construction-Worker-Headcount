@@ -295,7 +295,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[0].rate.toString(),
+                                      initialValue:
+                                          workers[0].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[0] = value;
                                       },
@@ -325,7 +326,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[1].rate.toString(),
+                                      initialValue:
+                                          workers[1].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[1] = value;
                                       },
@@ -355,7 +357,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[2].rate.toString(),
+                                      initialValue:
+                                          workers[2].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[2] = value;
                                       },
@@ -385,7 +388,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[3].rate.toString(),
+                                      initialValue:
+                                          workers[3].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[3] = value;
                                       },
@@ -415,7 +419,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[4].rate.toString(),
+                                      initialValue:
+                                          workers[4].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[4] = value;
                                       },
@@ -445,7 +450,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[5].rate.toString(),
+                                      initialValue:
+                                          workers[5].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[5] = value;
                                       },
@@ -475,7 +481,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[6].rate.toString(),
+                                      initialValue:
+                                          workers[6].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[6] = value;
                                       },
@@ -505,7 +512,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[7].rate.toString(),
+                                      initialValue:
+                                          workers[7].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[7] = value;
                                       },
@@ -535,7 +543,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[8].rate.toString(),
+                                      initialValue:
+                                          workers[8].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[8] = value;
                                       },
@@ -565,7 +574,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[9].rate.toString(),
+                                      initialValue:
+                                          workers[9].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[9] = value;
                                       },
@@ -595,7 +605,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[10].rate.toString(),
+                                      initialValue:
+                                          workers[10].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[10] = value;
                                       },
@@ -625,7 +636,8 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                                         }
                                         return null;
                                       },
-                                      initialValue: workers[11].rate.toString(),
+                                      initialValue:
+                                          workers[11].rate.toStringAsFixed(2),
                                       onChanged: (value) {
                                         rate[11] = value;
                                       },
@@ -637,9 +649,9 @@ class _RateOfWorkersState extends State<RateOfWorkers> {
                           )
                         ],
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 15),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
+                        padding: const EdgeInsets.only(bottom: 10.0),
                         child: SizedBox(
                           height: MediaQuery.of(context).size.height * 0.07,
                           width: MediaQuery.of(context).size.width * 0.45,

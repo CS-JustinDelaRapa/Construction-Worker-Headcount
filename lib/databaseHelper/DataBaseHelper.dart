@@ -1436,12 +1436,6 @@ class DatabaseHelper {
       ProductivityItem(
           fk: fk,
           col_1: 'DEFAULT',
-          col_1_val: 150,
-          type: 'Stirrups, spacers and links',
-          work: 'Steel Reinforcement Works'),
-      ProductivityItem(
-          fk: fk,
-          col_1: 'DEFAULT',
           col_1_val: 200,
           type: 'Walls',
           work: 'Steel Reinforcement Works'),
@@ -1877,12 +1871,6 @@ class DatabaseHelper {
           col_1: 'DEFAULT',
           col_1_val: 100,
           type: 'Lintels',
-          work: 'Steel Reinforcement Works'),
-      ProductivityItem(
-          fk: fk,
-          col_1: 'DEFAULT',
-          col_1_val: 150,
-          type: 'Stirrups, spacers and links',
           work: 'Steel Reinforcement Works'),
       ProductivityItem(
           fk: fk,

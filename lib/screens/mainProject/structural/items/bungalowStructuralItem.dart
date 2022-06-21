@@ -26,7 +26,6 @@ class BungalowStructuralItems {
     'Slabs',
     'Beams',
     'Lintels',
-    'Stirrups, spacers and links',
     'Walls',
     // 'Wall type',
   ];
@@ -61,7 +60,6 @@ class BungalowStructuralItems {
     DefaultValue(col_1: "DEFAULT", col_1_val: 175),
     DefaultValue(col_1: "DEFAULT", col_1_val: 173),
     DefaultValue(col_1: "DEFAULT", col_1_val: 100),
-    DefaultValue(col_1: "DEFAULT", col_1_val: 150),
     DefaultValue(col_1: "DEFAULT", col_1_val: 200),
     // DefaultValue(col_1: "DEFAULT", col_1_val: 0),
   ];

@@ -2,15 +2,10 @@
 
 import 'package:engineering/model/ProjectModel.dart';
 import 'package:engineering/screens/hamburgerMenu/openDrawer.dart';
-import 'package:engineering/screens/mainProject/structural/items/twoStoreyStructuralItems.dart';
-import 'package:engineering/widget/customWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:engineering/model/formModel.dart';
 import '../../../model/ProductivityModel.dart';
-import '../architectural/items/bungalowArchitecturalItem.dart';
-import '../architectural/items/twoStoreyArchitecturalItem.dart';
 import 'package:engineering/databaseHelper/DataBaseHelper.dart';
-import '../structural/items/bungalowStructuralItem.dart';
 
 class ProductivityRate extends StatefulWidget {
   final VoidCallback openDrawer;
@@ -53,7 +48,19 @@ class _ProductivityRateState extends State<ProductivityRate> {
         leading: OpenDrawerWidget(
           onClicked: widget.openDrawer,
         ),
-        title: const Text('Productivity Rate'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Productivity Rate',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'unit/day',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
       ),
       body: Scrollbar(
         child: SingleChildScrollView(
@@ -112,9 +119,13 @@ class _ProductivityRateState extends State<ProductivityRate> {
                             }
                           }
 
-                          return ItemRow(
-                            item: localProductivity,
-                            form: form,
+                          return Row(
+                            children: [
+                              ItemRow(
+                                  item: localProductivity,
+                                  form: form,
+                                  unit: 'cum'),
+                            ],
                           );
                         }).toList(),
                       ),
@@ -147,9 +158,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'sqm');
                         }).toList(),
                       ),
                       Padding(
@@ -181,9 +190,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'sqm');
                         }).toList(),
                       ),
                       Padding(
@@ -216,9 +223,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'cum');
                         }).toList(),
                       ),
                       Padding(
@@ -251,9 +256,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'kg');
                         }).toList(),
                       ),
                       Container(
@@ -306,9 +309,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'sqm');
                         }).toList(),
                       ),
                       Padding(
@@ -340,9 +341,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'sqm');
                         }).toList(),
                       ),
                       Padding(
@@ -375,9 +374,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'sqm');
                         }).toList(),
                       ),
                       Padding(
@@ -410,9 +407,12 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity,
+                              form: form,
+                              unit: form.type.toLowerCase() == 'doors' ||
+                                      form.type.toLowerCase() == 'windows'
+                                  ? 'sqm'
+                                  : 'sets');
                         }).toList(),
                       ),
                       Padding(
@@ -444,9 +444,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'sqm');
                         }).toList(),
                       ),
                       Padding(
@@ -478,9 +476,7 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity, form: form, unit: 'sqm');
                         }).toList(),
                       ),
                       Container(
@@ -534,9 +530,11 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity,
+                              form: form,
+                              unit: form.type.toLowerCase() == 'fixtures'
+                                  ? 'sets'
+                                  : 'm');
                         }).toList(),
                       ),
                       Padding(
@@ -569,9 +567,11 @@ class _ProductivityRateState extends State<ProductivityRate> {
                           }
 
                           return ItemRow(
-                            item: localProductivity,
-                            form: form,
-                          );
+                              item: localProductivity,
+                              form: form,
+                              unit: form.type.toLowerCase() == 'fixtures'
+                                  ? 'sets'
+                                  : 'm');
                         }).toList(),
                       ),
                     ],
@@ -584,7 +584,9 @@ class _ProductivityRateState extends State<ProductivityRate> {
 class ItemRow extends StatefulWidget {
   final FormData form;
   final List<ProductivityItem> item;
-  const ItemRow({Key? key, required this.form, required this.item})
+  final String unit;
+  const ItemRow(
+      {Key? key, required this.form, required this.item, required this.unit})
       : super(key: key);
 
   @override
@@ -650,15 +652,15 @@ class _ItemRowState extends State<ItemRow> {
               )
             : Row(children: [
                 SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
+                    width: MediaQuery.of(context).size.width * 0.20,
                     child: Text(widget.form.type)),
                 //dropdown or null
                 widget.form.col_1 == 'DEFAULT'
                     ? Container()
                     : SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.30,
+                        width: MediaQuery.of(context).size.width * 0.3,
                         child: Padding(
-                          padding: const EdgeInsets.only(right: 8),
+                          padding: const EdgeInsets.only(left: 8),
                           child: DropdownButtonFormField(
                               isExpanded: true,
                               value: _selectedType,
@@ -684,11 +686,11 @@ class _ItemRowState extends State<ItemRow> {
                         )),
                 SizedBox(
                     width: widget.form.col_1 == 'DEFAULT'
-                        ? MediaQuery.of(context).size.width * 0.5
-                        : MediaQuery.of(context).size.width * 0.20,
+                        ? MediaQuery.of(context).size.width * 0.45
+                        : MediaQuery.of(context).size.width * 0.15,
                     child: Center(
                         child: Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
+                      padding: const EdgeInsets.only(left: 8.0),
                       child: TextFormField(
                         validator: (value) {
                           if (value == null ||
@@ -720,7 +722,10 @@ class _ItemRowState extends State<ItemRow> {
                       ),
                     ))),
                 SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.20,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                    child: Text(widget.unit)),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.2,
                     child: ElevatedButton(
                         onPressed: isUpdating
                             ? () async {

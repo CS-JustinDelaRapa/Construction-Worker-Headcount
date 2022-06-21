@@ -145,9 +145,9 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
   Future refreshState() async {
     setState(() => isLoading = true);
     final SharedPreferences prefs = await _prefs;
-    final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
-    selectedDate =  DateTime.parse(defaultTime);
-
+    final String defaultTime = (prefs.getString(widget.projectFk.toString()) ??
+        DateTime.now().toString());
+    selectedDate = DateTime.parse(defaultTime);
 
     formData = await DatabaseHelper.instance.readFormData(
         widget.projectFk, widget.elecAndPlumbType, widget.workType);
@@ -224,11 +224,12 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
             children: [
               Text(
                 widget.workType,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
               ),
               Text(
                 widget.elecAndPlumbType,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               ),
             ],
           ),
@@ -266,7 +267,6 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
                               child: Center(
                                   child: TextField(
                                 readOnly: true,
-                                controller: dateStartControler,
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -1984,12 +1984,17 @@ class _TwoWorkersFormState extends State<TwoWorkersForm> {
   Widget saveButton() => ElevatedButton(
       onPressed: () async {
         final SharedPreferences prefs = await _prefs;
-        final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
-        if(dateEnd!.isAfter(DateTime.parse(defaultTime))){
-          if(dateEnd!.add(const Duration(days: 1)).weekday != DateTime.sunday){
-            prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 1)).toString());
-          }else{
-            prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 2)).toString());
+        final String defaultTime =
+            (prefs.getString(widget.projectFk.toString()) ??
+                DateTime.now().toString());
+        if (dateEnd!.isAfter(DateTime.parse(defaultTime))) {
+          if (dateEnd!.add(const Duration(days: 1)).weekday !=
+              DateTime.sunday) {
+            prefs.setString(widget.projectFk.toString(),
+                dateEnd!.add(const Duration(days: 1)).toString());
+          } else {
+            prefs.setString(widget.projectFk.toString(),
+                dateEnd!.add(const Duration(days: 2)).toString());
           }
         }
 

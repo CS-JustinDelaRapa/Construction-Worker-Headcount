@@ -236,11 +236,11 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
           children: [
             Text(
               widget.workType,
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               widget.structuralType,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
             ),
           ],
         ),

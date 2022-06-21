@@ -27,7 +27,7 @@ class OneWorkerForm extends StatefulWidget {
 
 class _OneWorkerFormState extends State<OneWorkerForm> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  
+
   TextEditingController dateStartControler = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   RegExp regex = RegExp(r'(?!^ +$)^.+$');
@@ -161,9 +161,9 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   Future refreshState() async {
     setState(() => isLoading = true);
     final SharedPreferences prefs = await _prefs;
-    final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
-    selectedDate =  DateTime.parse(defaultTime);
-
+    final String defaultTime = (prefs.getString(widget.projectFk.toString()) ??
+        DateTime.now().toString());
+    selectedDate = DateTime.parse(defaultTime);
 
     formData = await DatabaseHelper.instance.readFormData(
         widget.projectFk, widget.architecturalType, widget.workType);
@@ -274,7 +274,6 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
                               child: Center(
                                   child: TextField(
                                 readOnly: true,
-                                controller: dateStartControler,
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -1964,16 +1963,20 @@ class _OneWorkerFormState extends State<OneWorkerForm> {
   Widget saveButton() => ElevatedButton(
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
-            final SharedPreferences prefs = await _prefs;
-            final String defaultTime = (prefs.getString(widget.projectFk.toString()) ?? DateTime.now().toString());
-            if(dateEnd!.isAfter(DateTime.parse(defaultTime))){
-              if(dateEnd!.add(const Duration(days: 1)).weekday != DateTime.sunday){
-                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 1)).toString());
-              }else{
-                prefs.setString(widget.projectFk.toString(), dateEnd!.add(const Duration(days: 2)).toString());
-              }
+          final SharedPreferences prefs = await _prefs;
+          final String defaultTime =
+              (prefs.getString(widget.projectFk.toString()) ??
+                  DateTime.now().toString());
+          if (dateEnd!.isAfter(DateTime.parse(defaultTime))) {
+            if (dateEnd!.add(const Duration(days: 1)).weekday !=
+                DateTime.sunday) {
+              prefs.setString(widget.projectFk.toString(),
+                  dateEnd!.add(const Duration(days: 1)).toString());
+            } else {
+              prefs.setString(widget.projectFk.toString(),
+                  dateEnd!.add(const Duration(days: 2)).toString());
             }
-
+          }
 
           final formDataCreate = FormData(
             id: formData!.id,
